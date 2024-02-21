@@ -1,13 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
+import EmplifyLogo from '../assets/images/logo.png'
+import { Button, Icon, Image, Input, InputGroup, InputRightElement, Stack } from '@chakra-ui/react'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+
+
 
 const Login = () => {
+    const [show, setShow] = useState(false)
+    const handleClick = () => setShow(!show)
+    
     return (
-        <div className="container mx-auto mt-8">
-            <h1 className="text-3xl font-bold mb-4">Welcome to the About Page</h1>
-            <p className="text-lg">
-                This is a simple React application with a navbar and routing using React Router. Feel free to explore the
-                other pages using the links in the navbar.
+        <div className="container">
+          <div className='bg-blue-kpmgBlue w-screen py-5 px-14'>
+            <a href="/">
+                <Image
+                    src={EmplifyLogo}
+                    alt='KPMG Logo'
+                    priority
+                    className='object-contain'
+                />
+            </a>
+          </div>
+          <div className='bg-[#F9FAFB] w-screen pt-10 2xl:pt-20 pb-7 2xl:pb-14'>
+            <div className='flex flex-col space-y-1 w-5/12 2xl:w-1/3 mx-auto'>
+                <h1 className='text-[52px] font-sansBold text-black-custom1'>Login to your account</h1>
+                <p className='text-2xl text-black-custom1'>Welcome back!</p>
+            </div>
+          </div>
+          <div className="flex flex-col w-screen my-12 2xl:my-24">
+            <Stack spacing={1} className='w-5/12 2xl:w-1/3 mx-auto'>
+                <label className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Email Address</label>
+                <InputGroup className='mb-7 2xl:mb-10'>
+                    <Input 
+                        type='email' 
+                        placeholder='Enter your email address' 
+                        py='1.5rem'
+                        _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }} />
+                </InputGroup>
+
+                <label className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Password</label>
+                <InputGroup className='mb-10'>
+                    <Input
+                        pr='4.5rem'
+                        py='1.5rem'
+                        type={show ? 'text' : 'password'}
+                        placeholder='Enter your password'
+                        _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
+                    />
+                    <InputRightElement width='4.5rem' pt='0.75rem'>
+                        <Button h='1.75rem' size='lg' bg='white' px='0' onClick={handleClick}>
+                        {show ? <Icon as={EyeSlashIcon} /> : <Icon as={EyeIcon} />}
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
+            </Stack>
+            <p className="mt-10 2xl:mt-24 mb-7 2xl:mb-10 text-center">
+                Don't have an account? <a href="/register" className="font-semibold text-blue-500">Register an account.</a>
             </p>
+            <Button 
+                bg='#00338D'
+                color='white'
+                size='lg'
+                className="w-5/12 2xl:w-1/3 rounded-md self-center"
+            >
+                Login
+            </Button>
+        </div>
         </div>
     );
 };
