@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import EmplifyLogo from '../assets/images/logo.png'
-import { Button, Icon, Image, Input, InputGroup, InputRightElement, Stack } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputRightElement, Stack } from '@chakra-ui/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
 
@@ -31,62 +31,51 @@ const Register = () => {
           </div>
           <div className="flex flex-col w-screen my-10 2xl:my-16">
             <Stack spacing={1} className='w-5/12 2xl:w-1/3 mx-auto'>
-                <label className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Full Name</label>
-                <InputGroup className='mb-2 2xl:mb-5'>
-                    <Input 
-                        type='text' 
-                        placeholder='Enter your full name' 
-                        py='1.5rem'
-                        _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }} />
-                </InputGroup>
+                <FormControl isRequired>
+                    <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Full Name</FormLabel>
+                    <InputGroup className='mb-2 2xl:mb-5'>
+                        <Input 
+                            type='text' 
+                            placeholder='Enter your full name' 
+                            py='1.5rem'
+                            _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }} />
+                    </InputGroup>
+                </FormControl>
 
-                <label className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Email Address</label>
-                <InputGroup className='mb-2 2xl:mb-5'>
-                    <Input 
-                        type='email' 
-                        placeholder='Enter your email address' 
-                        py='1.5rem'
-                        _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }} />
-                </InputGroup>
+                <FormControl isRequired>
+                    <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Email Address</FormLabel>
+                    <InputGroup className='mb-2 2xl:mb-5'>
+                        <Input 
+                            type='email' 
+                            placeholder='Enter your email address' 
+                            py='1.5rem'
+                            _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }} />
+                    </InputGroup>
+                </FormControl>
 
-                <label className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Password</label>
-                <InputGroup className='mb-2 2xl:mb-5'>
-                    <Input
-                        pr='4.5rem'
-                        py='1.5rem'
-                        type={show ? 'text' : 'password'}
-                        placeholder='Enter your password'
-                        _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
-                    />
-                    <InputRightElement width='4.5rem' pt='0.75rem'>
-                        <Button h='1.75rem' size='lg' bg='white' px='0' onClick={handleClick}>
-                        {show ? <Icon as={EyeSlashIcon} /> : <Icon as={EyeIcon} />}
-                        </Button>
-                    </InputRightElement>
-                </InputGroup>
-
-                <label className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Confirm Password</label>
-                <InputGroup className='mb-2 2xl:mb-5'>
-                    <Input
-                        pr='4.5rem'
-                        py='1.5rem'
-                        type={show ? 'text' : 'password'}
-                        placeholder='Retype your password'
-                        _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
-                    />
-                    <InputRightElement width='4.5rem' pt='0.75rem'>
-                        <Button h='1.75rem' size='lg' bg='white' px='0' onClick={handleClick}>
-                        {show ? <Icon as={EyeSlashIcon} /> : <Icon as={EyeIcon} />}
-                        </Button>
-                    </InputRightElement>
-                </InputGroup>
-                
+                <FormControl isRequired>
+                    <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Password</FormLabel>
+                    <InputGroup className='mb-2 2xl:mb-5'>
+                        <Input
+                            pr='4.5rem'
+                            py='1.5rem'
+                            type={show ? 'text' : 'password'}
+                            placeholder='Enter your password'
+                            _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
+                        />
+                        <InputRightElement width='4.5rem' pt='0.75rem'>
+                            <Button h='1.75rem' size='lg' bg='white' px='0' onClick={handleClick}>
+                            {show ? <Icon as={EyeSlashIcon} /> : <Icon as={EyeIcon} />}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                </FormControl>
             </Stack>
             <Button 
                 bg='#00338D'
                 color='white'
                 size='lg'
-                mt='5%'
+                mt='4.2%'
                 className="w-5/12 2xl:w-1/3 rounded-md self-center"
             >
                 Register
