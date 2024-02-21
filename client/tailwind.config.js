@@ -4,10 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        customBlue: '#003366',
+        blue: {
+          kpmgBlue: '#00338D',
+        },
+        black: {
+          custom1: '#333D49',
+        },
       },
       fontFamily: {
-        customFont: ['Roboto', 'sans-serif'],
+        sans: ['Source Sans Pro', 'sans-serif'],
       },
     },
   },
