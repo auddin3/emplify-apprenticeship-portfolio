@@ -1,8 +1,12 @@
+const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/config');
 const bcrypt = require('bcryptjs')
+require('dotenv').config();
 
-const createUser = async (req, res) => {
+const SECRET_KEY = 'a-secret-key'
+
+const registerUser = async (req, res) => {
   try {
     const { email: enteredEmail, password: enteredPassword, name: enteredName } = req.body;
     const db = getDb();
@@ -36,7 +40,6 @@ const loginUser = async (req, res) => {
     } 
 
     const passwordsAreEqual = await bcrypt.compare(enteredPassword, existingUser.password)
-
     if (!passwordsAreEqual) {
       return res.status(500).json({ message: 'Could not login - incorrect password'})
     } 
@@ -45,12 +48,16 @@ const loginUser = async (req, res) => {
     req.session.isAuthenticated = true
     req.session.save()
 
-    res.status(201).json({ message: 'Success' });
+    const token = jwt.sign({ userId: existingUser.email }, SECRET_KEY, {
+      expiresIn: '1 hour'
+    });
+    
+    res.json({ token }).send();
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
   }
 
 const updateUser = async (req, res) => {
@@ -106,12 +113,10 @@ const updateUser = async (req, res) => {
   
   const getUserById = async (req, res) => {
     try {
-      const userId = ObjectId(req.params.userId);
-      const db = getDb();
-      const user = await db.collection('users').findOne({ _id: userId });
-  
+      const user = req.user
+
       if (user) {
-        res.json(user);
+        res.status(200).json({ user: user });
       } else {
         res.status(404).json({ message: 'User not found' });
       }
@@ -122,7 +127,7 @@ const updateUser = async (req, res) => {
   };
 
 module.exports = {
-  createUser,
+  registerUser,
   loginUser,
   updateUser,
   deleteUser,

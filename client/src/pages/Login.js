@@ -44,7 +44,9 @@ const Login = () => {
             }
      
             console.log('Login successful:');
-            navigate('/dashboard'); // Use history.push() for redirection
+            const token = await response.json();
+
+            navigate('/dashboard', { state: { token: token } });
     
         } catch (error) {
             console.error('Login failed:', error);

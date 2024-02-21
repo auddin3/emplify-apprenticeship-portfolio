@@ -23,7 +23,7 @@ const Home = () => {
                 </div>
             </div>
             <div className='pl-14 my-12 w-screen flex flex-row justify-between'>
-                <Stack spacing={10} className='justify-items-start my-auto'>
+                <Stack spacing={10} className='pl-2 justify-items-start my-auto'>
                     <Heading as='h1' size='lg' color='#F7F7F8' width='530px' className='font-sansSemibold'>
                         Elevate Your Story. Amplify Your Success. Empowering Portfolios. Empowering Futures.
                     </Heading>
