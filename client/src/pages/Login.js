@@ -59,7 +59,6 @@ const Login = () => {
                 <Image
                     src={EmplifyLogo}
                     alt='KPMG Logo'
-                    priority
                     className='object-contain'
                 />
             </a>
