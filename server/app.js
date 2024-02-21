@@ -10,26 +10,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-const session = require('express-session')
-const mongodbStore = require('connect-mongodb-session')
-
-const mongoDBStore = mongodbStore(session)
-
-const sessionStore = new mongoDBStore({
-    uri: 'mongodb://localhost:27017',
-    databaseName: 'emplify',
-    collection: 'sessions'
-})
-
-app.use(session({
-    secret: 'super-secret',
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore,
-    cookie: ({
-      maxAge: 2 * 60 * 60 * 1000
-    })
-  }))
 
 // Routes
 const indexRoutes = require('./routes/index');
