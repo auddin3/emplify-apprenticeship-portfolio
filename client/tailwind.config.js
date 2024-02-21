@@ -13,6 +13,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Source Sans Pro', 'sans-serif'],
+        sansBold: ['Source Sans Pro Bold', 'sans-serif'],
+        sansSemibold: ['Source Sans Pro Semibold', 'sans-serif'],
       },
     },
   },
