@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/config');
+const bcrypt = require('bcryptjs')
 
 const collectionName = 'users';
 
@@ -33,12 +34,20 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { email: enteredEmail, password: enteredPassword, name: enteredName } = req.body;
     const db = getDb();
-    const result = await db.collection(collectionName).insertOne({ name });
 
-    const newUser = result.ops[0];
-    res.status(201).json(newUser);
+    const hashedPassword = await bcrypt.hash(enteredPassword, 12)
+
+    const user = {
+      email: enteredEmail, 
+      password: hashedPassword, 
+      name: enteredName,
+    }
+
+    const result = await db.collection(collectionName).insertOne(user);
+    res.status(201).json({ message: 'Success' });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
