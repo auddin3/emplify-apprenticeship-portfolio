@@ -1,6 +1,10 @@
 {
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "cors": "^2.8.5",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "express": "^4.18.2",
     "mongodb": "^6.3.0",
     "nodemon": "^3.0.3",
@@ -9,7 +13,9 @@
   "scripts": {
     "dev": "npm-run-all -p start-backend start-frontend",
     "start-backend": "cd server && nodemon app.js",
-    "start-frontend": "cd client && PORT=3001 npm start"
+    "start-frontend": "cd client && PORT=3001 npm start",
+    "lint": "eslint .",
+    "lint-fix": "npx eslint --fix ."
   },
   "dependencies": {
     "react-router-dom": "^6.22.1"
