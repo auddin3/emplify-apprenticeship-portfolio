@@ -11,7 +11,6 @@ const Home = () => {
                 <Image
                     src={EmplifyLogo}
                     alt='KPMG Logo'
-                    priority
                     className='object-contain w-[100px] h-[45px]'
                 />
                 <div className='flex flex-row space-x-8 items-center'>
@@ -24,7 +23,7 @@ const Home = () => {
                 </div>
             </div>
             <div className='pl-14 my-12 w-screen flex flex-row justify-between'>
-                <Stack spacing={10} className='justify-items-start my-auto'>
+                <Stack spacing={10} className='pl-2 justify-items-start my-auto'>
                     <Heading as='h1' size='lg' color='#F7F7F8' width='530px' className='font-sansSemibold'>
                         Elevate Your Story. Amplify Your Success. Empowering Portfolios. Empowering Futures.
                     </Heading>
@@ -34,8 +33,7 @@ const Home = () => {
                 </Stack>
                 <Image
                     src={CircleMatrix}
-                    alt='Circle Matrix'
-                    priority
+                    alt='Circle Matrix'     
                     className='object-contain w-[303px] h-[300px]'
                 />
             </div>

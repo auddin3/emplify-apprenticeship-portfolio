@@ -1,12 +1,10 @@
 const express = require("express")
 const router = express.Router()
-const userController = require("../service/user")
+const userController = require("../controllers/user")
+const authz = require("../middleware/auth")
 
-// Define user-related routes
-router.get("/", userController.getAllUsers)
-router.get("/:userId", userController.getUserById)
-router.post("/", userController.createUser)
-router.put("/:userId", userController.updateUser)
-router.delete("/:userId", userController.deleteUser)
+router.post("/register", userController.registerUser)
+router.post("/login", userController.loginUser)
+router.get("/authenticate", authz.authenticate)
 
 module.exports = router

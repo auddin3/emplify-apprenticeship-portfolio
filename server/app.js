@@ -1,9 +1,8 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
-const db = require("./config/config")
+const db = require("./config/database")
 const app = express()
-const PORT = 5001
 
 // Middleware
 app.use(cors())
@@ -12,13 +11,14 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static("public"))
 
 // Routes
-const indexRoutes = require("./routes/index")
 const userRoutes = require("./routes/userRoutes")
+app.use(userRoutes)
 
-app.use("/", indexRoutes)
-app.use("/users", userRoutes)
+app.use(function(error, req, res) {
+	res.render("500")
+})
 
 // Start the server
 db.connectToDatabase().then(function() {
-	app.listen(PORT)
+	app.listen(5001)
 })
