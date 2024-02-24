@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../service/user');
+const userController = require('../controllers/user');
 
 // Define user-related routes
 router.get('/', userController.getAllUsers);

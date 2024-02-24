@@ -13,10 +13,10 @@ app.use(express.static('public'));
 
 // Routes
 const indexRoutes = require('./routes/index');
-const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 app.use('/', indexRoutes);
-app.use('/users', userRoutes);
+app.use(authRoutes);
 
 // Start the server
 db.connectToDatabase().then(function() {
