@@ -6,6 +6,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Portfolio from '../pages/Portfolio';
 import Library from '../pages/Library';
+import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 
 const AppRouter = () => {
     return (
@@ -14,9 +15,11 @@ const AppRouter = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/portfolio" element={<Portfolio />} />
-                    <Route path="/library" element={<Library />} />
+                    <Route element={<AuthOutlet fallbackPath='/login' />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/portfolio" element={<Portfolio />} />
+                        <Route path="/library" element={<Library />} />
+                    </Route>
                 </Routes>
         </Router>
     );
