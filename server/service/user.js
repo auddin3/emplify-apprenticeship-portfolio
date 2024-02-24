@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { getDb } = require('../config/config');
+const { getDb } = require('../config/database');
 
 const collectionName = 'users';
 

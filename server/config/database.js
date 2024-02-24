@@ -1,8 +1,3 @@
-/* 
-mongod --dbpath /Users/auddin3/Desktop/100DOC/Backend/mongodb/data 
---logpath /Users/auddin3/Desktop/100DOC/Backend/mongodb/logs/mongodb.log 
-*/
-
 const mongodb = require('mongodb')
 
 const MongoClient = mongodb.MongoClient
