@@ -101,10 +101,10 @@ const Dashboard = () => {
             <div className='text-center'>
               <Avatar name={user?.name} size='2xl' fontWeight={600} />
             </div>
-            <div className='text-3xl text-center font-sansSemibold pt-8 mb-4'>{user?.name}</div>
+            <div className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</div>
           </CardBody>
           <CardFooter>
-            <div className='w-full text-center mx-10'>Queen Mary&apos;s University of London</div>
+            <div className='w-full text-center mx-10 mb-4'>Queen Mary&apos;s University of London</div>
           </CardFooter>
         </Card>
         <Card className='px-2 rounded-full' size='lg'>
