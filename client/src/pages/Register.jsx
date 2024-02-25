@@ -1,18 +1,40 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EmplifyLogo from '../assets/images/logo.png'
-import { Button, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputRightElement, Stack } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputRightElement, Stack, Select } from '@chakra-ui/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
-const initialUserData = {
-  email: '', // Get the value from your state or form input
-  password: '', // Get the value from your state or form input
-  name: '', // Get the value from your state or form input
-}
+const schools = [
+  'University of Birmingham',
+  'University of Bristol',
+  'Durham University',
+  'University of Edinburgh',
+  'Imperial College London',
+  'King\'s College London',
+  'London School of Economics and Political Science (LSE)',
+  'University of Leeds',
+  'University of Liverpool',
+  'University of Manchester',
+  'Newcastle University',
+  'University of Nottingham',
+  'University of Oxford',
+  'Queen Mary\'s University of London',
+  'University of Sheffield',
+  'University of Southampton',
+  'University of St Andrews',
+  'University of Warwick',
+  'University of Glasgow',
+  'University College London (UCL)',
+]
 
 const Register = () => {
   const [show, setShow] = useState(false)
-  const [userData, setUserData] = useState(initialUserData)
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    school: '',
+  })
   const navigate = useNavigate()
 
   const handleChange = (e, name) => {
@@ -46,7 +68,7 @@ const Register = () => {
   }
 
   return (
-    <div className="container">
+    <div className="container h-screen">
       <div className='bg-blue-kpmgBlue w-screen py-5 px-14'>
         <a href="/">
           <Image
@@ -65,7 +87,7 @@ const Register = () => {
         </div>
       </div>
       <div className="flex flex-col w-screen my-10 2xl:my-16">
-        <Stack spacing={1} className='w-5/12 2xl:w-1/3 mx-auto'>
+        <Stack spacing={1} className='w-5/12 2xl:w-1/3 mx-auto h-80 2xl:h-full overflow-y-scroll '>
           <FormControl isRequired>
             <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">Name</FormLabel>
             <InputGroup className='mb-2 2xl:mb-5'>
@@ -75,7 +97,7 @@ const Register = () => {
                 value={userData.name}
                 onChange={e => handleChange(e, 'name')}
                 py='1.5rem'
-                _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }} />
+                _placeholder={{ opacity: 1, color: 'gray.500' }} />
             </InputGroup>
           </FormControl>
 
@@ -88,7 +110,7 @@ const Register = () => {
                 value={userData.email}
                 onChange={e => handleChange(e, 'email')}
                 py='1.5rem'
-                _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }} />
+                _placeholder={{ opacity: 1, color: 'gray.500' }} />
             </InputGroup>
           </FormControl>
 
@@ -102,7 +124,7 @@ const Register = () => {
                 placeholder='Enter your password'
                 value={userData.password}
                 onChange={e => handleChange(e, 'password')}
-                _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
+                _placeholder={{ opacity: 1, color: 'gray.500' }}
               />
               <InputRightElement width='4.5rem' pt='0.75rem'>
                 <Button h='1.75rem' size='lg' bg='white' px='0' onClick={() => setShow(!show)}>
@@ -111,6 +133,22 @@ const Register = () => {
               </InputRightElement>
             </InputGroup>
           </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1">School</FormLabel>
+            <Select
+              size='md'
+              placeholder='Select option'
+              className='text-gray-500/100'
+              value={userData.school}
+              onChange={e => handleChange(e, 'school')}
+            >
+              {schools.map((uni, idx) => (
+                <option key={idx} value={uni}>{uni}</option>
+              ))}
+            </Select>
+          </FormControl>
+
         </Stack>
         <Button
           bg='#00338D'

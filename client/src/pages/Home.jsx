@@ -11,7 +11,6 @@ const Home = () => {
         <Image
           src={EmplifyLogo}
           alt='KPMG Logo'
-          priority
           className='object-contain w-[100px] h-[45px]'
         />
         <div className='flex flex-row space-x-8 items-center'>
@@ -35,7 +34,6 @@ const Home = () => {
         <Image
           src={CircleMatrix}
           alt='Circle Matrix'
-          priority
           className='object-contain w-[303px] h-[300px]'
         />
       </div>

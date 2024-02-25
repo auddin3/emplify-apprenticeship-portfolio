@@ -20,7 +20,7 @@ const Login = () => {
     }))
   }
 
-  const handleSubmit = async (credentials) => {
+  const handleClick = async (credentials) => {
     const apiUrl = 'http://localhost:5001/login'
 
     try {
@@ -43,8 +43,14 @@ const Login = () => {
           token: data?.token,
           type: 'Bearer',
         },
-        userState: { name: data.user.name, uid: data.user.email },
-
+        userState: {
+          user: {
+            uid: data?.user?._id,
+            name: data?.user?.name,
+            email: data?.user?.email,
+            school: data?.user?.school,
+          },
+        },
       })
 
       navigate('/dashboard')
@@ -109,7 +115,7 @@ const Login = () => {
           color='white'
           size='lg'
           className="w-5/12 2xl:w-1/3 rounded-md self-center"
-          onClick={() => handleSubmit(user)}
+          onClick={() => handleClick(user)}
         >
                 Login
         </Button>

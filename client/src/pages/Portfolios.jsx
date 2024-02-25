@@ -2,7 +2,7 @@ import React from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 
-const Library = () => {
+const Portfolios = () => {
   const auth = useAuthUser()
   const user = auth.user
 
@@ -10,10 +10,10 @@ const Library = () => {
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
       <Navbar user={user}/>
       <div>
-        Library
+        Portfolio
       </div>
     </div>
   )
 }
 
-export default Library
+export default Portfolios
