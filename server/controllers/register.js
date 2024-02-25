@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const collectionName = 'users'
 
 const register = async (req, res) => {
-  const { email, password, name } = req.body
+  const { name, email, password, school } = req.body
 
   const db = getDb()
 
@@ -19,7 +19,7 @@ const register = async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 12)
-  const savedUser = db.collection(collectionName).insertOne({ name, email, password: hashedPassword }).catch((err) => {
+  const savedUser = db.collection(collectionName).insertOne({ name, email, password: hashedPassword, school }).catch((err) => {
     console.log('Error: ', err)
     res.status(500).json({ error: 'Failed to register user' })
   })

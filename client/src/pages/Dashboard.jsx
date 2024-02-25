@@ -28,11 +28,11 @@ const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
 
 const Dashboard = () => {
   const auth = useAuthUser()
-  const user = { name: auth.name, email: auth.email }
+  const user = auth.user
   const navigate = useNavigate()
 
   return (
-    <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
+    <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row max-h-screen'>
       <Navbar user={user}/>
       <div className='flex flex-col w-9/12 space-y-5 m-5'>
         <Card className='px-2 rounded-full' size='lg'>
@@ -104,7 +104,7 @@ const Dashboard = () => {
             <div className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</div>
           </CardBody>
           <CardFooter>
-            <div className='w-full text-center mx-10 mb-4'>Queen Mary&apos;s University of London</div>
+            <div className='w-full text-center mx-10 mb-4'>{user?.school}</div>
           </CardFooter>
         </Card>
         <Card className='px-2 rounded-full' size='lg'>
