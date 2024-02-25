@@ -20,9 +20,9 @@ import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 //   },
 // ]
 
-const skills = [
-  'Big Data Programming', 'Semi-structured Data Engineering', 'Procedural Programming', 'Web Programming',
-]
+// const skills = [
+//   'Big Data Programming', 'Semi-structured Data Engineering', 'Procedural Programming', 'Web Programming',
+// ]
 
 const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
 
@@ -31,8 +31,8 @@ const Dashboard = () => {
   const user = auth.user
   const navigate = useNavigate()
 
-  // eslint-disable-next-line no-unused-vars
   const [portfolios, setPortfolios] = useState()
+  const [skills, setSkills] = useState()
 
   const fetchData = async () => {
     const apiUrl = `http://localhost:5001/dashboard/${user.uid}`
@@ -50,6 +50,7 @@ const Dashboard = () => {
 
       const data = await response.json()
       setPortfolios(data?.portfolios.sort((a, b) => a.performance + b.performance))
+      setSkills(data?.skills)
     } catch (error) {
       console.error('Operation failed:', error)
     }
@@ -96,9 +97,9 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardBody>
                   <div className='space-y-3'>
-                    {skills.map((skill, idx) => (
+                    {skills && skills?.map((s, idx) => (
                       <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2}>
-                        <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{skill}</TagLabel>
+                        <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
                       </Tag>
                     ))}
                   </div>
@@ -111,9 +112,9 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardBody>
                   <div className='space-y-3'>
-                    {skills.map((skill, idx) => (
+                    {skills && skills?.map((s, idx) => (
                       <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2}>
-                        <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{skill}</TagLabel>
+                        <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
                       </Tag>
                     ))}
                   </div>
