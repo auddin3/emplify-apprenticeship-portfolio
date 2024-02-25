@@ -4,7 +4,7 @@ import Dashboard from '../pages/Dashboard'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
-import Portfolio from '../pages/Portfolio'
+import Portfolios from '../pages/Portfolios'
 import Library from '../pages/Library'
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 
@@ -17,7 +17,7 @@ const AppRouter = () => {
         <Route path="/register" element={<Register />} />
         <Route element={<AuthOutlet fallbackPath='/login' />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/portfolios" element={<Portfolio />} />
+          <Route path="/portfolios" element={<Portfolios />} />
           <Route path="/library" element={<Library />} />
         </Route>
       </Routes>

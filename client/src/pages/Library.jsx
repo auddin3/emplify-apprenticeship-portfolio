@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 
 const Library = () => {
   const auth = useAuthUser()
-  const user = { name: auth.name, email: auth.email }
+  const user = auth.user
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>

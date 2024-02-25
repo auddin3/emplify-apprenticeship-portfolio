@@ -2,9 +2,9 @@ import React from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 
-const Portfolio = () => {
+const Portfolios = () => {
   const auth = useAuthUser()
-  const user = { name: auth.name, email: auth.email }
+  const user = auth.user
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
@@ -16,4 +16,4 @@ const Portfolio = () => {
   )
 }
 
-export default Portfolio
+export default Portfolios
