@@ -56,7 +56,7 @@ const Dashboard = () => {
             </SimpleGrid>
           </CardBody>
         </Card>
-        <Card>
+        <Card className='px-2 rounded-full' size='md'>
           <CardHeader paddingBottom='8px'>
             <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Skills Distribution</div>
           </CardHeader>
@@ -96,26 +96,26 @@ const Dashboard = () => {
         </Card>
       </div>
       <div className='flex flex-col w-auto space-y-5 m-5'>
-        <Card className='px-2 rounded-full' size='lg'>
+        <Card className='px-2 rounded-full' size='md'>
           <CardBody>
             <div className='text-center'>
               <Avatar name={user?.name} size='2xl' fontWeight={600} />
             </div>
-            <div className='text-3xl text-center font-sansSemibold pt-8 mb-6'>{user?.name}</div>
+            <div className='text-3xl text-center font-sansSemibold pt-8 mb-4'>{user?.name}</div>
           </CardBody>
           <CardFooter>
             <div className='w-full text-center mx-10'>Queen Mary&apos;s University of London</div>
           </CardFooter>
         </Card>
-        <Card className='px-2 rounded-full'>
+        <Card className='px-2 rounded-full' size='lg'>
           <CardHeader paddingBottom='8px'>
             <div className='font-sansSemibold text-blue-kpmgBlue text-xl text-center'>Latest Portfolios</div>
           </CardHeader>
           <CardBody marginX={5}>
             <ul className='space-y-5'>
               {portfolios.map((p, idx) => (
-                <li key={idx} className='flex flex-row space-x-6 items-center'>
-                  <Icon as={ShieldCheckIcon} color='#0091DA'/>
+                <li key={idx} className='flex flex-row space-x-8 items-center'>
+                  <Icon as={ShieldCheckIcon} color='#0091DA' h={5} w={5}/>
                   <div className='font-sansSemibold'>{p?.name}</div>
                 </li>
               ))}
