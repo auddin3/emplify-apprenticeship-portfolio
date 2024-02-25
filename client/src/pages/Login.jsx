@@ -51,7 +51,6 @@ const Login = () => {
             school: data?.user?.school,
           },
         },
-
       })
 
       navigate('/dashboard')

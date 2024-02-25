@@ -1,24 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Icon, SimpleGrid, Tag, TagLabel, Avatar } from '@chakra-ui/react'
 import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 
-const portfolios = [
-  {
-    name: 'BSC Digital and Technology Solutions',
-    performance: 0.9,
-  },
-  {
-    name: 'BSC Business and Accounting',
-    performance: 0.65,
-  },
-  {
-    name: 'MLA Law and Economics',
-    performance: 0.35,
-  },
-]
+// const dummyPortfolios = [
+//   {
+//     name: 'BSC Digital and Technology Solutions',
+//     performance: 0.9,
+//   },
+//   {
+//     name: 'BSC Business and Accounting',
+//     performance: 0.65,
+//   },
+//   {
+//     name: 'MLA Law and Economics',
+//     performance: 0.35,
+//   },
+// ]
 
 const skills = [
   'Big Data Programming', 'Semi-structured Data Engineering', 'Procedural Programming', 'Web Programming',
@@ -31,6 +31,34 @@ const Dashboard = () => {
   const user = auth.user
   const navigate = useNavigate()
 
+  // eslint-disable-next-line no-unused-vars
+  const [portfolios, setPortfolios] = useState()
+
+  const fetchData = async () => {
+    const apiUrl = `http://localhost:5001/dashboard/${user.uid}`
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Login failed:', errorData)
+      }
+
+      const data = await response.json()
+      setPortfolios(data?.portfolios.sort((a, b) => a.performance + b.performance))
+    } catch (error) {
+      console.error('Operation failed:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row max-h-screen'>
       <Navbar user={user}/>
@@ -38,11 +66,11 @@ const Dashboard = () => {
         <Card className='px-2 rounded-full' size='lg'>
           <CardHeader paddingBottom='8px'>
             <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Performance Analysis</div>
-            <div className='pt-4'>The top performing portfolio is <strong>{portfolios[0]?.name}.</strong></div>
+            <div className='pt-4'>The top performing portfolio is <strong> {portfolios ? portfolios[0]?.name : ''}.</strong></div>
           </CardHeader>
           <CardBody>
             <SimpleGrid spacing={10} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-              {portfolios.map((p, idx) => (
+              {portfolios && portfolios?.map((p, idx) => (
                 <Card key={idx}>
                   <CardBody className='flex flex-col justify-items-center' paddingBottom='15px'>
                     <CircularProgress thickness='10px' size='110px' color={colorScheme[idx]} value={p?.performance * 100} className='mx-auto' />
@@ -113,7 +141,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardBody marginX={5}>
             <ul className='space-y-5'>
-              {portfolios.map((p, idx) => (
+              {portfolios && portfolios?.map((p, idx) => (
                 <li key={idx} className='flex flex-row space-x-8 items-center'>
                   <Icon as={ShieldCheckIcon} color='#0091DA' h={5} w={5}/>
                   <div className='font-sansSemibold'>{p?.name}</div>
