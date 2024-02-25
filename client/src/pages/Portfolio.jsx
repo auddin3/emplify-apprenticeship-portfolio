@@ -1,13 +1,17 @@
 import React from 'react'
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
+import Navbar from '../components/Navbar'
 
 const Portfolio = () => {
+  const auth = useAuthUser()
+  const user = { name: auth.name, email: auth.email }
+
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-4">Welcome to the Services Page</h1>
-      <p className="text-lg">
-                This is a simple React application with a navbar and routing using React Router. Feel free to explore the
-                other pages using the links in the navbar.
-      </p>
+    <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
+      <Navbar user={user}/>
+      <div>
+        Portfolio
+      </div>
     </div>
   )
 }

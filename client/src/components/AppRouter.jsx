@@ -17,7 +17,7 @@ const AppRouter = () => {
         <Route path="/register" element={<Register />} />
         <Route element={<AuthOutlet fallbackPath='/login' />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolios" element={<Portfolio />} />
           <Route path="/library" element={<Library />} />
         </Route>
       </Routes>

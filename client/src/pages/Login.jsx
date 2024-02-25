@@ -20,7 +20,7 @@ const Login = () => {
     }))
   }
 
-  const handleSubmit = async (credentials) => {
+  const handleClick = async (credentials) => {
     const apiUrl = 'http://localhost:5001/login'
 
     try {
@@ -109,7 +109,7 @@ const Login = () => {
           color='white'
           size='lg'
           className="w-5/12 2xl:w-1/3 rounded-md self-center"
-          onClick={() => handleSubmit(user)}
+          onClick={() => handleClick(user)}
         >
                 Login
         </Button>
