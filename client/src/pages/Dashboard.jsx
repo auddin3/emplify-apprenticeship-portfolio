@@ -5,25 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Icon, SimpleGrid, Tag, TagLabel, Avatar } from '@chakra-ui/react'
 import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 
-// const dummyPortfolios = [
-//   {
-//     name: 'BSC Digital and Technology Solutions',
-//     performance: 0.9,
-//   },
-//   {
-//     name: 'BSC Business and Accounting',
-//     performance: 0.65,
-//   },
-//   {
-//     name: 'MLA Law and Economics',
-//     performance: 0.35,
-//   },
-// ]
-
-// const skills = [
-//   'Big Data Programming', 'Semi-structured Data Engineering', 'Procedural Programming', 'Web Programming',
-// ]
-
 const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
 
 const Dashboard = () => {
@@ -73,7 +54,7 @@ const Dashboard = () => {
             <SimpleGrid spacing={10} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
               {portfolios && portfolios?.map((p, idx) => (
                 <Card key={idx}>
-                  <CardBody className='flex flex-col justify-items-center' paddingBottom='15px'>
+                  <CardBody className='flex flex-col justify-items-center max-h-48' paddingBottom='15px'>
                     <CircularProgress thickness='10px' size='110px' color={colorScheme[idx]} value={p?.performance * 100} className='mx-auto' />
                     <div className={' text-2xl text-center mt-4 font-sansBold'} style= {{ color: colorScheme[idx] }}>{p?.performance * 100}%</div>
                   </CardBody>
