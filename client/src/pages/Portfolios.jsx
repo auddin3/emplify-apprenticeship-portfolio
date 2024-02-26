@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
-import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, SimpleGrid } from '@chakra-ui/react'
+import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, SimpleGrid, Tooltip } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
+import { calculateDateDifference } from '../utils'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 
 const Portfolios = () => {
   const auth = useAuthUser()
@@ -44,7 +46,7 @@ const Portfolios = () => {
         <hr className='border-t-2 border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
         <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
           {portfolios && portfolios?.map((p, idx) => {
-            const daysRemaining = 32
+            const daysRemaining = calculateDateDifference(p?.deadline)
 
             const ksbsCompleted = 19
             const ksbsRemaining = 24
@@ -52,8 +54,13 @@ const Portfolios = () => {
             return (
               <GridItem key={idx} w='100%'>
                 <Card padding={4}>
-                  <CardHeader paddingBottom={0}>
-                    <div className='text-lg font-sansSemibold'>{p?.name}</div>
+                  <CardHeader paddingBottom={2}>
+                    <div className='flex flex-row space-x-2 items-center'>
+                      <div className='text-lg font-sansSemibold'>{p?.name}</div>
+                      <Tooltip hasArrow label={p?.description || 'abc'} bg="gray.300" color='black' placement='right'>
+                        <Icon color='#6D2077' as={InformationCircleIcon}/>
+                      </Tooltip>
+                    </div>
                     <div className='text-[#333333] italic'>Due in {daysRemaining} days</div>
                   </CardHeader>
                   <CardBody>
