@@ -9,7 +9,7 @@ const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
 
 const Dashboard = () => {
   const auth = useAuthUser()
-  const user = auth.user
+  const user = auth?.user
   const navigate = useNavigate()
 
   const [portfolios, setPortfolios] = useState()

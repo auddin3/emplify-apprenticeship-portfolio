@@ -34,7 +34,7 @@ const menuOptions = [
 
 const Portfolios = () => {
   const auth = useAuthUser()
-  const user = auth.user
+  const user = auth?.user
   const navigate = useNavigate()
 
   const [portfolios, setPortfolios] = useState()
