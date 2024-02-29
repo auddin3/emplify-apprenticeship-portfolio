@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
@@ -47,7 +46,7 @@ const Library = () => {
   }, [])
 
   useEffect(() => {
-    setFilteredModules([...modules].sort((a, b) => a.title.localeCompare(b.title)))
+    modules && setFilteredModules(modules.sort((a, b) => a.title.localeCompare(b.title)))
   }, [modules])
 
   return (
@@ -101,16 +100,21 @@ const Library = () => {
                   <TabPanel key={idx}>
                     <Grid templateColumns='repeat(3, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
                       {tabModules && tabModules?.map((module, idx) => {
+                        const dateCreated = new Date(module?.dateCreated)
+                        const options = { day: 'numeric', month: 'numeric', year: 'numeric' }
+                        const formattedDate = dateCreated.toLocaleDateString('en-GB', options)
+
                         return (
-                          <Card key={idx}>
-                            <CardHeader>
+                          <Card key={idx} className='px-2'>
+                            <CardHeader className='flex flex-row justify-between border-b'>
                               <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
                                 <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
                               </Tag>
-                              <div>{module?.dateCreated}</div>
+                              <div className='text-sm text-[#00338D]/80 font-sansSemibold'>{formattedDate || ''}</div>
                             </CardHeader>
                             <CardBody>
-                              <div>{module?.title}</div>
+                              <div className='text-blue-kpmgBlue font-sansSemibold text-lg h-12'>{module?.moduleId} - {module?.title}</div>
+                              <div className='text-blue-kpmgBlue my-5'>{module?.description}</div>
                             </CardBody>
                           </Card>
                         )

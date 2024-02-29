@@ -66,7 +66,7 @@ const Portfolios = () => {
   }, [])
 
   useEffect(() => {
-    setSortedPortfolios(portfolios)
+    portfolios && setSortedPortfolios(portfolios)
   }, [portfolios])
 
   return (
