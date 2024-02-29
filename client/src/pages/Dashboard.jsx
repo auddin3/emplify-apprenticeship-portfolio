@@ -42,7 +42,7 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row max-h-screen'>
+    <div className='bg-gray-paleGray flex flex-row max-h-screen'>
       <Navbar user={user}/>
       <div className='flex flex-col w-9/12 space-y-5 m-5'>
         <Card className='px-2 rounded-full' size='lg'>

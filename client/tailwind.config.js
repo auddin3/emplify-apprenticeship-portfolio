@@ -21,6 +21,7 @@ module.exports = {
         },
         pink: '#C6007E',
         black: { custom1: '#333D49' },
+        gray: { paleGray: '#F8F9FD' },
       },
       fontFamily: {
         sans: ['Source Sans Pro', 'sans-serif'],

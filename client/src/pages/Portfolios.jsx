@@ -5,6 +5,7 @@ import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, S
 import { useNavigate } from 'react-router-dom'
 import { calculateDateDifference } from '../utils'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import SortMenu from '../components/SortMenu'
 
 const Portfolios = () => {
   const auth = useAuthUser()
@@ -12,6 +13,7 @@ const Portfolios = () => {
   const navigate = useNavigate()
 
   const [portfolios, setPortfolios] = useState()
+  const [sortedPortfolios, setSortedPortfolios] = useState()
 
   const fetchData = async () => {
     const apiUrl = `http://localhost:5001/portfolios/${user.uid}`
@@ -28,7 +30,7 @@ const Portfolios = () => {
       }
 
       const data = await response.json()
-      setPortfolios(data?.portfolios.sort((a, b) => a.name + b.name))
+      setPortfolios(data?.portfolios)
     } catch (error) {
       console.error('Operation failed:', error)
     }
@@ -38,16 +40,21 @@ const Portfolios = () => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    setSortedPortfolios(portfolios)
+  }, [portfolios])
+
   return (
-    <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
+    <div className='bg-gray-paleGray flex flex-row'>
       <Navbar user={user}/>
       <div className='w-full p-14 max-h-screen overflow-y-scroll'>
         <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
-        <hr className='border-t-2 border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
+        <SortMenu portfolios={portfolios} setSortedPortfolios={setSortedPortfolios}/>
         <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
-          {portfolios && portfolios?.map((p, idx) => {
+          {sortedPortfolios && sortedPortfolios?.map((p, idx) => {
             const daysRemaining = calculateDateDifference(p?.deadline)
 
+            // Update logic
             const ksbsCompleted = 19
             const ksbsRemaining = 24
 
