@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar'
-import { Tabs, TabList, Tab, TabIndicator, Tag } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, Grid, Tabs, TabList, Tab, TabIndicator, TabPanels, TabPanel, Tag } from '@chakra-ui/react'
 
-const pages = ['all', 'databaseManagement', 'networks', 'UXD/UID', 'dataModelling', 'artificialIntelligence']
+const pages = ['all', 'dataModelling', 'artificialIntelligence', 'softwareEngineering', 'networks', 'UXD/UID']
 
 const camelCaseToSpaced = (str) => {
   return str
@@ -17,20 +18,52 @@ const Library = () => {
   const user = auth?.user
 
   const [selectedTab, setSelectedTab] = useState(0)
+  const [modules, setModules] = useState()
+  const [filteredModules, setFilteredModules] = useState()
+
+  const fetchData = async () => {
+    const apiUrl = 'http://localhost:5001/modules'
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setModules(data?.modules)
+    } catch (error) {
+      console.error('Operation failed:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    setFilteredModules([...modules].sort((a, b) => a.title.localeCompare(b.title)))
+  }, [modules])
 
   return (
     <div className='bg-gray-paleGray flex flex-row'>
       <Navbar user={user}/>
-      <div className='w-full p-12'>
+      <div className='w-full p-12 max-h-screen overflow-y-scroll'>
         <SearchBar />
         <div className='mx-2'>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
 
           <Tabs variant='unstyled' size='lg'>
-            <TabList className='space-x-6'>
-              {pages.map((page, idx) => {
+            <TabList className='space-x-5'>
+              {pages?.map((page, idx) => {
                 const isSelected = idx === selectedTab
+                const count = filteredModules?.filter(module => module?.category === page).length
 
                 return (
                   <Tab
@@ -45,7 +78,9 @@ const Library = () => {
                       ? ''
                       : (
                         <Tag backgroundColor={`${isSelected ? 'rgb(75, 117, 255)' : 'rgba(75, 117, 255, 0.2)'}`} paddingX={3.5} borderRadius={7}>
-                          <div className={`${isSelected ? 'text-white' : 'text-blue-kpmgBlue'}`}>7</div>
+                          <div className={`${isSelected ? 'text-white' : 'text-blue-kpmgBlue'}`}>
+                            {count}
+                          </div>
                         </Tag>
                       )
                     }
@@ -59,6 +94,32 @@ const Library = () => {
               bg="#4B75FF"
               borderRadius="1px"
             />
+            <TabPanels>
+              {pages?.map((page, idx) => {
+                const tabModules = page === 'all' ? filteredModules : filteredModules?.filter(module => module?.category === page)
+                return (
+                  <TabPanel key={idx}>
+                    <Grid templateColumns='repeat(3, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
+                      {tabModules && tabModules?.map((module, idx) => {
+                        return (
+                          <Card key={idx}>
+                            <CardHeader>
+                              <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
+                                <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
+                              </Tag>
+                              <div>{module?.dateCreated}</div>
+                            </CardHeader>
+                            <CardBody>
+                              <div>{module?.title}</div>
+                            </CardBody>
+                          </Card>
+                        )
+                      })}
+                    </Grid>
+                  </TabPanel>
+                )
+              })}
+            </TabPanels>
           </Tabs>
         </div>
       </div>

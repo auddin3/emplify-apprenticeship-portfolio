@@ -51,7 +51,7 @@ const Portfolios = () => {
 
       if (!response.ok) {
         const errorData = await response.json()
-        console.error('Login failed:', errorData)
+        console.error('Operation failed:', errorData)
       }
 
       const data = await response.json()
