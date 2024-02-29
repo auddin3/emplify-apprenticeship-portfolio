@@ -4,7 +4,13 @@ import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar'
 import { Tabs, TabList, Tab, TabIndicator, Tag } from '@chakra-ui/react'
 
-const pages = ['all', 'database Management', 'networks', 'UXD/UID', 'data Modelling', 'artificial Intelligence']
+const pages = ['all', 'databaseManagement', 'networks', 'UXD/UID', 'dataModelling', 'artificialIntelligence']
+
+const camelCaseToSpaced = (str) => {
+  return str
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/^./, s => s.toUpperCase())
+}
 
 const Library = () => {
   const auth = useAuthUser()
@@ -30,11 +36,11 @@ const Library = () => {
                   <Tab
                     key={idx}
                     _selected={{ color: '#00338D' }}
-                    className={`text-[#00338D]/60 ${page === 'All' ? '' : 'space-x-4'}`}
+                    className={`text-[#00338D]/60 ${page === 'All' ? '' : 'space-x-2'}`}
                     onClick={() => setSelectedTab(idx)}
                     isSelected={isSelected}
                   >
-                    <div className='capitalize'>{page}</div>
+                    <div className='capitalize'>{camelCaseToSpaced(page)}</div>
                     {page === 'all'
                       ? ''
                       : (
