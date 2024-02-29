@@ -7,6 +7,31 @@ import { calculateDateDifference } from '../utils'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import SortMenu from '../components/SortMenu'
 
+const menuOptions = [
+  {
+    type: 'alpha',
+    name: 'Alphabetically (A-Z)',
+    chronological: true,
+  },
+  {
+    type: 'alpha',
+    name: 'Alphabetically (Z-A)',
+    chronological: false,
+  },
+  {
+    type: 'numerical',
+    name: 'Performance: High to low',
+    chronological: true,
+    property: 'performance',
+  },
+  {
+    type: 'numerical',
+    name: 'Performance: Low to high',
+    chronological: false,
+    property: 'performance',
+  },
+]
+
 const Portfolios = () => {
   const auth = useAuthUser()
   const user = auth.user
@@ -49,7 +74,7 @@ const Portfolios = () => {
       <Navbar user={user}/>
       <div className='w-full p-14 max-h-screen overflow-y-scroll'>
         <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
-        <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} />
+        <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
         <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
           {sortedPortfolios && sortedPortfolios?.map((p, idx) => {
             const daysRemaining = calculateDateDifference(p?.deadline)

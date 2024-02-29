@@ -3,14 +3,7 @@ import React, { useState } from 'react'
 import { Menu, MenuButton, MenuList, MenuItem, Icon } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
-const menuOptions = [
-  'Alphabetically (A-Z)',
-  'Alphabetically (Z-A)',
-  'Performance: High to low',
-  'Performance: Low to high',
-]
-
-const SortMenu = ({ elements, setSortedElements }) => {
+const SortMenu = ({ elements, setSortedElements, menuOptions }) => {
   const [selected, setSelected] = useState('')
 
   const handleMenuItemClick = (value) => {
@@ -18,22 +11,13 @@ const SortMenu = ({ elements, setSortedElements }) => {
 
     const sortedElements = [...elements]
 
-    switch (value) {
-    case menuOptions[0]:
-      setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
-      break
-    case menuOptions[1]:
-      setSortedElements(sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
-      break
-    case menuOptions[2]:
-      setSortedElements(sortedElements.sort((a, b) => b.performance - a.performance))
-      break
-    case menuOptions[3]:
-      setSortedElements(sortedElements.sort((a, b) => a.performance - b.performance))
-      break
-    default:
-      setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
-      break
+    if (value.type === 'alpha') {
+      if (value.chronological) setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
+      else setSortedElements(sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
+    }
+    if (value.type === 'numerical') {
+      if (value.chronological) setSortedElements(sortedElements.sort((a, b) => b[value.property] - a[value.property]))
+      else setSortedElements(sortedElements.sort((a, b) => a[value.property] - b[value.property]))
     }
   }
 
@@ -52,13 +36,13 @@ const SortMenu = ({ elements, setSortedElements }) => {
           background="white"
           textColor={'#0D2976'}
         >
-          {selected || menuOptions[0]}
+          { selected ? selected.name : menuOptions[0].name }
           <Icon as={ChevronDownIcon} marginLeft={2} />
         </MenuButton>
         <MenuList>
           {menuOptions.map((option, idx) => (
             <MenuItem key={idx} onClick={() => handleMenuItemClick(option)}>
-              {option}
+              {option.name}
             </MenuItem>
           ))}
         </MenuList>

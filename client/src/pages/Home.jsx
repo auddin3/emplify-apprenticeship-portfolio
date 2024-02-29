@@ -37,7 +37,7 @@ const Home = () => {
           className='object-contain w-[303px] h-[300px]'
         />
       </div>
-      <div className='bg-[#F7F7F8] py-10 2xl:py-20'>
+      <div className='bg-gray-paleGray py-10 2xl:py-20'>
         <Stack spacing={3} className='flex flex-col'>
           <Heading fontSize='22px' color='black-custom1' className='flex font-sansSemibold mx-auto pb-8'>
                         Why choose us?
