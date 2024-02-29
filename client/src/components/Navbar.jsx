@@ -34,21 +34,21 @@ const Navbar = ({ user }) => {
 
       <div className='flex flex-col justify-between h-full'>
         <div className='flex flex-col w-full mt-12 space-y-12'>
-          <a href='/dashboard' className={`flex justify-center py-3 cursor-pointer ${location.pathname === '/dashboard' ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
+          <a href='/dashboard' className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/dashboard') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
             <Icon w={30} h={30} color="white" as={ChartPieIcon}/>
           </a>
 
-          <a href='/portfolios' className={`flex justify-center py-3 cursor-pointer ${location.pathname === '/portfolios' ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
+          <a href='/portfolios' className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/portfolios') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
             <Icon w={30} h={30} color="white" as={ShieldCheckIcon}/>
           </a>
 
-          <a href='/library' className={`flex justify-center py-3 cursor-pointer ${location.pathname === '/library' ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
+          <a href='/library' className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/library') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
             <Icon w={30} h={30} color="white" as={WalletIcon}/>
           </a>
         </div>
 
         <div>
-          <hr className='text-white mb-20'/>
+          <hr className='border-t border-t-white mb-20'/>
 
           <Popover placement='right'>
             <PopoverTrigger>
