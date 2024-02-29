@@ -49,7 +49,7 @@ const Portfolios = () => {
       <Navbar user={user}/>
       <div className='w-full p-14 max-h-screen overflow-y-scroll'>
         <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
-        <SortMenu portfolios={portfolios} setSortedPortfolios={setSortedPortfolios}/>
+        <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} />
         <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
           {sortedPortfolios && sortedPortfolios?.map((p, idx) => {
             const daysRemaining = calculateDateDifference(p?.deadline)

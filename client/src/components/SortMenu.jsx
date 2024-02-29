@@ -10,29 +10,29 @@ const menuOptions = [
   'Performance: Low to high',
 ]
 
-const SortMenu = ({ portfolios, setSortedPortfolios }) => {
+const SortMenu = ({ elements, setSortedElements }) => {
   const [selected, setSelected] = useState('')
 
   const handleMenuItemClick = (value) => {
     setSelected(value)
 
-    const sortedPortfolios = [...portfolios]
+    const sortedElements = [...elements]
 
     switch (value) {
     case menuOptions[0]:
-      setSortedPortfolios(sortedPortfolios.sort((a, b) => a.name.localeCompare(b.name)))
+      setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
       break
     case menuOptions[1]:
-      setSortedPortfolios(sortedPortfolios.sort((a, b) => b.name.localeCompare(a.name)))
+      setSortedElements(sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
       break
     case menuOptions[2]:
-      setSortedPortfolios(sortedPortfolios.sort((a, b) => b.performance - a.performance))
+      setSortedElements(sortedElements.sort((a, b) => b.performance - a.performance))
       break
     case menuOptions[3]:
-      setSortedPortfolios(sortedPortfolios.sort((a, b) => a.performance - b.performance))
+      setSortedElements(sortedElements.sort((a, b) => a.performance - b.performance))
       break
     default:
-      setSortedPortfolios(sortedPortfolios.sort((a, b) => a.name.localeCompare(b.name)))
+      setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
       break
     }
   }
