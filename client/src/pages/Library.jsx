@@ -3,6 +3,7 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar'
 import { Card, CardHeader, CardBody, Grid, Tabs, TabList, Tab, TabIndicator, TabPanels, TabPanel, Tag } from '@chakra-ui/react'
+import SortMenu from '../components/SortMenu'
 
 const pages = ['all', 'dataModelling', 'artificialIntelligence', 'softwareEngineering', 'networks', 'UXD/UID']
 
@@ -54,10 +55,10 @@ const Library = () => {
       <Navbar user={user}/>
       <div className='w-full p-12 max-h-screen overflow-y-scroll'>
         <SearchBar />
-        <div className='mx-2'>
+        <div className='mx-2 mt-10'>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
-          <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
-
+          <SortMenu elements={modules} setSortedElements={setFilteredModules}/>
+          <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full mb-5' />
           <Tabs variant='unstyled' size='lg'>
             <TabList className='space-x-5'>
               {pages?.map((page, idx) => {

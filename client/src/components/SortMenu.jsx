@@ -1,9 +1,21 @@
-// SortMenu.jsx
 import React, { useState } from 'react'
 import { Menu, MenuButton, MenuList, MenuItem, Icon } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
-const SortMenu = ({ elements, setSortedElements, menuOptions }) => {
+const defaultMenuOptions = [
+  {
+    type: 'alpha',
+    name: 'Alphabetically (A-Z)',
+    chronological: true,
+  },
+  {
+    type: 'alpha',
+    name: 'Alphabetically (Z-A)',
+    chronological: false,
+  },
+]
+
+const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOptions }) => {
   const [selected, setSelected] = useState('')
 
   const handleMenuItemClick = (value) => {
@@ -12,8 +24,13 @@ const SortMenu = ({ elements, setSortedElements, menuOptions }) => {
     const sortedElements = [...elements]
 
     if (value.type === 'alpha') {
-      if (value.chronological) setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
-      else setSortedElements(sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
+      if (value.chronological) {
+        if (sortedElements[0]?.name !== undefined) setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
+        if (sortedElements[0]?.title !== undefined) setSortedElements(sortedElements.sort((a, b) => a.title.localeCompare(b.title)))
+      } else {
+        if (sortedElements[0]?.name !== undefined) setSortedElements(sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
+        if (sortedElements[0]?.title !== undefined) setSortedElements(sortedElements.sort((a, b) => b.title.localeCompare(a.title)))
+      }
     }
     if (value.type === 'numerical') {
       if (value.chronological) setSortedElements(sortedElements.sort((a, b) => b[value.property] - a[value.property]))
@@ -22,7 +39,7 @@ const SortMenu = ({ elements, setSortedElements, menuOptions }) => {
   }
 
   return (
-    <div className='flex flex-row-reverse items-center'>
+    <div className='flex flex-row-reverse items-center my-4'>
       <Menu w="full">
         <MenuButton
           px={4}
