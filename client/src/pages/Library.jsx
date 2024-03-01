@@ -6,6 +6,7 @@ import { Card, CardHeader, CardBody, Grid, Spinner, Tabs, TabList, Tab, TabIndic
 import SortMenu from '../components/SortMenu'
 import { camelCaseToSpaced, convertDateToString } from '../utils'
 import SideBar from '../components/SideBar'
+import PieChart from '../components/charts/PieChart'
 
 const pages = ['all', 'dataModelling', 'artificialIntelligence', 'softwareEngineering', 'networks', 'UXD/UID']
 
@@ -84,8 +85,6 @@ const Library = () => {
       onOpen()
     }
   }
-
-  console.log(selectedModule)
 
   return (
     <div className='bg-gray-paleGray flex flex-row max-h-screen'>
@@ -185,8 +184,8 @@ const Library = () => {
         </div>
       </div>
       <SideBar isOpen={isOpen} onClose={onClose} title={selectedModule?.title} >
-        <div className='relative space-y-2 mb-4'>
-          <div className='ml-8 my-3.5 flex flex-row items-center space-x-8'>
+        <div className='relative space-y-2'>
+          <div className='ml-8 mt-2.5 mb-3 flex flex-row items-center space-x-8'>
             <div className='space-y-2 w-24'>
               <div className='font-sansSemibold text-blue-kpmgBlue'>Date Created</div>
               <div className='font-sans text-blue-kpmgBlue text-sm'>{convertDateToString(selectedModule?.dateCreated)}</div>
@@ -200,7 +199,7 @@ const Library = () => {
           </div>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
         </div>
-        <div className='relative space-y-2 mb-4'>
+        <div className='relative space-y-2 mt-10'>
           <div className='ml-8 my-3.5 flex flex-row items-start space-x-8'>
             <div className='space-y-2 w-24'>
               <div className='font-sansSemibold text-blue-kpmgBlue'>Module ID</div>
@@ -226,10 +225,12 @@ const Library = () => {
           </div>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
         </div>
-        <div className='relative space-y-2 mb-4'>
+        <div className='relative space-y-2 mt-10'>
           <div className='ml-8 my-3.5 flex flex-col space-x-8'>
             <div className='font-sansSemibold text-blue-kpmgBlue'>Assessment Breakdown</div>
           </div>
+          {selectedModule?.assessmentBreakdown && <PieChart data={selectedModule?.assessmentBreakdown}/>}
+          <div className="h-1"></div>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
         </div>
       </SideBar>
