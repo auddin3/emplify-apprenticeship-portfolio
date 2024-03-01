@@ -5,7 +5,7 @@ import { Icon,
   InputLeftElement } from '@chakra-ui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
-const SearchBar = ({ elements, setElements, initialElements }) => {
+const SearchBar = ({ elements, setElements, initialElements, searchKeys }) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = (searchTerm) => {
@@ -17,8 +17,9 @@ const SearchBar = ({ elements, setElements, initialElements }) => {
 
         if (!searchTerm || searchTerm.trim().length < 3) return initialElements
         else {
-          return sortedElements.filter(module => module.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        module.moduleId.toLowerCase().includes(searchTerm.toLowerCase()))
+          return sortedElements.filter(el =>
+            searchKeys.some(k => el[k].toLowerCase().includes(searchTerm.toLowerCase())),
+          )
         }
       })
     }

@@ -74,7 +74,7 @@ const Library = () => {
     <div className='bg-gray-paleGray flex flex-row'>
       <Navbar user={user}/>
       <div className='w-full p-12 max-h-screen overflow-y-scroll'>
-        <SearchBar elements={filteredModules} setElements={setFilteredModules} initialElements={modules} />
+        <SearchBar elements={filteredModules} setElements={setFilteredModules} initialElements={modules} searchKeys={['title', 'moduleId']}/>
         <div className='mx-2 mt-10'>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
           <SortMenu elements={filteredModules} setSortedElements={setFilteredModules} menuOptions={menuOptions} />
