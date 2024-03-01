@@ -74,10 +74,10 @@ const Library = () => {
     <div className='bg-gray-paleGray flex flex-row'>
       <Navbar user={user}/>
       <div className='w-full p-12 max-h-screen overflow-y-scroll'>
-        <SearchBar />
+        <SearchBar elements={filteredModules} setElements={setFilteredModules} initialElements={modules} />
         <div className='mx-2 mt-10'>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
-          <SortMenu elements={modules} setSortedElements={setFilteredModules} menuOptions={menuOptions}/>
+          <SortMenu elements={filteredModules} setSortedElements={setFilteredModules} menuOptions={menuOptions} />
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full mb-5' />
           <Tabs variant='unstyled' size='lg'>
             <TabList className='space-x-5'>
@@ -91,7 +91,6 @@ const Library = () => {
                     _selected={{ color: '#00338D' }}
                     className={`text-[#00338D]/60 ${page === 'All' ? '' : 'space-x-2'}`}
                     onClick={() => setSelectedTab(idx)}
-                    isSelected={isSelected}
                   >
                     <div className='capitalize'>{camelCaseToSpaced(page)}</div>
                     {page === 'all'
