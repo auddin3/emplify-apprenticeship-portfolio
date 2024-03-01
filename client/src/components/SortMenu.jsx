@@ -15,11 +15,12 @@ const defaultMenuOptions = [
   },
 ]
 
-const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOptions }) => {
+const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOptions, setLoading }) => {
   const [selected, setSelected] = useState('')
 
   useEffect(() => {
     if (elements) {
+      setLoading && setLoading(true)
       const sortedElements = [...elements]
 
       if (selected.type === 'alpha') {
@@ -52,6 +53,7 @@ const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOption
           }))
         }
       }
+      setLoading && setLoading(false)
     }
   }, [selected, elements, setSortedElements])
 

@@ -5,13 +5,14 @@ import { Icon,
   InputLeftElement } from '@chakra-ui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
-const SearchBar = ({ elements, setElements, initialElements, searchKeys }) => {
+const SearchBar = ({ elements, setElements, initialElements, searchKeys, setLoading }) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm)
 
     if (elements) {
+      setLoading && setLoading(true)
       setElements((prevElements) => {
         const sortedElements = [...prevElements].sort((a, b) => a.title.localeCompare(b.title))
 
@@ -22,6 +23,7 @@ const SearchBar = ({ elements, setElements, initialElements, searchKeys }) => {
           )
         }
       })
+      setLoading && setLoading(false)
     }
   }
 
