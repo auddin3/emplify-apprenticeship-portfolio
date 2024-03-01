@@ -10,20 +10,21 @@ const SearchBar = ({ elements, setElements, initialElements, searchKeys, setLoad
 
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm)
+    setLoading && setLoading(true)
 
     if (elements) {
-      setLoading && setLoading(true)
       setElements((prevElements) => {
-        const sortedElements = [...prevElements].sort((a, b) => a.title.localeCompare(b.title))
+        const sortedElements = [...initialElements].sort((a, b) => a.title.localeCompare(b.title))
 
-        if (!searchTerm || searchTerm.trim().length < 3) return initialElements
-        else {
-          return sortedElements.filter(el =>
+        const filteredElements = searchTerm.trim().length < 1
+          ? initialElements
+          : sortedElements.filter(el =>
             searchKeys.some(k => el[k].toLowerCase().includes(searchTerm.toLowerCase())),
           )
-        }
+
+        setLoading && setLoading(false)
+        return filteredElements
       })
-      setLoading && setLoading(false)
     }
   }
 
