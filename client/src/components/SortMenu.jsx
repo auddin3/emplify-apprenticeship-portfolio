@@ -36,6 +36,23 @@ const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOption
       if (value.chronological) setSortedElements(sortedElements.sort((a, b) => b[value.property] - a[value.property]))
       else setSortedElements(sortedElements.sort((a, b) => a[value.property] - b[value.property]))
     }
+    if (value.type === 'date') {
+      if (value.chronological) {
+        setSortedElements(sortedElements.sort((a, b) => {
+          const dateA = a[value.property] ? new Date(a[value.property]) : null
+          const dateB = b[value.property] ? new Date(b[value.property]) : null
+
+          return dateB - dateA
+        }))
+      } else {
+        setSortedElements(sortedElements.sort((a, b) => {
+          const dateA = a[value.property] ? new Date(a[value.property]) : null
+          const dateB = b[value.property] ? new Date(b[value.property]) : null
+
+          return dateA - dateB
+        }))
+      }
+    }
   }
 
   return (

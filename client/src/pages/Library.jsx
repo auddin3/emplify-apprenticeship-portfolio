@@ -4,14 +4,34 @@ import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar'
 import { Card, CardHeader, CardBody, Grid, Tabs, TabList, Tab, TabIndicator, TabPanels, TabPanel, Tag } from '@chakra-ui/react'
 import SortMenu from '../components/SortMenu'
+import { camelCaseToSpaced } from '../utils'
 
 const pages = ['all', 'dataModelling', 'artificialIntelligence', 'softwareEngineering', 'networks', 'UXD/UID']
 
-const camelCaseToSpaced = (str) => {
-  return str
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/^./, s => s.toUpperCase())
-}
+const menuOptions = [
+  {
+    type: 'alpha',
+    name: 'Alphabetically (A-Z)',
+    chronological: true,
+  },
+  {
+    type: 'alpha',
+    name: 'Alphabetically (Z-A)',
+    chronological: false,
+  },
+  {
+    type: 'date',
+    name: 'Most Recent',
+    chronological: true,
+    property: 'dateCreated',
+  },
+  {
+    type: 'date',
+    name: 'Least Recent',
+    chronological: false,
+    property: 'dateCreated',
+  },
+]
 
 const Library = () => {
   const auth = useAuthUser()
@@ -57,7 +77,7 @@ const Library = () => {
         <SearchBar />
         <div className='mx-2 mt-10'>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
-          <SortMenu elements={modules} setSortedElements={setFilteredModules}/>
+          <SortMenu elements={modules} setSortedElements={setFilteredModules} menuOptions={menuOptions}/>
           <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full mb-5' />
           <Tabs variant='unstyled' size='lg'>
             <TabList className='space-x-5'>
