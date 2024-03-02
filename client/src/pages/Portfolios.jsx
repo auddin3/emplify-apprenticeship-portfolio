@@ -164,15 +164,15 @@ const Portfolios = () => {
             size='xl'
           />
         </div>
-        : <div className='w-full p-14 max-h-screen overflow-y-scroll'>
+        : <div className='w-full px-14 py-8 max-h-screen overflow-y-scroll'>
           <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
           <div>
-            <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
+            <h2 className='text-xl text-blue-kpmgBlue font-semibold'>My Portfolios</h2>
             <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} />
           </div>
 
           <div className='mt-14'>
-            <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>Shared with Me</h1>
+            <h2 className='text-xl text-blue-kpmgBlue font-semibold'>Shared with Me</h2>
             <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner !== user.uid)} user={user} />
           </div>
 
