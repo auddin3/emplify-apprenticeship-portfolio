@@ -35,6 +35,62 @@ const menuOptions = [
   },
 ]
 
+const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
+  return (
+    <SideBar isOpen={isOpen} onClose={onClose} title={selectedModule?.title} >
+      <div className='relative space-y-2'>
+        <div className='ml-8 mt-2.5 mb-3 flex flex-row items-center space-x-8'>
+          <div className='space-y-2 w-24'>
+            <div className='font-sansSemibold text-blue-kpmgBlue'>Date Created</div>
+            <div className='font-sans text-blue-kpmgBlue text-sm'>{convertDateToString(selectedModule?.dateCreated)}</div>
+          </div>
+          <div className='space-y-2'>
+            <div className='font-sansSemibold text-blue-kpmgBlue'>Category</div>
+            <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
+              <div className='text-blue-kpmgBlue font-sans'>{camelCaseToSpaced(selectedModule?.category)}</div>
+            </Tag>
+          </div>
+        </div>
+        <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
+      </div>
+      <div className='relative space-y-2 mt-10'>
+        <div className='ml-8 my-3.5 flex flex-row items-start space-x-8'>
+          <div className='space-y-2 w-24'>
+            <div className='font-sansSemibold text-blue-kpmgBlue'>Module ID</div>
+            <div className='font-sans text-blue-kpmgBlue text-sm'>{selectedModule?.moduleId}</div>
+          </div>
+          <div className='space-y-2 w-56'>
+            <div className='font-sansSemibold text-blue-kpmgBlue'>Description</div>
+            <div className='text-blue-kpmgBlue font-sans text-sm'>{selectedModule?.description}</div>
+          </div>
+        </div>
+        <div className='space-y-2 mx-8'>
+          <div className='font-sansSemibold text-blue-kpmgBlue'>Learning Objectives</div>
+          <div className='text-blue-kpmgBlue'>
+            <ul className="list-inside pl-1.5 mb-3.5">
+              {selectedModule?.learningObjectives && selectedModule?.learningObjectives?.map((lo, idx) => (
+                <li key={idx} className="text-sm flex items-center font-sans">
+                  <span className="mr-2 font-sansBold">&#10003;</span>
+                  {lo}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
+      </div>
+      <div className='relative space-y-2 mt-10'>
+        <div className='ml-8 my-3.5 flex flex-col space-x-8'>
+          <div className='font-sansSemibold text-blue-kpmgBlue'>Assessment Breakdown</div>
+        </div>
+        {selectedModule?.assessmentBreakdown && <PieChart data={selectedModule?.assessmentBreakdown}/>}
+        <div className="h-1"></div>
+        <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
+      </div>
+    </SideBar>
+  )
+}
+
 const Library = () => {
   const auth = useAuthUser()
   const user = auth?.user
@@ -183,57 +239,7 @@ const Library = () => {
           </Tabs>
         </div>
       </div>
-      <SideBar isOpen={isOpen} onClose={onClose} title={selectedModule?.title} >
-        <div className='relative space-y-2'>
-          <div className='ml-8 mt-2.5 mb-3 flex flex-row items-center space-x-8'>
-            <div className='space-y-2 w-24'>
-              <div className='font-sansSemibold text-blue-kpmgBlue'>Date Created</div>
-              <div className='font-sans text-blue-kpmgBlue text-sm'>{convertDateToString(selectedModule?.dateCreated)}</div>
-            </div>
-            <div className='space-y-2'>
-              <div className='font-sansSemibold text-blue-kpmgBlue'>Category</div>
-              <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
-                <div className='text-blue-kpmgBlue font-sans'>{camelCaseToSpaced(selectedModule?.category)}</div>
-              </Tag>
-            </div>
-          </div>
-          <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
-        </div>
-        <div className='relative space-y-2 mt-10'>
-          <div className='ml-8 my-3.5 flex flex-row items-start space-x-8'>
-            <div className='space-y-2 w-24'>
-              <div className='font-sansSemibold text-blue-kpmgBlue'>Module ID</div>
-              <div className='font-sans text-blue-kpmgBlue text-sm'>{selectedModule?.moduleId}</div>
-            </div>
-            <div className='space-y-2 w-56'>
-              <div className='font-sansSemibold text-blue-kpmgBlue'>Description</div>
-              <div className='text-blue-kpmgBlue font-sans text-sm'>{selectedModule?.description}</div>
-            </div>
-          </div>
-          <div className='space-y-2 mx-8'>
-            <div className='font-sansSemibold text-blue-kpmgBlue'>Learning Objectives</div>
-            <div className='text-blue-kpmgBlue'>
-              <ul className="list-inside pl-1.5 mb-3.5">
-                {selectedModule?.learningObjectives && selectedModule?.learningObjectives?.map((lo, idx) => (
-                  <li key={idx} className="text-sm flex items-center font-sans">
-                    <span className="mr-2 font-sansBold">&#10003;</span>
-                    {lo}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
-        </div>
-        <div className='relative space-y-2 mt-10'>
-          <div className='ml-8 my-3.5 flex flex-col space-x-8'>
-            <div className='font-sansSemibold text-blue-kpmgBlue'>Assessment Breakdown</div>
-          </div>
-          {selectedModule?.assessmentBreakdown && <PieChart data={selectedModule?.assessmentBreakdown}/>}
-          <div className="h-1"></div>
-          <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
-        </div>
-      </SideBar>
+      { selectedModule && <ModuleInformation isOpen={isOpen} onClose={onClose} selectedModule={selectedModule} /> }
     </div>
   )
 }
