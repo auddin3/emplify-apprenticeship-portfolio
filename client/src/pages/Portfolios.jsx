@@ -40,6 +40,7 @@ const CardGrid = ({ sortedPortfolios, user }) => {
     <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
       {sortedPortfolios && sortedPortfolios?.map((p, idx) => {
         const daysRemaining = calculateDateDifference(p?.deadline)
+        const canEdit = p?.owner === user.uid
 
         // Update logic
         const ksbsCompleted = 19
@@ -89,12 +90,11 @@ const CardGrid = ({ sortedPortfolios, user }) => {
                   borderRadius={99}
                   paddingX={10}
                   marginX="auto"
-                  onClick={() => navigate(`/portfolios/${p._id}`, { state: { portfolio: p } })}
+                  onClick={() => navigate(`/portfolios/${p._id}`, { state: { portfolio: p, edit: canEdit } })}
                 >
-                      Edit
+                  { canEdit ? 'Edit' : 'View' }
                 </Button>
               </CardFooter>
-
             </Card>
           </GridItem>
         )
