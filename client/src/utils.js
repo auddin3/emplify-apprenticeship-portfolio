@@ -7,3 +7,16 @@ export const calculateDateDifference = (targetDate) => {
 
   return daysDifference
 }
+
+export const camelCaseToSpaced = (str) => {
+  if (str) {
+    return str
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/^./, s => s.toUpperCase())
+  }
+}
+
+export const convertDateToString = (date) => {
+  const options = { day: 'numeric', month: 'numeric', year: 'numeric' }
+  return new Date(date).toLocaleDateString('en-GB', options)
+}

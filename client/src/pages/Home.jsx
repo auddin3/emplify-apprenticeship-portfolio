@@ -6,7 +6,7 @@ import { RectangleStackIcon, MagnifyingGlassIcon, ChartPieIcon } from '@heroicon
 
 const Home = () => {
   return (
-    <div className="bg-blue-kpmgBlue brightness-125 min-h-screen flex flex-col flex-1 justify-around max-h-screen overflow-hidden">
+    <div className="bg-blue-kpmgBlue min-h-screen flex flex-col flex-1 justify-around max-h-screen overflow-hidden">
       <div className='flex justify-between w-screen py-2.5 px-14'>
         <Image
           src={EmplifyLogo}
