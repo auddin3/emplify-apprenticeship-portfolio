@@ -5,6 +5,7 @@ import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, S
 import { useNavigate } from 'react-router-dom'
 import { calculateDateDifference } from '../utils'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { ClockIcon, UserGroupIcon } from '@heroicons/react/24/solid'
 import SortMenu from '../components/SortMenu'
 
 const menuOptions = [
@@ -32,10 +33,79 @@ const menuOptions = [
   },
 ]
 
+const CardGrid = ({ sortedPortfolios, user }) => {
+  const navigate = useNavigate()
+
+  return (
+    <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
+      {sortedPortfolios && sortedPortfolios?.map((p, idx) => {
+        const daysRemaining = calculateDateDifference(p?.deadline)
+
+        // Update logic
+        const ksbsCompleted = 19
+        const ksbsRemaining = 24
+
+        return (
+          <GridItem key={idx} w='100%'>
+            <Card padding={4}>
+              <CardHeader paddingBottom={2}>
+                <div className='flex flex-row space-x-2 items-center'>
+                  <div className='text-lg font-sansSemibold'>{p?.name}</div>
+                  <Tooltip hasArrow label={p?.description || 'abc'} placement='auto'>
+                    <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
+                  </Tooltip>
+                </div>
+                <div className='flex flex-row justify-between'>
+                  <div className='flex flex-row items-center space-x-2'>
+                    <Icon as={ClockIcon} color="#989898"/>
+                    <div className='text-[#333333] italic'>Due in {daysRemaining} days</div>
+                  </div>
+                  {
+                    p?.sharedWith?.length > 0 &&
+                    <Tooltip hasArrow label='Shared'>
+                      <Icon as={UserGroupIcon} color='#00338D'/>
+                    </Tooltip>
+                  }
+                </div>
+              </CardHeader>
+              <CardBody>
+                <SimpleGrid spacing={8} templateColumns='repeat(2, minmax(200px, 1fr))'>
+                  <Card className='items-center p-5'>
+                    <div className='text-4xl font-sansSemibold text-green-turquoise pb-2'>{ksbsCompleted}</div>
+                    <div className='leading-tight'>has been</div>
+                    <strong className='leading-tight'>completed</strong>
+                  </Card>
+                  <Card className='items-center p-5'>
+                    <div className='text-4xl font-sansSemibold text-blue-lightBlue pb-2'>{ksbsRemaining}</div>
+                    <div className='leading-tight'>left</div>
+                    <strong className='leading-tight'>to complete</strong>
+                  </Card>
+                </SimpleGrid>
+              </CardBody>
+              <CardFooter paddingTop={2} paddingBottom={2}>
+                <Button size="md"
+                  bgColor='#00338D'
+                  color='white'
+                  borderRadius={99}
+                  paddingX={10}
+                  marginX="auto"
+                  onClick={() => navigate(`/portfolios/${p._id}`, { state: { portfolio: p } })}
+                >
+                      Edit
+                </Button>
+              </CardFooter>
+
+            </Card>
+          </GridItem>
+        )
+      })}
+    </Grid>
+  )
+}
+
 const Portfolios = () => {
   const auth = useAuthUser()
   const user = auth?.user
-  const navigate = useNavigate()
 
   const [portfolios, setPortfolios] = useState()
   const [sortedPortfolios, setSortedPortfolios] = useState()
@@ -94,61 +164,18 @@ const Portfolios = () => {
             size='xl'
           />
         </div>
-        : <div className='w-full p-14 max-h-screen overflow-y-scroll'>
-          <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
-          <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} setLoading={setLoading}/>
-          <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
-            {sortedPortfolios && sortedPortfolios?.map((p, idx) => {
-              const daysRemaining = calculateDateDifference(p?.deadline)
+        : <div className='w-full px-14 py-8 max-h-screen overflow-y-scroll'>
+          <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
+          <div>
+            <h2 className='text-xl text-blue-kpmgBlue font-semibold'>My Portfolios</h2>
+            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} />
+          </div>
 
-              // Update logic
-              const ksbsCompleted = 19
-              const ksbsRemaining = 24
+          <div className='mt-14'>
+            <h2 className='text-xl text-blue-kpmgBlue font-semibold'>Shared with Me</h2>
+            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner !== user.uid)} user={user} />
+          </div>
 
-              return (
-                <GridItem key={idx} w='100%'>
-                  <Card padding={4}>
-                    <CardHeader paddingBottom={2}>
-                      <div className='flex flex-row space-x-2 items-center'>
-                        <div className='text-lg font-sansSemibold'>{p?.name}</div>
-                        <Tooltip hasArrow label={p?.description || 'abc'} bg="gray.300" color='black' placement='right'>
-                          <Icon color='#6D2077' as={InformationCircleIcon}/>
-                        </Tooltip>
-                      </div>
-                      <div className='text-[#333333] italic'>Due in {daysRemaining} days</div>
-                    </CardHeader>
-                    <CardBody>
-                      <SimpleGrid spacing={8} templateColumns='repeat(2, minmax(200px, 1fr))'>
-                        <Card className='items-center p-5'>
-                          <div className='text-4xl font-sansSemibold text-green-turquoise pb-2'>{ksbsCompleted}</div>
-                          <div className='leading-tight'>has been</div>
-                          <strong className='leading-tight'>completed</strong>
-                        </Card>
-                        <Card className='items-center p-5'>
-                          <div className='text-4xl font-sansSemibold text-blue-lightBlue pb-2'>{ksbsRemaining}</div>
-                          <div className='leading-tight'>left</div>
-                          <strong className='leading-tight'>to complete</strong>
-                        </Card>
-                      </SimpleGrid>
-                    </CardBody>
-                    <CardFooter paddingTop={3} paddingBottom={5}>
-                      <Button size="md"
-                        bgColor='#00338D'
-                        color='white'
-                        borderRadius={99}
-                        paddingX={10}
-                        marginX="auto"
-                        onClick={() => navigate(`/portfolios/${p._id}`, { state: { portfolio: p } })}
-                      >
-                      Edit
-                      </Button>
-                    </CardFooter>
-
-                  </Card>
-                </GridItem>
-              )
-            })}
-          </Grid>
         </div>
       }
     </div>

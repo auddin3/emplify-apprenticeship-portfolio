@@ -145,8 +145,8 @@ const Library = () => {
   return (
     <div className='bg-gray-paleGray flex flex-row max-h-screen'>
       <Navbar user={user}/>
-      {loading && (
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+      {loading
+        ? <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           <Spinner
             thickness='4px'
             speed='0.65s'
@@ -155,91 +155,93 @@ const Library = () => {
             size='xl'
           />
         </div>
-      )}
-      <div className='w-full p-12 max-h-screen overflow-y-scroll'>
-        <SearchBar
-          elements={filteredModules}
-          setElements={setFilteredModules}
-          initialElements={modules}
-          searchKeys={['title', 'moduleId']}
-          setLoading={setLoading}
-        />
-        <div className='mx-2 mt-10'>
-          <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
-          <SortMenu
-            elements={filteredModules}
-            setSortedElements={setFilteredModules}
-            menuOptions={menuOptions}
-            setLoading={setLoading}
-          />
-          <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full mb-5' />
-          <Tabs variant='unstyled' size='lg'>
-            <TabList className='space-x-5'>
-              {pages?.map((page, idx) => {
-                const isSelected = idx === selectedTab
-                const count = filteredModules?.filter(module => module?.category === page).length
-
-                return (
-                  <Tab
-                    key={idx}
-                    _selected={{ color: '#00338D' }}
-                    className={`text-[#00338D]/60 ${page === 'All' ? '' : 'space-x-2'}`}
-                    onClick={() => setSelectedTab(idx)}
-                  >
-                    <div className='capitalize'>{camelCaseToSpaced(page)}</div>
-                    {page === 'all'
-                      ? ''
-                      : (
-                        <Tag backgroundColor={`${isSelected ? 'rgb(75, 117, 255)' : 'rgba(75, 117, 255, 0.2)'}`} paddingX={3.5} borderRadius={7}>
-                          <div className={`${isSelected ? 'text-white' : 'text-blue-kpmgBlue'}`}>
-                            {count}
-                          </div>
-                        </Tag>
-                      )
-                    }
-                  </Tab>
-                )
-              })}
-            </TabList>
-            <TabIndicator
-              mt="-6px"
-              height="4px"
-              bg="#4B75FF"
-              borderRadius="1px"
+        : <>
+          <div className='w-full p-12 max-h-screen overflow-y-scroll'>
+            <SearchBar
+              elements={filteredModules}
+              setElements={setFilteredModules}
+              initialElements={modules}
+              searchKeys={['title', 'moduleId']}
+              setLoading={setLoading}
             />
-            <TabPanels>
-              {pages?.map((page, idx) => {
-                const tabModules = page === 'all' ? filteredModules : filteredModules?.filter(module => module?.category === page)
-                return (
-                  <TabPanel key={idx}>
-                    <Grid templateColumns='repeat(3, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
-                      {tabModules && tabModules?.map((module, idx) => {
-                        return (
-                          <Card key={idx} className='px-2'>
-                            <CardHeader className='flex flex-row justify-between border-b'>
-                              <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
-                                <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
-                              </Tag>
-                              <div className='text-sm text-[#00338D]/80 font-sansSemibold'>{convertDateToString(module?.dateCreated) || ''}</div>
-                            </CardHeader>
-                            <CardBody>
-                              <div className='text-blue-kpmgBlue font-sansSemibold text-lg h-12 cursor-pointer' onClick={() => onModuleClick(module)}>
-                                {module?.moduleId} - {module?.title}
+            <div className='mx-2 mt-10'>
+              <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
+              <SortMenu
+                elements={filteredModules}
+                setSortedElements={setFilteredModules}
+                menuOptions={menuOptions}
+                setLoading={setLoading}
+              />
+              <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full mb-5' />
+              <Tabs variant='unstyled' size='lg'>
+                <TabList className='space-x-5'>
+                  {pages?.map((page, idx) => {
+                    const isSelected = idx === selectedTab
+                    const count = filteredModules?.filter(module => module?.category === page).length
+
+                    return (
+                      <Tab
+                        key={idx}
+                        _selected={{ color: '#00338D' }}
+                        className={`text-[#00338D]/60 ${page === 'All' ? '' : 'space-x-2'}`}
+                        onClick={() => setSelectedTab(idx)}
+                      >
+                        <div className='capitalize'>{camelCaseToSpaced(page)}</div>
+                        {page === 'all'
+                          ? ''
+                          : (
+                            <Tag backgroundColor={`${isSelected ? 'rgb(75, 117, 255)' : 'rgba(75, 117, 255, 0.2)'}`} paddingX={3.5} borderRadius={7}>
+                              <div className={`${isSelected ? 'text-white' : 'text-blue-kpmgBlue'}`}>
+                                {count}
                               </div>
-                              <div className='text-blue-kpmgBlue my-5'>{module?.description}</div>
-                            </CardBody>
-                          </Card>
-                        )
-                      })}
-                    </Grid>
-                  </TabPanel>
-                )
-              })}
-            </TabPanels>
-          </Tabs>
-        </div>
-      </div>
-      { selectedModule && <ModuleInformation isOpen={isOpen} onClose={onClose} selectedModule={selectedModule} /> }
+                            </Tag>
+                          )
+                        }
+                      </Tab>
+                    )
+                  })}
+                </TabList>
+                <TabIndicator
+                  mt="-6px"
+                  height="4px"
+                  bg="#4B75FF"
+                  borderRadius="1px"
+                />
+                <TabPanels>
+                  {pages?.map((page, idx) => {
+                    const tabModules = page === 'all' ? filteredModules : filteredModules?.filter(module => module?.category === page)
+                    return (
+                      <TabPanel key={idx}>
+                        <Grid templateColumns='repeat(3, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
+                          {tabModules && tabModules?.map((module, idx) => {
+                            return (
+                              <Card key={idx} className='px-2'>
+                                <CardHeader className='flex flex-row justify-between border-b'>
+                                  <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
+                                    <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
+                                  </Tag>
+                                  <div className='text-sm text-[#00338D]/80 font-sansSemibold'>{convertDateToString(module?.dateCreated) || ''}</div>
+                                </CardHeader>
+                                <CardBody>
+                                  <div className='text-blue-kpmgBlue font-sansSemibold text-lg h-12 cursor-pointer' onClick={() => onModuleClick(module)}>
+                                    {module?.moduleId} - {module?.title}
+                                  </div>
+                                  <div className='text-blue-kpmgBlue my-5'>{module?.description}</div>
+                                </CardBody>
+                              </Card>
+                            )
+                          })}
+                        </Grid>
+                      </TabPanel>
+                    )
+                  })}
+                </TabPanels>
+              </Tabs>
+            </div>
+          </div>
+          { selectedModule && <ModuleInformation isOpen={isOpen} onClose={onClose} selectedModule={selectedModule} /> }
+        </>
+      }
     </div>
   )
 }
