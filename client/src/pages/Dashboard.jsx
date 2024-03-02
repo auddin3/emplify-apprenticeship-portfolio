@@ -66,7 +66,7 @@ const Dashboard = () => {
             </SimpleGrid>
           </CardBody>
         </Card>
-        <Card className='px-2 rounded-full' size='md'>
+        <Card className='px-2 rounded-full h-1/2' size='md'>
           <CardHeader paddingBottom='8px'>
             <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Skills Distribution</div>
           </CardHeader>
@@ -76,10 +76,10 @@ const Dashboard = () => {
                 <CardHeader paddingBottom={0}>
                   <div className='text-white font-sansSemibold text-lg'>Top Areas</div>
                 </CardHeader>
-                <CardBody>
-                  <div className='space-y-3'>
+                <CardBody className='max-h-40 overflow-y-scroll'>
+                  <div>
                     {skills && skills?.map((s, idx) => (
-                      <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2}>
+                      <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
                         <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
                       </Tag>
                     ))}
@@ -91,10 +91,10 @@ const Dashboard = () => {
                 <CardHeader paddingBottom={0}>
                   <div className='text-white font-sansSemibold text-lg'>Areas For Improvement</div>
                 </CardHeader>
-                <CardBody>
-                  <div className='space-y-3'>
+                <CardBody className='max-h-40 overflow-y-scroll'>
+                  <div>
                     {skills && skills?.map((s, idx) => (
-                      <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2}>
+                      <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
                         <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
                       </Tag>
                     ))}

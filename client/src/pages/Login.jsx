@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EmplifyLogo from '../assets/images/logo.png'
-import { Button, Icon, Image, Input, InputGroup, InputRightElement, Stack } from '@chakra-ui/react'
+import { Button, Icon, Image, Input, InputGroup, InputRightElement, Stack, useToast } from '@chakra-ui/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
 
@@ -11,6 +11,7 @@ const Login = () => {
   const signIn = useSignIn()
 
   const navigate = useNavigate()
+  const toast = useToast()
 
   const handleChange = (e, name) => {
     const { value } = e.target
@@ -54,8 +55,22 @@ const Login = () => {
       })
 
       navigate('/dashboard')
+      toast({
+        title: 'Login successful.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
     } catch (error) {
       console.error('Login failed:', error)
+      toast({
+        title: 'Login Failed',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
     }
   }
 

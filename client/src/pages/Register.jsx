@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import EmplifyLogo from '../assets/images/logo.png'
-import { Button, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputRightElement, Stack, Select } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputRightElement, Stack, Select, useToast } from '@chakra-ui/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
 const schools = [
@@ -36,6 +36,7 @@ const Register = () => {
     school: '',
   })
   const navigate = useNavigate()
+  const toast = useToast()
 
   const handleChange = (e, name) => {
     const { value } = e.target
@@ -62,8 +63,23 @@ const Register = () => {
 
       console.log('Registration successful')
       navigate('/login')
+      toast({
+        title: 'Account created.',
+        description: 'We\'ve created your account for you.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
     } catch (error) {
       console.error('Registration failed:', error)
+      toast({
+        title: 'Registration Failed',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
     }
   }
 
