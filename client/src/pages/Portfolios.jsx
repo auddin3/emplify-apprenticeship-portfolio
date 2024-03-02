@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
-import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, SimpleGrid, Tooltip } from '@chakra-ui/react'
+import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, SimpleGrid, Spinner, Tooltip } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { calculateDateDifference } from '../utils'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
@@ -105,12 +105,14 @@ const CardGrid = ({ sortedPortfolios, user }) => {
 
 const Portfolios = () => {
   const auth = useAuthUser()
-  const user = auth.user
+  const user = auth?.user
 
   const [portfolios, setPortfolios] = useState()
   const [sortedPortfolios, setSortedPortfolios] = useState()
+  const [loading, setLoading] = useState(true)
 
   const fetchData = async () => {
+    setLoading(true)
     const apiUrl = `http://localhost:5001/portfolios/${user.uid}`
 
     try {
@@ -121,13 +123,15 @@ const Portfolios = () => {
 
       if (!response.ok) {
         const errorData = await response.json()
-        console.error('Login failed:', errorData)
+        console.error('Operation failed:', errorData)
       }
 
       const data = await response.json()
       setPortfolios(data?.portfolios)
     } catch (error) {
       console.error('Operation failed:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -136,25 +140,44 @@ const Portfolios = () => {
   }, [])
 
   useEffect(() => {
-    setSortedPortfolios(portfolios)
+    portfolios && setSortedPortfolios(portfolios)
   }, [portfolios])
 
   return (
     <div className='bg-gray-paleGray flex flex-row'>
       <Navbar user={user}/>
-      <div className='w-full p-14 max-h-screen overflow-y-scroll'>
-        <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
-        <div>
-          <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
-          <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} />
-        </div>
+      {loading
+        ? <div
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
 
-        <div className='mt-14'>
-          <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>Shared with Me</h1>
-          <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner !== user.uid)} user={user} />
+          <Spinner
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='blue.500'
+            size='xl'
+          />
         </div>
+        : <div className='w-full p-14 max-h-screen overflow-y-scroll'>
+          <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
+          <div>
+            <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
+            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} />
+          </div>
 
-      </div>
+          <div className='mt-14'>
+            <h1 className='text-2xl text-blue-kpmgBlue font-semibold'>Shared with Me</h1>
+            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner !== user.uid)} user={user} />
+          </div>
+
+        </div>
+      }
     </div>
   )
 }

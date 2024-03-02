@@ -85,7 +85,7 @@ const Login = () => {
           />
         </a>
       </div>
-      <div className='bg-gray-paleGray w-screen pt-10 2xl:pt-20 pb-7 2xl:pb-14'>
+      <div className='bg-[#F9FAFB] w-screen pt-10 2xl:pt-20 pb-7 2xl:pb-14'>
         <div className='flex flex-col space-y-1 w-5/12 2xl:w-1/3 mx-auto'>
           <h1 className='text-[52px] font-sansBold text-black-custom1'>Login to your account</h1>
           <p className='text-2xl text-black-custom1'>Welcome back!</p>

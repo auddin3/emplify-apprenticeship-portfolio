@@ -6,7 +6,7 @@ import { RectangleStackIcon, MagnifyingGlassIcon, ChartPieIcon } from '@heroicon
 
 const Home = () => {
   return (
-    <div className="bg-blue-kpmgBlue min-h-screen flex flex-col flex-1 justify-around">
+    <div className="bg-blue-kpmgBlue min-h-screen flex flex-col flex-1 justify-around max-h-screen overflow-hidden">
       <div className='flex justify-between w-screen py-2.5 px-14'>
         <Image
           src={EmplifyLogo}
@@ -37,26 +37,26 @@ const Home = () => {
           className='object-contain w-[303px] h-[300px]'
         />
       </div>
-      <div className='bg-gray-paleGray py-10 2xl:py-20'>
+      <div className='bg-[#FFFFFF] invisible h-5'>
         <Stack spacing={3} className='flex flex-col'>
-          <Heading fontSize='22px' color='black-custom1' className='flex font-sansSemibold mx-auto pb-8'>
+          <div className='flex font-sansSemibold mx-auto pb-8 text-2xl text-[#272727]'>
                         Why choose us?
-          </Heading>
+          </div>
           <div className='flex flex-row justify-center mx-54 mb-4'>
             <div className='flex flex-col items-center w-1/3'>
               <Icon as={RectangleStackIcon} w={12} h={12} color='#00338D'/>
-              <Heading size='sm' className='font-sansSemibold py-2.5'>Effortless File Sync</Heading>
-              <p className='w-7/12 text-center'>Easily synchronise your uploaded files to a specific location.</p>
+              <Heading size='sm' className='font-sansSemibold py-2.5' color='#272727'>Effortless File Sync</Heading>
+              <p className='w-7/12 text-center text-[#515151] font-sans'>Easily synchronise your uploaded files to a specific location.</p>
             </div>
             <div className='flex flex-col items-center w-1/3'>
               <Icon as={MagnifyingGlassIcon} w={12} h={12} color='#00338D'/>
-              <Heading size='sm' className='font-sansSemibold py-2.5'>Portfolio Management</Heading>
-              <p className='w-7/12 text-center'>Streamline portfolio tasks effortlessly with our app&apos;s user-friendly features.</p>
+              <Heading size='sm' className='font-sansSemibold py-2.5' color='#272727'>Portfolio Management</Heading>
+              <p className='w-7/12 text-center text-[#515151] font-sans'>Streamline portfolio tasks effortlessly with our app&apos;s user-friendly features.</p>
             </div>
             <div className='flex flex-col items-center w-1/3'>
               <Icon as={ChartPieIcon} w={12} h={12} color='#00338D'/>
-              <Heading size='sm' className='font-sansSemibold py-2.5'>Expert Analysis</Heading>
-              <p className='w-7/12 text-center'>Make informed decisions through visualised insights into your portfolio.</p>
+              <Heading size='sm' className='font-sansSemibold py-2.5' color='#272727'>Expert Analysis</Heading>
+              <p className='w-7/12 text-center text-[#515151] font-sans'>Make informed decisions through visualised insights into your portfolio.</p>
             </div>
           </div>
         </Stack>

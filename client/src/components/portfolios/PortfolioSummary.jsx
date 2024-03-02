@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 
 const Portfolio = () => {
   const auth = useAuthUser()
-  const user = auth.user
+  const user = auth?.user
   const location = useLocation()
   const portfolio = location?.state?.portfolio
 
