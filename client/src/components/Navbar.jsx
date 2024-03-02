@@ -60,12 +60,11 @@ const Navbar = ({ user }) => {
               <PopoverContent className='p-1'>
                 <PopoverArrow />
                 <PopoverBody>
-                  <div className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>My profile</div>
-                  <p className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>Settings</p>
+                  <div className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>My Profile</div>
                 </PopoverBody>
                 <PopoverFooter>
                   <div onClick={() => handleClick()} className='flex flex-row space-x-2 items-center py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>
-                    <Icon h={5} w={5} stroke={4} as={ArrowLeftStartOnRectangleIcon} />
+                    <Icon h={5} w={5} stroke={4} as={ArrowLeftStartOnRectangleIcon} color='#00338D'/>
                     <p className='font-sansSemibold text-blue-kpmgBlue'>Logout</p>
                   </div>
                 </PopoverFooter>

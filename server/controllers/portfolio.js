@@ -7,8 +7,8 @@ const getUserPortfolios = async (uid) => {
 
   const portfolios = await db.collection(collectionName).find({
     $or: [
-      { private: false },
       { owner: uid },
+      { sharedWith: { $in: [uid] } },
     ],
   }).toArray()
 

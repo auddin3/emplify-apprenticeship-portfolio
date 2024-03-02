@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
-import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, SimpleGrid, Tooltip, Tag } from '@chakra-ui/react'
+import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, SimpleGrid, Tooltip } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { calculateDateDifference } from '../utils'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { ClockIcon } from '@heroicons/react/24/solid'
+import { ClockIcon, UserGroupIcon } from '@heroicons/react/24/solid'
 import SortMenu from '../components/SortMenu'
 
 const menuOptions = [
@@ -51,7 +51,7 @@ const CardGrid = ({ sortedPortfolios, user }) => {
               <CardHeader paddingBottom={2}>
                 <div className='flex flex-row space-x-2 items-center'>
                   <div className='text-lg font-sansSemibold'>{p?.name}</div>
-                  <Tooltip hasArrow label={p?.description || 'abc'} bg="gray.300" color='black' placement='right'>
+                  <Tooltip hasArrow label={p?.description || 'abc'} placement='auto'>
                     <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
                   </Tooltip>
                 </div>
@@ -61,10 +61,10 @@ const CardGrid = ({ sortedPortfolios, user }) => {
                     <div className='text-[#333333] italic'>Due in {daysRemaining} days</div>
                   </div>
                   {
-                    !p?.private &&
-                    <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
-                      <div className='text-blue-kpmgBlue'>Public</div>
-                    </Tag>
+                    p?.sharedWith?.length > 0 &&
+                    <Tooltip hasArrow label='Shared'>
+                      <Icon as={UserGroupIcon} color='#00338D'/>
+                    </Tooltip>
                   }
                 </div>
               </CardHeader>
