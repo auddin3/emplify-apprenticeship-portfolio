@@ -133,13 +133,13 @@ const Dashboard = () => {
                   <Icon as={Cog6ToothIcon} h={6} w={6} onClick={() => navigate('/profile')}/>
                 </div>
               </CardHeader>
-              <CardBody paddingTop={0}>
+              <CardBody paddingTop={2} paddingBottom={2}>
                 <div className='text-center'>
                   <Avatar name={user?.name} size='2xl' fontWeight={600} />
                 </div>
                 <div className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</div>
               </CardBody>
-              <CardFooter paddingTop={1} paddingBottom={3}>
+              <CardFooter paddingTop={0}>
                 <div className='w-full text-center mx-10 mb-4 text-[#696969]'>{user?.school}</div>
               </CardFooter>
             </Card>

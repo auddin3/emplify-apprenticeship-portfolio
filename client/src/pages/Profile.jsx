@@ -108,9 +108,7 @@ const Profile = () => {
                   <InputGroup className='mb-2 2xl:mb-5'>
                     <Input
                       type={show ? 'text' : 'password'}
-                      placeholder='Enter your full name'
-                      value={userData?.name.split(' ')[0]}
-                      onChange={e => handleChange(e, 'name')}
+                      placeholder='password'
                       py='1.25rem'
                       _placeholder={{ opacity: 1, color: 'gray.500' }}
                       size="sm"
