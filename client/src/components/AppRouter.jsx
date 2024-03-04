@@ -7,6 +7,7 @@ import Register from '../pages/Register'
 import Portfolios from '../pages/Portfolios'
 import Portfolio from './portfolios/PortfolioSummary'
 import Library from '../pages/Library'
+import Profile from '../pages/Profile'
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 
 const AppRouter = () => {
@@ -21,6 +22,7 @@ const AppRouter = () => {
           <Route path="/portfolios" element={<Portfolios />} />
           <Route path="/portfolios/:pid" element={<Portfolio />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </Router>

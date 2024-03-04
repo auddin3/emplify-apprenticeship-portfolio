@@ -60,7 +60,12 @@ const Navbar = ({ user }) => {
               <PopoverContent className='p-1'>
                 <PopoverArrow />
                 <PopoverBody>
-                  <div className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>My Profile</div>
+                  <div
+                    className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'
+                    onClick={() => navigate('/profile')}
+                  >
+                    My Profile
+                  </div>
                 </PopoverBody>
                 <PopoverFooter>
                   <div onClick={() => handleClick()} className='flex flex-row space-x-2 items-center py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>
