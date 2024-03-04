@@ -9,22 +9,31 @@ const Profile = () => {
   const auth = useAuthUser()
   const user = auth?.user
 
-  const [userData, setUserData] = useState({
-    email: user?.email,
-    password: '',
-    name: user?.name,
-    school: user?.school,
-  })
   const [tabIndex, setTabIndex] = useState(0)
   const [show, setShow] = useState(false)
 
-  const handleChange = (e, name) => {
+  const [userData, setUserData] = useState({
+    email: user?.email,
+    password: '',
+    fName: user?.name?.split(' ')?.slice(0, -1).join(' '),
+    lName: user?.name?.split(' ')?.slice(-1).join('') || ' ',
+    school: user?.school,
+  })
+
+  const handleChange = (e, prop) => {
     const { value } = e.target
     setUserData(prevUserData => ({
       ...prevUserData,
-      [name]: value,
+      [prop]: value,
     }))
   }
+
+  //   const concatenateName = ({ fName, lName, fullName }) => {
+  //     const splitName = fullName.split(' ')
+
+  //     if (fName) return { fullName: fName + ' ' + splitName[splitName.length - 1] }
+  //     if (lName) return { fullName: splitName.slice(0, -1).join(' ') + ' ' + lName }
+  //   }
 
   return (
     <div className='bg-gray-paleGray flex flex-row'>
@@ -64,8 +73,8 @@ const Profile = () => {
                       <Input
                         type='text'
                         placeholder='Enter your full name'
-                        value={userData?.name.split(' ')[0]}
-                        onChange={e => handleChange(e, 'name')}
+                        value={userData?.fName}
+                        onChange={e => handleChange(e, 'fName')}
                         py='1.25rem'
                         _placeholder={{ opacity: 1, color: 'gray.500' }}
                         size="sm"
@@ -78,8 +87,8 @@ const Profile = () => {
                       <Input
                         type='text'
                         placeholder='Enter your full name'
-                        value={userData?.name.split(' ')[2]}
-                        onChange={e => handleChange(e, 'name')}
+                        value={userData?.lName || ' '}
+                        onChange={e => handleChange(e, 'lName')}
                         py='1.25rem'
                         _placeholder={{ opacity: 1, color: 'gray.500' }}
                         size="sm"
