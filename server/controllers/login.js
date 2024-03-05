@@ -30,7 +30,7 @@ const login = async (req, res) => {
   }
 
   const jwtToken = jwt.sign(
-    { id: user._id, email: user.email },
+    { id: user._id },
     'my_secret_api_key',
     { expiresIn: '1 hour' },
   )

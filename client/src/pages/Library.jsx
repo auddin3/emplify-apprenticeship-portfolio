@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar'
 import { Card, CardHeader, CardBody, Grid, Spinner, Tabs, TabList, Tab, TabIndicator, TabPanels, TabPanel, Tag, useDisclosure } from '@chakra-ui/react'
@@ -51,7 +50,7 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
             </Tag>
           </div>
         </div>
-        <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
+        <hr className='border-t border-t-black-custom1/20 text-black-custom1 w-full absolute left-0 right-0' />
       </div>
       <div className='relative space-y-2 mt-10'>
         <div className='ml-8 my-3.5 flex flex-row items-start space-x-8'>
@@ -77,7 +76,7 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
             </ul>
           </div>
         </div>
-        <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
+        <hr className='border-t border-t-black-custom1/20 text-black-custom1 w-full absolute left-0 right-0' />
       </div>
       <div className='relative space-y-2 mt-10'>
         <div className='ml-8 my-3.5 flex flex-col space-x-8'>
@@ -85,17 +84,14 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
         </div>
         {selectedModule?.assessmentBreakdown && <PieChart data={selectedModule?.assessmentBreakdown}/>}
         <div className="h-1"></div>
-        <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
+        <hr className='border-t border-t-black-custom1/20 text-black-custom1 w-full absolute left-0 right-0' />
       </div>
     </SideBar>
   )
 }
 
 const Library = () => {
-  const auth = useAuthUser()
-  const user = auth?.user
-
-  const [selectedTab, setSelectedTab] = useState(0)
+  const [tabIndex, setTabIndex] = useState(0)
   const [modules, setModules] = useState()
   const [filteredModules, setFilteredModules] = useState()
   const [loading, setLoading] = useState(true)
@@ -144,7 +140,7 @@ const Library = () => {
 
   return (
     <div className='bg-gray-paleGray flex flex-row max-h-screen'>
-      <Navbar user={user}/>
+      <Navbar />
       {loading
         ? <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           <Spinner
@@ -165,18 +161,18 @@ const Library = () => {
               setLoading={setLoading}
             />
             <div className='mx-2 mt-10'>
-              <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full' />
+              <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full' />
               <SortMenu
                 elements={filteredModules}
                 setSortedElements={setFilteredModules}
                 menuOptions={menuOptions}
                 setLoading={setLoading}
               />
-              <hr className='border-t border-t-black-custom1/15 text-black-custom1 my-2 w-full mb-5' />
+              <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full mb-5' />
               <Tabs variant='unstyled' size='lg'>
                 <TabList className='space-x-5'>
                   {pages?.map((page, idx) => {
-                    const isSelected = idx === selectedTab
+                    const isSelected = idx === tabIndex
                     const count = filteredModules?.filter(module => module?.category === page).length
 
                     return (
@@ -184,7 +180,7 @@ const Library = () => {
                         key={idx}
                         _selected={{ color: '#00338D' }}
                         className={`text-[#00338D]/60 ${page === 'All' ? '' : 'space-x-2'}`}
-                        onClick={() => setSelectedTab(idx)}
+                        onClick={() => setTabIndex(idx)}
                       >
                         <div className='capitalize'>{camelCaseToSpaced(page)}</div>
                         {page === 'all'

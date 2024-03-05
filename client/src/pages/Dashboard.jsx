@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom'
-import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Icon, SimpleGrid, Spinner, Tag, TagLabel, Avatar } from '@chakra-ui/react'
-import { ShieldCheckIcon } from '@heroicons/react/24/solid'
+import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Icon, SimpleGrid, Spinner, Tag,
+  TagLabel, Avatar } from '@chakra-ui/react'
+import { ShieldCheckIcon, Cog6ToothIcon } from '@heroicons/react/24/solid'
 
 const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
 
@@ -47,7 +48,7 @@ const Dashboard = () => {
 
   return (
     <div className='bg-gray-paleGray flex flex-row max-h-screen'>
-      <Navbar user={user}/>
+      <Navbar />
       {loading
         ? <div
           style={{
@@ -126,15 +127,20 @@ const Dashboard = () => {
             </Card>
           </div>
           <div className='flex flex-col w-auto space-y-5 m-5'>
-            <Card className='px-2 rounded-full' size='md'>
-              <CardBody>
+            <Card className='rounded-full' size='md'>
+              <CardHeader paddingBottom={0}>
+                <div className='text-right text-[#A8A8A8] cursor-pointer'>
+                  <Icon as={Cog6ToothIcon} h={6} w={6} onClick={() => navigate('/profile')}/>
+                </div>
+              </CardHeader>
+              <CardBody paddingTop={2} paddingBottom={2}>
                 <div className='text-center'>
                   <Avatar name={user?.name} size='2xl' fontWeight={600} />
                 </div>
                 <div className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</div>
               </CardBody>
-              <CardFooter>
-                <div className='w-full text-center mx-10 mb-4'>{user?.school}</div>
+              <CardFooter paddingTop={0}>
+                <div className='w-full text-center mx-10 mb-4 text-[#696969]'>{user?.school}</div>
               </CardFooter>
             </Card>
             <Card className='px-2 rounded-full' size='lg'>

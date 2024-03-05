@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import EmplifyLogo from '../assets/images/logo.png'
 import { ArrowLeftStartOnRectangleIcon, ChartPieIcon, ShieldCheckIcon, WalletIcon } from '@heroicons/react/24/solid'
@@ -13,11 +13,19 @@ import { Icon,
   Portal,
   Avatar } from '@chakra-ui/react'
 import useSignOut from 'react-auth-kit/hooks/useSignOut'
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const signOut = useSignOut()
   const location = useLocation()
   const navigate = useNavigate()
+
+  const auth = useAuthUser()
+  const [user, setUser] = useState(auth?.user)
+
+  useEffect(() => {
+    setUser(auth?.user)
+  }, [auth])
 
   const handleClick = () => {
     signOut()
@@ -33,7 +41,7 @@ const Navbar = ({ user }) => {
       />
 
       <div className='flex flex-col justify-between h-full'>
-        <div className='flex flex-col w-full mt-12 space-y-12'>
+        <div className='flex flex-col w-full mt-12 2xl:my-40 space-y-12'>
           <a href='/dashboard' className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/dashboard') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
             <Icon w={30} h={30} color="white" as={ChartPieIcon}/>
           </a>
@@ -52,7 +60,8 @@ const Navbar = ({ user }) => {
 
           <Popover placement='right'>
             <PopoverTrigger>
-              <div className='w-fit mx-auto mb-20'>
+              <div className={`w-fit mx-auto
+              ${location.pathname.includes('/profile') ? 'bg-blue-lightBlue rounded-full p-2 mb-16' : 'mb-20'}`}>
                 <Avatar name={user?.name} size='lg' fontWeight={600} className='cursor-pointer'/>
               </div>
             </PopoverTrigger>
@@ -60,7 +69,12 @@ const Navbar = ({ user }) => {
               <PopoverContent className='p-1'>
                 <PopoverArrow />
                 <PopoverBody>
-                  <div className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>My Profile</div>
+                  <div
+                    className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'
+                    onClick={() => navigate('/profile')}
+                  >
+                    My Profile
+                  </div>
                 </PopoverBody>
                 <PopoverFooter>
                   <div onClick={() => handleClick()} className='flex flex-row space-x-2 items-center py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'>

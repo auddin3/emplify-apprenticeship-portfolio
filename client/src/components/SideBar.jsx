@@ -11,7 +11,7 @@ const SideBar = ({ isOpen, onClose, size = 'sm', title = 'undefined', children }
           <div className='font-sansSemibold text-blue-kpmgBlue text-[22px] py-1.5 ml-2'>
             {title}
           </div>
-          <hr className='border-t border-t-black-custom1/15 text-black-custom1 w-full absolute left-0 right-0' />
+          <hr className='border-t border-t-black-custom1/20 text-black-custom1 w-full absolute left-0 right-0' />
         </DrawerHeader>
         <Box overflowY="auto">
           {children}
