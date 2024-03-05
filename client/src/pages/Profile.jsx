@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import { Avatar, Box, Button, FormControl, FormLabel, Icon, Input, InputGroup, InputRightElement, Stack,
-  Tabs, Tab, TabList, TabIndicator, TabPanels, TabPanel } from '@chakra-ui/react'
+  Tabs, Tab, TabList, TabIndicator, TabPanels, TabPanel, useToast } from '@chakra-ui/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
 const Profile = () => {
@@ -11,12 +11,15 @@ const Profile = () => {
 
   const [tabIndex, setTabIndex] = useState(0)
   const [show, setShow] = useState(false)
+  const toast = useToast()
+
+  const [fName, lName] = user?.name ? user?.name.split(' ') : ['', '']
 
   const [userData, setUserData] = useState({
     email: user?.email,
-    password: '',
-    fName: user?.name?.split(' ')?.slice(0, -1).join(' '),
-    lName: user?.name?.split(' ')?.slice(-1).join('') || ' ',
+    id: user?.uid,
+    fName,
+    lName: lName || ' ',
     school: user?.school,
   })
 
@@ -28,12 +31,53 @@ const Profile = () => {
     }))
   }
 
-  //   const concatenateName = ({ fName, lName, fullName }) => {
-  //     const splitName = fullName.split(' ')
+  const handleSave = async (data) => {
+    const apiUrl = `http://localhost:5001/profile/${user.uid}`
 
-  //     if (fName) return { fullName: fName + ' ' + splitName[splitName.length - 1] }
-  //     if (lName) return { fullName: splitName.slice(0, -1).join(' ') + ' ' + lName }
-  //   }
+    const { fName, lName, ...userDataWithoutName } = userData
+
+    const formattedData = {
+      name: fName + ' ' + lName,
+      ...userDataWithoutName,
+    }
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formattedData),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Update failed:', errorData)
+      }
+
+      auth.setAuthState({
+        ...auth.authState,
+        user: formattedData,
+      })
+
+      console.log('Update successful')
+      toast({
+        title: 'Details updated.',
+        description: 'We\'ve updated your details.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (error) {
+      console.error('We could not update your detail.', error)
+      toast({
+        title: 'Update Failed',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
+    }
+  }
 
   return (
     <div className='bg-gray-paleGray flex flex-row'>
@@ -102,9 +146,9 @@ const Profile = () => {
                   <InputGroup className='mb-2 2xl:mb-5'>
                     <Input
                       type='text'
-                      placeholder='Enter your full name'
+                      placeholder='Enter your email address'
                       value={userData?.email}
-                      onChange={e => handleChange(e, 'name')}
+                      onChange={e => handleChange(e, 'email')}
                       py='1.25rem'
                       _placeholder={{ opacity: 1, color: 'gray.500' }}
                       size="sm"
@@ -139,6 +183,7 @@ const Profile = () => {
                   size='md'
                   my={2}
                   className="w-5/12 2xl:w-1/3 rounded-md mx-auto"
+                  onClick={handleSave}
                 >
                 Save
                 </Button>
