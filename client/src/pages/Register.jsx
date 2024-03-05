@@ -4,7 +4,7 @@ import EmplifyLogo from '../assets/images/logo.png'
 import { Button, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputRightElement, Stack, Select, useToast } from '@chakra-ui/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
-const schools = [
+export const schools = [
   'University of Birmingham',
   'University of Bristol',
   'Durham University',

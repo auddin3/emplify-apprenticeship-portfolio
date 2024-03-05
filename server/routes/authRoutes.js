@@ -15,13 +15,13 @@ router.post('/login', loginController.login)
 
 router.post('/profile/:uid', async function (req, res) {
   const uid = new ObjectId(req.params.uid)
-  const { name } = req.body
+  const { name, email, school } = req.body
 
   const db = getDb()
 
   try {
     const updateOperation = await db.collection('users').updateOne({ _id: uid },
-      { $set: { name } })
+      { $set: { name, email, school } })
 
     const user = await db.collection('users').findOne({ _id: uid })
 

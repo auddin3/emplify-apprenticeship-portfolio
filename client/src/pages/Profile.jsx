@@ -9,6 +9,7 @@ import { Avatar,
   InputGroup,
   InputRightElement,
   Stack,
+  Select,
   Tabs,
   Tab,
   TabList,
@@ -16,10 +17,11 @@ import { Avatar,
   TabPanels,
   TabPanel,
   useToast } from '@chakra-ui/react'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+import { PencilIcon } from '@heroicons/react/24/solid'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
 import Navbar from '../components/Navbar'
+import { schools } from './Register'
 
 const Profile = () => {
   const auth = useAuthUser()
@@ -33,7 +35,7 @@ const Profile = () => {
 
   const [userData, setUserData] = useState({
     email: user?.email,
-    id: user?.uid,
+    uid: user?.uid,
     fName,
     lName: lName || ' ',
     school: user?.school,
@@ -175,7 +177,6 @@ const Profile = () => {
                     </InputGroup>
                   </div>
                 </FormControl>
-
                 <FormControl >
                   <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1 text-xs">Email address</FormLabel>
                   <InputGroup className='mb-2 2xl:mb-5'>
@@ -190,42 +191,58 @@ const Profile = () => {
                     />
                   </InputGroup>
                 </FormControl>
-
                 <FormControl >
                   <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1 text-xs">Password</FormLabel>
                   <InputGroup className='mb-2 2xl:mb-5'>
                     <Input
-                      type={show ? 'text' : 'password'}
+                      type={'password'}
                       placeholder='password'
                       py='1.25rem'
                       _placeholder={{ opacity: 1, color: 'gray.500' }}
                       size="sm"
                     />
                     <InputRightElement width='4.5rem' pt='0.25rem'>
-                      <Button h='1.75rem' size='lg' bg='white' px='0' onClick={() => setShow(!show)}>
-                        {show ? <Icon as={EyeSlashIcon} /> : <Icon as={EyeIcon} />}
+                      <Button h='1.5rem' size='sm' bg='white' px='0' onClick={() => setShow(!show)}>
+                        <Icon as={PencilIcon} />
                       </Button>
                     </InputRightElement>
                   </InputGroup>
                 </FormControl>
-
               </Stack>
-
-              <div className='w-full flex flex-row items-center'>
-                <Button
-                  bg='#00338D'
-                  color='white'
-                  size='md'
-                  my={2}
-                  className="w-5/12 2xl:w-1/3 rounded-md mx-auto"
-                  onClick={handleSave}
-                >
-                Save
-                </Button>
-              </div>
+            </TabPanel>
+            <TabPanel>
+              <Stack spacing={5} className='w-11/12 overflow-y-scroll h-64 2xl:h-full my-8 ml-10'>
+                <FormControl >
+                  <FormLabel className="w-full mb-2 ml-2 flex self-center font-sansSemibold text-black-custom1 text-xs">School</FormLabel>
+                  <Select
+                    size='md'
+                    placeholder='Select option'
+                    py='0.15rem'
+                    className='text-gray-500/100'
+                    value={userData?.school}
+                    onChange={e => handleChange(e, 'school')}
+                  >
+                    {schools.map((uni, idx) => (
+                      <option key={idx} value={uni}>{uni}</option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <div className='w-full flex flex-row items-center'>
+          <Button
+            bg='#00338D'
+            color='white'
+            size='md'
+            my={2}
+            className="w-5/12 2xl:w-1/3 rounded-md mx-auto"
+            onClick={handleSave}
+          >
+                Save
+          </Button>
+        </div>
       </Box>
     </div>
   )
