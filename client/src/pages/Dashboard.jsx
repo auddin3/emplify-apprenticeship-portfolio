@@ -48,7 +48,7 @@ const Dashboard = () => {
 
   return (
     <div className='bg-gray-paleGray flex flex-row max-h-screen'>
-      <Navbar user={user}/>
+      <Navbar />
       {loading
         ? <div
           style={{

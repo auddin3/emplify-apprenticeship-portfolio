@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar'
 import { Card, CardHeader, CardBody, Grid, Spinner, Tabs, TabList, Tab, TabIndicator, TabPanels, TabPanel, Tag, useDisclosure } from '@chakra-ui/react'
@@ -92,9 +91,6 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
 }
 
 const Library = () => {
-  const auth = useAuthUser()
-  const user = auth?.user
-
   const [tabIndex, setTabIndex] = useState(0)
   const [modules, setModules] = useState()
   const [filteredModules, setFilteredModules] = useState()
@@ -144,7 +140,7 @@ const Library = () => {
 
   return (
     <div className='bg-gray-paleGray flex flex-row max-h-screen'>
-      <Navbar user={user}/>
+      <Navbar />
       {loading
         ? <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
           <Spinner

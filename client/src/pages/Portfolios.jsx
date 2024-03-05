@@ -145,7 +145,7 @@ const Portfolios = () => {
 
   return (
     <div className='bg-gray-paleGray flex flex-row'>
-      <Navbar user={user}/>
+      <Navbar />
       {loading
         ? <div
           style={{

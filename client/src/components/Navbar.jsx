@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import EmplifyLogo from '../assets/images/logo.png'
 import { ArrowLeftStartOnRectangleIcon, ChartPieIcon, ShieldCheckIcon, WalletIcon } from '@heroicons/react/24/solid'
@@ -13,11 +13,19 @@ import { Icon,
   Portal,
   Avatar } from '@chakra-ui/react'
 import useSignOut from 'react-auth-kit/hooks/useSignOut'
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const signOut = useSignOut()
   const location = useLocation()
   const navigate = useNavigate()
+
+  const auth = useAuthUser()
+  const [user, setUser] = useState(auth?.user)
+
+  useEffect(() => {
+    setUser(auth?.user)
+  }, [auth])
 
   const handleClick = () => {
     signOut()

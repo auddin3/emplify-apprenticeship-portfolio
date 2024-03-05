@@ -1,19 +1,35 @@
 import React, { useState } from 'react'
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
-import Navbar from '../components/Navbar'
-import { Avatar, Box, Button, FormControl, FormLabel, Icon, Input, InputGroup, InputRightElement, Stack,
-  Tabs, Tab, TabList, TabIndicator, TabPanels, TabPanel, useToast } from '@chakra-ui/react'
+import { Avatar,
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Icon,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Tabs,
+  Tab,
+  TabList,
+  TabIndicator,
+  TabPanels,
+  TabPanel,
+  useToast } from '@chakra-ui/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
+import useSignIn from 'react-auth-kit/hooks/useSignIn'
+import Navbar from '../components/Navbar'
 
 const Profile = () => {
   const auth = useAuthUser()
   const user = auth?.user
-
+  const signIn = useSignIn()
   const [tabIndex, setTabIndex] = useState(0)
   const [show, setShow] = useState(false)
   const toast = useToast()
 
-  const [fName, lName] = user?.name ? user?.name.split(' ') : ['', '']
+  const [fName, lName] = user?.name ? user?.name?.split(' ') : ['', '']
 
   const [userData, setUserData] = useState({
     email: user?.email,
@@ -31,11 +47,9 @@ const Profile = () => {
     }))
   }
 
-  const handleSave = async (data) => {
+  const handleSave = async () => {
     const apiUrl = `http://localhost:5001/profile/${user.uid}`
-
     const { fName, lName, ...userDataWithoutName } = userData
-
     const formattedData = {
       name: fName + ' ' + lName,
       ...userDataWithoutName,
@@ -53,9 +67,30 @@ const Profile = () => {
         console.error('Update failed:', errorData)
       }
 
-      auth.setAuthState({
-        ...auth.authState,
-        user: formattedData,
+      const data = await response.json()
+
+      signIn({
+        expiresIn: 3600,
+        auth: {
+          token: data?.token,
+          type: 'Bearer',
+        },
+        userState: {
+          user: {
+            uid: data?.user?._id,
+            name: data?.user?.name,
+            email: data?.user?.email,
+            school: data?.user?.school,
+          },
+        },
+      })
+
+      setUserData({
+        email: data?.user?.email,
+        uid: data?.user?._id,
+        fName,
+        lName: lName || ' ',
+        school: data?.user?.school,
       })
 
       console.log('Update successful')
@@ -81,7 +116,7 @@ const Profile = () => {
 
   return (
     <div className='bg-gray-paleGray flex flex-row'>
-      <Navbar user={user}/>
+      <Navbar />
       <Box borderWidth='1px' borderRadius='md' bg="white" margin={5} width="full">
         <div className='flex flex-col items-center my-7'>
           <div className='w-fit mx-auto mb-7'>

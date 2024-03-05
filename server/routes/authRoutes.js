@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongodb = require('mongodb')
 const { getDb } = require('../config/database')
+const jwt = require('jsonwebtoken')
 
 const registerController = require('../controllers/register')
 const loginController = require('../controllers/login')
@@ -19,9 +20,18 @@ router.post('/profile/:uid', async function (req, res) {
   const db = getDb()
 
   try {
-    const updatedUser = await db.collection('users').updateOne({ _id: uid },
+    const updateOperation = await db.collection('users').updateOne({ _id: uid },
       { $set: { name } })
-    return res.json(updatedUser)
+
+    const user = await db.collection('users').findOne({ _id: uid })
+
+    const jwtToken = jwt.sign(
+      { id: user._id },
+      'my_secret_api_key',
+      { expiresIn: '1 hour' },
+    )
+
+    return res.json({ updateOperation, token: jwtToken, user })
   } catch (e) {
     return res.error(e)
   }
