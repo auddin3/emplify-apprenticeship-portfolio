@@ -58,7 +58,7 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
             <div className='font-sansSemibold text-blue-kpmgBlue'>Module ID</div>
             <div className='font-sans text-blue-kpmgBlue text-sm'>{selectedModule?.moduleId}</div>
           </div>
-          <div className='space-y-2 w-56'>
+          <div className='space-y-2 w-64'>
             <div className='font-sansSemibold text-blue-kpmgBlue'>Description</div>
             <div className='text-blue-kpmgBlue font-sans text-sm'>{selectedModule?.description}</div>
           </div>
