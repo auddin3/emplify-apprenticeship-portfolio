@@ -61,7 +61,7 @@ const Navbar = () => {
           <Popover placement='right'>
             <PopoverTrigger>
               <div className={`w-fit mx-auto
-              ${location.pathname.includes('/profile') ? 'bg-blue-lightBlue rounded-full p-2 mb-16' : 'mb-20'}`}>
+              ${location.pathname.includes('/profile') ? 'bg-blue-lightBlue rounded-full p-1 mb-[4.5rem]' : 'mb-20'}`}>
                 <Avatar name={user?.name} size='lg' fontWeight={600} className='cursor-pointer'/>
               </div>
             </PopoverTrigger>
@@ -71,9 +71,15 @@ const Navbar = () => {
                 <PopoverBody>
                   <div
                     className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'
-                    onClick={() => navigate('/profile')}
+                    onClick={() => navigate('/profile', { state: { tab: 0 } })}
                   >
                     My Profile
+                  </div>
+                  <div
+                    className='font-sansSemibold text-blue-kpmgBlue py-2 px-4 cursor-pointer rounded-full hover:bg-blue-kpmgBlue/10'
+                    onClick={() => navigate('/profile', { state: { tab: 1 } })}
+                  >
+                    Settings
                   </div>
                 </PopoverBody>
                 <PopoverFooter>

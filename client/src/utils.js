@@ -20,3 +20,7 @@ export const convertDateToString = (date) => {
   const options = { day: 'numeric', month: 'numeric', year: 'numeric' }
   return new Date(date).toLocaleDateString('en-GB', options)
 }
+
+export const capitalize = (str) => {
+  return str.replace(/\b\w/g, match => match.toUpperCase())
+}

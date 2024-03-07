@@ -113,6 +113,7 @@ const Login = () => {
               placeholder='Enter your password'
               value={user.password}
               onChange={e => handleChange(e, 'password')}
+              onKeyDown={e => e.key === 'Enter' && handleClick(user)}
               _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
             />
             <InputRightElement width='4.5rem' pt='0.75rem'>
