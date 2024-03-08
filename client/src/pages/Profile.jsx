@@ -229,6 +229,7 @@ const Profile = () => {
                         value='password'
                         size="sm"
                         readOnly
+                        isDisabled
                       />
                       <InputRightElement width='4.5rem' pt='0.25rem'>
                         <Button h='1.5rem' size='sm' bg='white' px='0' onClick={() => setShow(!show)}>

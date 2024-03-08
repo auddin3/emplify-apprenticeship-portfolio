@@ -60,8 +60,8 @@ const Navbar = () => {
 
           <Popover placement='right'>
             <PopoverTrigger>
-              <div className={`w-fit mx-auto
-              ${location.pathname.includes('/profile') ? 'bg-blue-lightBlue rounded-full p-1 mb-[4.5rem]' : 'mb-20'}`}>
+              <div className={`mb-20 flex justify-center py-2.5 mr-3 pl-3
+              ${location.pathname.includes('/profile') ? 'bg-blue-lightBlue rounded-r-full' : ''}`}>
                 <Avatar name={user?.name} size='lg' fontWeight={600} className='cursor-pointer'/>
               </div>
             </PopoverTrigger>
