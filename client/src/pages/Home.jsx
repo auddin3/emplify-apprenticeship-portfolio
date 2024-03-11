@@ -2,18 +2,18 @@ import React from 'react'
 import EmplifyLogo from '../assets/images/logo.png'
 import CircleMatrix from '../assets/images/circle-matrix.png'
 import { Button, Heading, Icon, Image, Stack } from '@chakra-ui/react'
-import { RectangleStackIcon, MagnifyingGlassIcon, ChartPieIcon } from '@heroicons/react/24/outline'
+import { RectangleStackIcon, MagnifyingGlassIcon, ChartPieIcon } from '@heroicons/react/24/solid'
 
 const Home = () => {
   return (
-    <div className="bg-blue-kpmgBlue min-h-screen flex flex-col flex-1 justify-around max-h-screen overflow-hidden">
-      <div className='flex justify-between w-screen py-2.5 px-14'>
+    <div className="bg-gradient-to-tl from-[#031641] via-[#031641] to-[#00338D] flex flex-col flex-1 justify-around">
+      <div className='flex justify-between w-screen px-14 my-8'>
         <Image
           src={EmplifyLogo}
           alt='KPMG Logo'
           className='object-contain w-[100px] h-[45px]'
         />
-        <div className='flex flex-row space-x-8 items-center'>
+        <div className='flex flex-row space-x-14 items-center'>
           <a href="/login" className='text-white font-sansSemibold'>Login</a>
           <a href='/register'>
             <Button bg='white' color='#00338D' size='md' rounded='3xl' px='7'>
@@ -22,46 +22,43 @@ const Home = () => {
           </a>
         </div>
       </div>
-      <div className='pl-14 my-12 w-screen flex flex-row justify-between'>
+      <div className='pl-14 w-screen flex flex-row justify-between my-7'>
         <Stack spacing={10} className='justify-items-start my-auto'>
-          <Heading as='h1' size='lg' color='#F7F7F8' width='530px' className='font-sansSemibold'>
+          <h1 className='font-sansSemibold text-3xl text-[#F7F7F8] w-[530px]'>
                         Elevate Your Story. Amplify Your Success. Empowering Portfolios. Empowering Futures.
-          </Heading>
-          <Heading size='md' color='#F7F7F8' width='550px' className=''>
+          </h1>
+          <h2 width='550px' className='font-sans text-lg text-[#F7F7F8] w-[550px]'>
                          Enhance your professional journey by boosting your portfolio&apos;s impact, offering tailored tools to showcase your strengths seamlessly
-          </Heading>
+          </h2>
         </Stack>
         <Image
           src={CircleMatrix}
           alt='Circle Matrix'
-          className='object-contain w-[303px] h-[300px]'
+          className='object-contain w-[290px] h-[290px]'
         />
       </div>
-      <div className='bg-[#FFFFFF] invisible h-5'>
-        <Stack spacing={3} className='flex flex-col'>
-          <div className='flex font-sansSemibold mx-auto pb-8 text-2xl text-[#272727]'>
-                        Why choose us?
-          </div>
-          <div className='flex flex-row justify-center mx-54 mb-4'>
-            <div className='flex flex-col items-center w-1/3'>
-              <Icon as={RectangleStackIcon} w={12} h={12} color='#00338D'/>
-              <Heading size='sm' className='font-sansSemibold py-2.5' color='#272727'>Effortless File Sync</Heading>
-              <p className='w-7/12 text-center text-[#515151] font-sans'>Easily synchronise your uploaded files to a specific location.</p>
-            </div>
-            <div className='flex flex-col items-center w-1/3'>
-              <Icon as={MagnifyingGlassIcon} w={12} h={12} color='#00338D'/>
-              <Heading size='sm' className='font-sansSemibold py-2.5' color='#272727'>Portfolio Management</Heading>
-              <p className='w-7/12 text-center text-[#515151] font-sans'>Streamline portfolio tasks effortlessly with our app&apos;s user-friendly features.</p>
-            </div>
-            <div className='flex flex-col items-center w-1/3'>
-              <Icon as={ChartPieIcon} w={12} h={12} color='#00338D'/>
-              <Heading size='sm' className='font-sansSemibold py-2.5' color='#272727'>Expert Analysis</Heading>
-              <p className='w-7/12 text-center text-[#515151] font-sans'>Make informed decisions through visualised insights into your portfolio.</p>
+      <div className='mx-auto w-10/12 2xl:w-10/12 my-8'>
+        <div className='flex flex-row justify-center items-center space-x-16'>
+          <div className='flex flex-col items-center border border-white/20 rounded-lg py-10 space-y-1.5 w-96 px-4 bg-gradient-to-tl from-[#031641] via-[#031641] to-[#00338D]'>
+            <Icon as={RectangleStackIcon} w={10} h={10} color='#C6007E'/>
+            <Heading size='md' className='font-sansSemibold py-2.5' color='white'>Effortless File Sync</Heading>
+            <div className='text-center text-[#C1D0FC] font-sans text-lg px-10'>
+              Easily synchronise your uploaded files to a specific location.
             </div>
           </div>
-        </Stack>
+          <div className='flex flex-col items-center border border-white/20 rounded-lg py-10 space-y-1.5 w-96 px-4 bg-gradient-to-t from-[#031641] via-[#031641] to-[#00338D]'>
+            <Icon as={MagnifyingGlassIcon} w={10} h={10} color='#00A3A1'/>
+            <Heading size='md' className='font-sansSemibold py-2.5' color='white'>Portfolio Management</Heading>
+            <p className='text-center text-[#C1D0FC] font-sans text-lg px-12'>Streamline portfolio tasks effortlessly with our app&apos;s user-friendly features.</p>
+          </div>
+          <div className='flex flex-col items-center border border-white/20 rounded-lg py-10 space-y-1.5 w-96 px-4 bg-gradient-to-br from-[#031641] via-[#031641] to-[#00338D]'>
+            <Icon as={ChartPieIcon} w={10} h={10} color='#0091DA'/>
+            <Heading size='md' className='font-sansSemibold py-2.5' color='white'>Expert Analysis</Heading>
+            <p className='text-center text-[#C1D0FC] font-sans text-lg px-10'>Make informed decisions through visualised insights into your portfolio.</p>
+          </div>
+        </div>
       </div>
-      <div className='flex flex-col py-5 h-full justify-items-center'>
+      <div className='flex flex-col pb-3 h-full justify-items-center mb-10 mt-5'>
         <Heading fontSize='20px' color='#F7F7F8' className='mx-auto mb-4'>Want to start today?</Heading>
         <div className='mx-auto'>
           <Button bg='white' color='#00338D' size='md' rounded='3xl' px='7'>

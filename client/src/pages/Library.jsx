@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar'
-import { Card, CardHeader, CardBody, Grid, Spinner, Tabs, TabList, Tab, TabIndicator, TabPanels, TabPanel, Tag, useDisclosure } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, Checkbox, Grid, Spinner, Tabs, TabList, Tab, TabIndicator,
+  TabPanels, TabPanel, Tag, useDisclosure } from '@chakra-ui/react'
 import SortMenu from '../components/SortMenu'
 import { camelCaseToSpaced, convertDateToString } from '../utils'
 import SideBar from '../components/SideBar'
@@ -66,11 +67,12 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
         <div className='space-y-2 mx-8'>
           <div className='font-sansSemibold text-blue-kpmgBlue'>Learning Objectives</div>
           <div className='text-blue-kpmgBlue'>
-            <ul className="list-inside pl-1.5 mb-3.5">
+            <ul className="list-inside pl-1.5 mb-3.5 space-y-0.5">
               {selectedModule?.learningObjectives && selectedModule?.learningObjectives?.map((lo, idx) => (
-                <li key={idx} className="text-sm flex items-center font-sans">
-                  <span className="mr-2 font-sansBold">&#10003;</span>
-                  {lo}
+                <li key={idx} className="flex items-center font-sans">
+                  <Checkbox colorScheme='green' size="sm">
+                    {lo}
+                  </Checkbox>
                 </li>
               ))}
             </ul>
