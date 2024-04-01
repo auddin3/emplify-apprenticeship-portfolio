@@ -30,4 +30,12 @@ const getPortfolioCriterion = async (pid) => {
   return { specification }
 }
 
-module.exports = { getUserPortfolios, getPortfolioCriterion }
+const getPortfolioEntries = async (pid) => {
+  const db = getDb()
+
+  const entries = await db.collection('portfolioEntries').find({ portfolio: pid }).toArray()
+
+  return { entries }
+}
+
+module.exports = { getUserPortfolios, getPortfolioCriterion, getPortfolioEntries }

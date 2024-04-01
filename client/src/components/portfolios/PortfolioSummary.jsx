@@ -5,6 +5,7 @@ import { IconButton, Icon, SimpleGrid, Box, Avatar, Spinner } from '@chakra-ui/r
 import { ArrowLeftCircleIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
 import { LightBulbIcon, ClockIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import SortMenu from '../SortMenu'
+import { calculateDateDifference } from '../../utils'
 
 const menuOptions = [
   {
@@ -62,6 +63,7 @@ const Portfolio = () => {
   // const canEdit = location?.state?.edit
 
   const [criterion, setCriterion] = useState()
+  const [entries, setEntries] = useState()
   const [sortedCriterion, setSortedCriterion] = useState()
   const [loading, setLoading] = useState(true)
 
@@ -82,6 +84,7 @@ const Portfolio = () => {
 
       const data = await response.json()
       setCriterion(data?.specification)
+      setEntries(data?.entries)
     } catch (error) {
       console.error('Operation failed:', error)
     } finally {
@@ -94,8 +97,15 @@ const Portfolio = () => {
   }, [])
 
   useEffect(() => {
-    criterion && setSortedCriterion(criterion.sort((a, b) => a.title.localeCompare(b.title)))
+    criterion && setSortedCriterion(criterion?.sort((a, b) => a.title.localeCompare(b.title)))
   }, [criterion])
+
+  useEffect(() => {
+    entries && setEntries(entries)
+  }, [entries])
+
+  const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
+  const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
@@ -124,14 +134,14 @@ const Portfolio = () => {
             />
             <div className='flex flex-col'>
               <h1 className='text-2xl text-black-custom1 font-semibold'>{portfolio?.name}</h1>
-              <div className='text-lg w-2/3 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
+              <div className='text-lg pr-96 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
             </div>
           </div>
           <div className='px-20 flex flex-row justify-between w-full'>
             <SimpleGrid columns={3} spacing={10} maxWidth="100%" className='w-full'>
-              <StatCard title="KSBs Achieved" icon={CheckCircleIcon} stat={19} colour="#00A3A1"/>
-              <StatCard title="KSBs Remaining" icon={RemainingIcon} stat={3} colour="#C6007E"/>
-              <StatCard title="Days Until Submission" icon={TimeIcon} stat={19} colour="#0091DA"/>
+              <StatCard title="KSBs Achieved" icon={CheckCircleIcon} stat={ksbsAchieved} colour="#00A3A1"/>
+              <StatCard title="KSBs Remaining" icon={RemainingIcon} stat={ksbsRemaining} colour="#C6007E"/>
+              <StatCard title="Days Until Submission" icon={TimeIcon} stat={calculateDateDifference(portfolio?.deadline)} colour="#0091DA"/>
             </SimpleGrid>
           </div>
           <div className='px-20'>
@@ -143,13 +153,11 @@ const Portfolio = () => {
             />
           </div>
           <div className='px-20 flex flex-col space-y-4 w-full'>
-            <div className='font-sansSemibold text-black-custom1/70 text-lg'>Incomplete</div>
-            { sortedCriterion && sortedCriterion?.map((c, idx) => {
-              const splitTitle = c?.title.split('C').join(' ')
-
+            <div className='font-sansSemibold text-black-custom1/70 text-xl'>Incomplete</div>
+            { sortedCriterion && sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title))?.map((c, idx) => {
               return (
                 <div key={idx} className='flex flex-row bg-white w-full p-4 rounded-xl border space-x-4'>
-                  <Avatar name={'C' + splitTitle} size='md' fontWeight={600} className='cursor-pointer' style={{ opacity: 0.5 }}/>
+                  <Avatar name={c.title[0] + c.subTitle + ' ' + c.title[1]} size='md' fontWeight={600} className='cursor-pointer' style={{ opacity: 0.5 }}/>
                   <div>
                     <div className='font-sansSemibold'>{c?.subTitle}</div>
                     <div className='font-sans text-black-custom1/70 text-sm'>{c?.description.substring(0, 100)}...</div>
@@ -163,19 +171,18 @@ const Portfolio = () => {
             })}
           </div>
           <div className='px-20 flex flex-col space-y-4 w-full'>
-            <div className='font-sansSemibold text-black-custom1/70 text-lg'>Complete</div>
-            { sortedCriterion && sortedCriterion?.map((c, idx) => {
-              const splitTitle = c?.title.split('C').join(' ')
-
+            <div className='font-sansSemibold text-black-custom1/70 text-xl'>Achieved</div>
+            { sortedCriterion && sortedCriterion?.filter(c => entries.some(e => e.skill === c.title))?.map((c, idx) => {
+              const occurences = entries.filter(e => e.skill === c.title).length
               return (
                 <div key={idx} className='flex flex-row bg-white w-full p-4 rounded-xl border space-x-4'>
-                  <Avatar name={'C' + splitTitle} size='md' fontWeight={600} className='cursor-pointer'/>
+                  <Avatar name={c.title[0] + c.subTitle + ' ' + c.title[1]} size='md' fontWeight={600} className='cursor-pointer'/>
                   <div>
                     <div className='font-sansSemibold'>{c?.subTitle}</div>
                     <div className='font-sans text-black-custom1/70 text-sm'>{c?.description.substring(0, 100)}...</div>
                   </div>
                   <div className='flex flex-row items-center space-x-5' style={{ marginLeft: 'auto' }}>
-                    <p className='text-3xl font-sansSemibold text-pink'>0</p>
+                    <p className={`text-3xl font-sansSemibold ${occurences > 1 ? 'text-green-turquoise' : 'text-orange'}`}>{occurences}</p>
                     <Icon as={ChevronRightIcon} h={5} w={5} strokeWidth={3}/>
                   </div>
                 </div>
