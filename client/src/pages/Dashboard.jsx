@@ -161,7 +161,7 @@ const Dashboard = () => {
                 <CardBody marginX={5}>
                   <ul className='space-y-5'>
                     {portfolios && portfolios?.map((p, idx) => (
-                      <li key={idx} className='flex flex-row space-x-8 items-center'>
+                      <li key={idx} className='flex flex-row space-x-8 items-center cursor-pointer' onClick={() => navigate(`/portfolios/${p._id}`, { state: { portfolio: p, edit: p.owner === user.uid } })}>
                         <Icon as={ShieldCheckIcon} color='#0091DA' h={5} w={5}/>
                         <div className='font-sansSemibold'>{p?.name}</div>
                       </li>
@@ -169,7 +169,9 @@ const Dashboard = () => {
                   </ul>
                 </CardBody>
                 <CardFooter>
-                  <Button size="md" bgColor='#00338D' color='white' borderRadius={99} w="full" onClick={() => navigate('/portfolios')}>View all</Button>
+                  <Button size="md" bgColor='#00338D' color='white' borderRadius={99} w="full" onClick={() => navigate('/portfolios')}>
+                    View all
+                  </Button>
                 </CardFooter>
               </Card>
             </GridItem>

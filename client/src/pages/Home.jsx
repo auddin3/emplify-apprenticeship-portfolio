@@ -6,7 +6,7 @@ import { RectangleStackIcon, MagnifyingGlassIcon, ChartPieIcon } from '@heroicon
 
 const Home = () => {
   return (
-    <div className="bg-gradient-to-tl from-[#031641] via-[#031641] to-[#00338D] flex flex-col flex-1 justify-around">
+    <div className="bg-gradient-to-tl from-[#031641] via-[#031641] to-[#00338D] flex flex-col flex-1 justify-around min-h-screen">
       <div className='flex justify-between w-screen px-14 my-8'>
         <Image
           src={EmplifyLogo}
