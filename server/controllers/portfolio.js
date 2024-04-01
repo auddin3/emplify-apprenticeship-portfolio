@@ -15,4 +15,19 @@ const getUserPortfolios = async (uid) => {
   return { portfolios }
 }
 
-module.exports = { getUserPortfolios }
+const getPortfolioCriterion = async (pid) => {
+  const db = getDb()
+
+  const { specification: titles } = await db.collection(collectionName).findOne(
+    { _id: pid },
+    { projection: { specification: 1, _id: 0 } },
+  )
+
+  const titleArray = Array.isArray(titles) ? titles : [titles]
+
+  const specification = await db.collection('skills').find({ title: { $in: titleArray } }).toArray()
+
+  return { specification }
+}
+
+module.exports = { getUserPortfolios, getPortfolioCriterion }

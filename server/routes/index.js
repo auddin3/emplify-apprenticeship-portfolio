@@ -45,6 +45,19 @@ router.get('/portfolios/:uid', async function (req, res) {
   }
 })
 
+router.get('/portfolio/:pid', async function (req, res) {
+  const pid = new ObjectId(req.params.pid)
+
+  try {
+    const specification = await portfolioController.getPortfolioCriterion(pid)
+
+    return res.json(specification)
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+})
+
 router.get('/modules', async function (req, res) {
   try {
     const { modules } = await moduleController.getAllModules()
