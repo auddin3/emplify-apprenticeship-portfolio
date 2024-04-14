@@ -53,7 +53,6 @@ const Portfolio = () => {
     entries && setEntries(entries)
   }, [entries])
 
-  console.log(selectedKSB)
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
       <Navbar />
