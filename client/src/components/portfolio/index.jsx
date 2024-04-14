@@ -15,6 +15,7 @@ const Portfolio = () => {
   const [entries, setEntries] = useState()
   const [sortedCriterion, setSortedCriterion] = useState()
   const [selectedKSB, setSelectedKSB] = useState()
+  const [grades, setGrades] = useState()
 
   const fetchData = async () => {
     setLoading(true)
@@ -36,6 +37,25 @@ const Portfolio = () => {
       setEntries(data?.entries)
     } catch (error) {
       console.error('Operation failed:', error)
+    }
+
+    const gradesApiUrl = `http://localhost:5001/grades/${portfolio?.owner}`
+
+    try {
+      const response = await fetch(gradesApiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const gradesData = await response.json()
+      setGrades(gradesData?.userGrades)
+    } catch (error) {
+      console.error('Operation failed:', error)
     } finally {
       setLoading(false)
     }
@@ -52,6 +72,10 @@ const Portfolio = () => {
   useEffect(() => {
     entries && setEntries(entries)
   }, [entries])
+
+  useEffect(() => {
+    grades && setGrades(grades)
+  }, [grades])
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
@@ -72,6 +96,7 @@ const Portfolio = () => {
             selectedKSB={selectedKSB}
             setSelectedKSB = {setSelectedKSB}
             entries={entries.filter(e => e.skill === selectedKSB.title)}
+            grades={grades}
           />
           : <PortfolioCompact
             sortedCriterion={sortedCriterion}

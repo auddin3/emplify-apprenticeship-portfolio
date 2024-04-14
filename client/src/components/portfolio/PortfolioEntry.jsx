@@ -4,13 +4,14 @@ import { Box, Grid, GridItem, Card, CardHeader, CardBody, Tag, Stack, StackDivid
 import { camelCaseToSpaced } from '../../utils'
 import PieChart from '../charts/PieChart'
 
-const ModuleInfoCard = ({ selectedEntry, module }) => {
+const ModuleInfoCard = ({ module, performance }) => {
   const calculateTotal = () => {
-    return selectedEntry?.grades?.reduce((total, g) => {
+    return performance?.grades?.reduce((total, g) => {
       const weight = module?.assessmentBreakdown?.find(a => a.title === g.activity)?.percentage ?? 0
       return total + Math.round(g.grade * weight * 100)
     }, 0)
   }
+
   return (
     <Card>
       <CardHeader backgroundColor={'#F8F9FD'} px={8}>
@@ -49,7 +50,7 @@ const ModuleInfoCard = ({ selectedEntry, module }) => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {selectedEntry?.grades?.map((g, idx) => {
+                  {performance?.grades?.map((g, idx) => {
                     const weight = module?.assessmentBreakdown?.find(a => a.title === g.activity).percentage
 
                     return (
@@ -85,7 +86,7 @@ const ModuleInfoCard = ({ selectedEntry, module }) => {
   )
 }
 
-const PortfolioEntry = ({ module, selectedEntry }) => {
+const PortfolioEntry = ({ module, selectedEntry, grades }) => {
   return (
     <Grid
       templateRows='repeat(4, 1fr)'
@@ -95,8 +96,8 @@ const PortfolioEntry = ({ module, selectedEntry }) => {
     >
       <GridItem colSpan={4} rowSpan={3}>
         <ModuleInfoCard
-          selectedEntry={selectedEntry}
           module={module}
+          performance={grades?.find(g => g.module === module.moduleId)}
         />
       </GridItem>
       <GridItem rowSpan={4}>

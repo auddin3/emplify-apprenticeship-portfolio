@@ -61,7 +61,7 @@ const KSBGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries
   </div>
 )
 
-const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setLoading }) => {
+const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setLoading, grades }) => {
   const [modules, setModules] = useState()
   const [sortedModules, setSortedModules] = useState()
   const [selectedEntry, setSelectedEntry] = useState()
@@ -149,6 +149,7 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setLoading })
               module={modules?.find(m => m.moduleId === selectedEntry.module)}
               selectedEntry={selectedEntry}
               setLoading={setLoading}
+              grades={grades}
             />
             : <KSBGrid
               sortedModules={sortedModules}
