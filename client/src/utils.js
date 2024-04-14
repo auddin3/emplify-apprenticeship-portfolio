@@ -16,8 +16,7 @@ export const camelCaseToSpaced = (str) => {
   }
 }
 
-export const convertDateToString = (date) => {
-  const options = { day: 'numeric', month: 'numeric', year: 'numeric' }
+export const convertDateToString = (date, options = { day: 'numeric', month: 'numeric', year: 'numeric' }) => {
   return new Date(date).toLocaleDateString('en-GB', options)
 }
 

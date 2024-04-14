@@ -150,6 +150,7 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setLoading, g
               selectedEntry={selectedEntry}
               setLoading={setLoading}
               grades={grades}
+              selectedKSB={selectedKSB}
             />
             : <KSBGrid
               sortedModules={sortedModules}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Grid, GridItem, Card, CardHeader, CardBody, Tag, Stack, StackDivider, Checkbox,
   Table, TableContainer, TableCaption, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
-import { camelCaseToSpaced } from '../../utils'
+import { camelCaseToSpaced, convertDateToString } from '../../utils'
 import PieChart from '../charts/PieChart'
 
 const ModuleInfoCard = ({ module, performance }) => {
@@ -86,7 +86,27 @@ const ModuleInfoCard = ({ module, performance }) => {
   )
 }
 
-const PortfolioEntry = ({ module, selectedEntry, grades }) => {
+const PortfolioLogCard = ({ selectedEntry, selectedKSB }) => {
+  const creationDate = convertDateToString(selectedEntry?.dateCreated, { month: 'long', year: 'numeric' })
+  return (
+    <Card>
+      <CardHeader backgroundColor={'#F8F9FD'} px={8}>
+        <div className='font-sansSemibold text-black-custom1'>{selectedKSB?.description}</div>
+        <div className='font-sans text-black-custom1/70 text-sm italic pt-2'>{creationDate}</div>
+      </CardHeader>
+      <CardBody p={0}>
+        <Stack divider={<StackDivider />}>
+          <Box className='px-8 py-4'>
+
+          </Box>
+
+        </Stack>
+      </CardBody>
+    </Card>
+  )
+}
+
+const PortfolioEntry = ({ module, selectedEntry, grades, selectedKSB }) => {
   return (
     <Grid
       templateRows='repeat(4, 1fr)'
@@ -100,7 +120,11 @@ const PortfolioEntry = ({ module, selectedEntry, grades }) => {
           performance={grades?.find(g => g.module === module.moduleId)}
         />
       </GridItem>
-      <GridItem rowSpan={4}>
+      <GridItem colSpan={6} rowSpan={4}>
+        <PortfolioLogCard
+          selectedEntry={selectedEntry}
+          selectedKSB={selectedKSB}
+        />
       </GridItem>
 
     </Grid>

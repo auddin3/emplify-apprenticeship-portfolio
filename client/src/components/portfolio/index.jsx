@@ -15,7 +15,7 @@ const Portfolio = () => {
   const [entries, setEntries] = useState()
   const [sortedCriterion, setSortedCriterion] = useState()
   const [selectedKSB, setSelectedKSB] = useState()
-  const [grades, setGrades] = useState()
+  const [userGrades, setUserGrades] = useState()
 
   const fetchData = async () => {
     setLoading(true)
@@ -53,7 +53,7 @@ const Portfolio = () => {
       }
 
       const gradesData = await response.json()
-      setGrades(gradesData?.userGrades)
+      setUserGrades(gradesData?.userGrades)
     } catch (error) {
       console.error('Operation failed:', error)
     } finally {
@@ -74,8 +74,8 @@ const Portfolio = () => {
   }, [entries])
 
   useEffect(() => {
-    grades && setGrades(grades)
-  }, [grades])
+    userGrades && setUserGrades(userGrades)
+  }, [userGrades])
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
@@ -96,7 +96,7 @@ const Portfolio = () => {
             selectedKSB={selectedKSB}
             setSelectedKSB = {setSelectedKSB}
             entries={entries.filter(e => e.skill === selectedKSB.title)}
-            grades={grades}
+            grades={userGrades}
           />
           : <PortfolioCompact
             sortedCriterion={sortedCriterion}
