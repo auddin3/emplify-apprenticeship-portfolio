@@ -1,5 +1,4 @@
 import React from 'react'
-// import { useNavigate } from 'react-router-dom'
 import { Icon, IconButton, SimpleGrid, Box, Avatar, Card, CardBody } from '@chakra-ui/react'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import { LightBulbIcon, ClockIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
