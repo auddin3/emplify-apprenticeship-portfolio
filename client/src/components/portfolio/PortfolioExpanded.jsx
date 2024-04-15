@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Breadcrumb,
   BreadcrumbItem,
+  Button,
   BreadcrumbLink,
   Avatar,
   Card,
@@ -9,7 +10,7 @@ import { Breadcrumb,
   SimpleGrid,
   Tag,
   Icon } from '@chakra-ui/react'
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { ChevronRightIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
 import SortMenu from '../SortMenu'
@@ -58,6 +59,9 @@ const KSBGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries
         })}
       </SimpleGrid>
     </div>
+    <Button leftIcon={<PlusIcon />} colorScheme='facebook' variant="solid">
+        New Entry
+    </Button>
   </div>
 )
 
@@ -134,7 +138,7 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setLoading, g
         </Breadcrumb>
       </div>
       <div className='px-20 h-full'>
-        <div className='flex flex-col items-center space-y-5 py-10'>
+        <div className='flex flex-col items-center space-y-5 pb-8'>
           <Avatar
             name={selectedKSB.title[0] + selectedKSB.subTitle + ' ' + selectedKSB.title[1]}
             size='xl'

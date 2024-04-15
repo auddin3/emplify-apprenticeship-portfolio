@@ -56,14 +56,12 @@ const StatCard = ({ title, icon, stat, colour }) => {
 }
 
 const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfolio, setLoading, setSelectedKSB }) => {
-//   const navigate = useNavigate()
-
   const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
   const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
 
   return (
     <div className='w-full p-14 flex flex-col space-y-10 max-h-screen overflow-y-scroll'>
-      <div className='flex flex-row space-x-12 justify-items-start ml-14'>
+      <div className='flex flex-row space-x-12 justify-items-start ml-6'>
         {/* <IconButton
           as={ArrowLeftCircleIcon}
           w={8}
@@ -79,14 +77,14 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
           <div className='text-lg pr-96 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
         </div>
       </div>
-      <div className='px-14 flex flex-row justify-between w-full'>
+      <div className='px-8 flex flex-row justify-between w-full'>
         <SimpleGrid columns={3} spacing={10} maxWidth="100%" className='w-full'>
           <StatCard title="KSBs Achieved" icon={CheckCircleIcon} stat={ksbsAchieved} colour="#00A3A1"/>
           <StatCard title="KSBs Remaining" icon={RemainingIcon} stat={ksbsRemaining} colour="#C6007E"/>
           <StatCard title="Days Until Submission" icon={TimeIcon} stat={calculateDateDifference(portfolio?.deadline)} colour="#0091DA"/>
         </SimpleGrid>
       </div>
-      <div className='px-14'>
+      <div className='px-8'>
         <SortMenu
           elements={sortedCriterion}
           setSortedElements={setSortedCriterion}
@@ -94,14 +92,14 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
           setLoading={setLoading}
         />
       </div>
-      <div className='px-14 flex flex-col space-y-4 w-full'>
+      <div className='px-8 flex flex-col space-y-4 w-full'>
         <div className='font-sansSemibold text-black-custom1/70 text-xl'>Incomplete</div>
         { sortedCriterion && sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title))?.map((c, idx) => {
           const occurences = entries.filter(e => e.skill === c.title).length
           return (
             <Card key={idx} className='bg-white w-full border rounded-xl space-x-4'>
               <CardBody className='flex flex-row space-x-5'>
-                <Avatar name={c.title[0] + c.subTitle + ' ' + c.title[1]} size='md' fontWeight={600} className='cursor-pointer' style={{ opacity: 0.5 }}/>
+                <Avatar name={c.title[0] + c.subTitle + ' ' + c.title[1]} size='md' fontWeight={600} className='cursor-pointer' style={{ opacity: 0.5 }} />
                 <div>
                   <div className='font-sansSemibold'>{c?.subTitle}</div>
                   <div className='font-sans text-black-custom1/70 text-sm'>{c?.description.substring(0, 80)}...</div>
@@ -122,7 +120,7 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
           )
         })}
       </div>
-      <div className='px-14 flex flex-col space-y-4 w-full'>
+      <div className='px-8 flex flex-col space-y-4 w-full'>
         <div className='font-sansSemibold text-black-custom1/70 text-xl'>Achieved</div>
         { sortedCriterion && sortedCriterion?.filter(c => entries.some(e => e.skill === c.title))?.map((c, idx) => {
           const occurences = entries.filter(e => e.skill === c.title).length

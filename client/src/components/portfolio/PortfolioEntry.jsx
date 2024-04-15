@@ -3,6 +3,7 @@ import { Box, Grid, GridItem, Card, CardHeader, CardBody, Tag, Stack, StackDivid
   Table, TableContainer, TableCaption, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
 import { camelCaseToSpaced, convertDateToString } from '../../utils'
 import PieChart from '../charts/PieChart'
+import Disclosure from '../Disclosure'
 
 const ModuleInfoCard = ({ module, performance }) => {
   const calculateTotal = () => {
@@ -91,15 +92,13 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB }) => {
   return (
     <Card>
       <CardHeader backgroundColor={'#F8F9FD'} px={8}>
-        <div className='font-sansSemibold text-black-custom1'>{selectedKSB?.description}</div>
+        <div className='font-sansSemibold text-black-custom1 mr-10'>{selectedKSB?.description}</div>
         <div className='font-sans text-black-custom1/70 text-sm italic pt-2'>{creationDate}</div>
       </CardHeader>
       <CardBody p={0}>
         <Stack divider={<StackDivider />}>
-          <Box className='px-8 py-4'>
-
-          </Box>
-
+          <Disclosure question="1. What was the nature of your involvement with the project?" answer='Hiya i am a test' />
+          <Disclosure question="2. What was the nature of your involvement with the project?" answer='Hiya i am a test' />
         </Stack>
       </CardBody>
     </Card>
