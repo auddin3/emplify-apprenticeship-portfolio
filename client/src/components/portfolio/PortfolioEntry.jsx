@@ -1,10 +1,11 @@
 import React from 'react'
 import { Box, Grid, GridItem, Card, CardHeader, CardBody, Tag, Stack, StackDivider, Checkbox, IconButton,
-  Table, TableContainer, TableCaption, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
+  Table, TableContainer, TableCaption, Thead, Tbody, Tr, Th, Td, useDisclosure, Textarea } from '@chakra-ui/react'
 import { camelCaseToSpaced, convertDateToString } from '../../utils'
 import PieChart from '../charts/PieChart'
 import Disclosure from '../Disclosure'
 import { PencilSquareIcon } from '@heroicons/react/24/solid'
+import SideBar from '../SideBar'
 
 const ModuleInfoCard = ({ module, performance }) => {
   const calculateTotal = () => {
@@ -88,7 +89,29 @@ const ModuleInfoCard = ({ module, performance }) => {
   )
 }
 
-const PortfolioLogCard = ({ selectedEntry, selectedKSB }) => {
+const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, module }) => {
+  return (
+    <SideBar
+      isOpen={isOpen}
+      onClose={onClose}
+      size="xl"
+      title={'Modify Portfolio Entry'}
+    >
+      <div className='px-8 py-4 space-y-3'>
+        <div className='text-lg font-sansSemibold text-black-custom1'>
+           1. What was the nature of your involvement with the project?
+        </div>
+        <Textarea
+          size="sm"
+          value={selectedEntry?.q1}
+          className='h-full'
+        />
+      </div>
+    </SideBar>
+  )
+}
+
+const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
   const creationDate = convertDateToString(selectedEntry?.dateCreated, { month: 'long', year: 'numeric' })
   return (
     <Card>
@@ -102,6 +125,7 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB }) => {
           h={5} w={5}
           variant="unstyled"
           color="#686868"
+          onClick={onOpen}
         />
       </CardHeader>
       <CardBody p={0}>
@@ -145,27 +169,40 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB }) => {
 }
 
 const PortfolioEntry = ({ module, selectedEntry, grades, selectedKSB }) => {
-  return (
-    <Grid
-      templateRows='repeat(4, 1fr)'
-      templateColumns='repeat(10, 1fr)'
-      gap={4}
-      minHeight="screen"
-    >
-      <GridItem colSpan={4} rowSpan={3}>
-        <ModuleInfoCard
-          module={module}
-          performance={grades?.find(g => g.module === module.moduleId)}
-        />
-      </GridItem>
-      <GridItem colSpan={6} rowSpan={4}>
-        <PortfolioLogCard
-          selectedEntry={selectedEntry}
-          selectedKSB={selectedKSB}
-        />
-      </GridItem>
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
-    </Grid>
+  return (
+    <>
+      <Grid
+        templateRows='repeat(4, 1fr)'
+        templateColumns='repeat(10, 1fr)'
+        gap={4}
+        minHeight="screen"
+      >
+        <GridItem colSpan={4} rowSpan={3}>
+          <ModuleInfoCard
+            module={module}
+            performance={grades?.find(g => g.module === module.moduleId)}
+          />
+        </GridItem>
+        <GridItem colSpan={6} rowSpan={4}>
+          <PortfolioLogCard
+            selectedEntry={selectedEntry}
+            selectedKSB={selectedKSB}
+            onOpen={onOpen}
+          />
+        </GridItem>
+      </Grid>
+      {
+        isOpen && (
+          <EditPortfolioLog
+            isOpen={isOpen}
+            onClose={onClose}
+            selectedEntry={selectedEntry}
+            module={module}
+          />)
+      }
+    </>
   )
 }
 

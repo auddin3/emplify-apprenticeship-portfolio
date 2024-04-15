@@ -1,7 +1,7 @@
 import React from 'react'
 import { Drawer, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Box } from '@chakra-ui/react'
 
-const SideBar = ({ isOpen, onClose, size = 'sm', title = 'undefined', children }) => {
+const SideBar = ({ isOpen, onClose, size = 'sm', title = '', children }) => {
   return (
     <Drawer placement='right' isOpen={isOpen} onClose={onClose} size={size}>
       <DrawerOverlay />
