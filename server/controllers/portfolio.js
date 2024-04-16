@@ -54,9 +54,18 @@ const updatePortfolioEntry = async (pid, formattedEntry) => {
   return { entries }
 }
 
+const deletePortfolioEntry = async (pid) => {
+  const db = getDb()
+  await db.collection('portfolioEntries').deleteOne({ _id: pid })
+
+  const entries = await db.collection('portfolioEntries').find({}).toArray()
+  return { entries }
+}
+
 module.exports = {
   getUserPortfolios,
   getPortfolioCriterion,
   getPortfolioEntries,
   updatePortfolioEntry,
+  deletePortfolioEntry,
 }

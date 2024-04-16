@@ -225,7 +225,8 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
         </div>
         <IconButton
           as={PencilSquareIcon}
-          h={5} w={5}
+          h={4}
+          w={4}
           variant="unstyled"
           onClick={onOpen}
           className='stroke-black-custom1/70 cursor-pointer'

@@ -9,7 +9,8 @@ import { Breadcrumb,
   CardHeader,
   SimpleGrid,
   Tag,
-  Icon } from '@chakra-ui/react'
+  Icon,
+  IconButton } from '@chakra-ui/react'
 import { ChevronRightIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
@@ -29,41 +30,72 @@ const menuOptions = [
   },
 ]
 
-const KSBGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries, setSelectedEntry }) => (
-  <div>
-    <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full' />
-    <SortMenu
-      elements={sortedModules}
-      setSortedElements={setSortedModules}
-      menuOptions={menuOptions}
-      setLoading={setLoading}
-    />
-    <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full mb-5' />
+const KSBGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries, setSelectedEntry, setEntries }) => {
+  const handleDelete = async (entry) => {
+    const apiUrl = `http://localhost:5001/portfolioEntry/${entry._id}`
+    setLoading(true)
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setEntries(data)
+    } catch (error) {
+      console.error('Operation failed:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
     <div>
-      <SimpleGrid columns={3} py={5}>
-        {entries?.map((e, idx) => {
-          const module = modules?.find(m => m.moduleId === e.module)
-          return (
-            <Card key={idx} onClick={() => setSelectedEntry(e)}>
-              <CardHeader className='text-right' pb={0}>
-                <Icon as={TrashIcon} />
-              </CardHeader>
-              <CardBody pt={0} mt={-4}>
-                <div className='font-sansSemibold mb-2'>{module?.title}</div>
-                <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
-                  <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
-                </Tag>
-              </CardBody>
-            </Card>
-          )
-        })}
-      </SimpleGrid>
-    </div>
-    <Button leftIcon={<PlusIcon />} colorScheme='facebook' variant="solid">
+      <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full' />
+      <SortMenu
+        elements={sortedModules}
+        setSortedElements={setSortedModules}
+        menuOptions={menuOptions}
+        setLoading={setLoading}
+      />
+      <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full mb-5' />
+      <div>
+        <SimpleGrid columns={3} py={5} gap={10}>
+          {entries?.map((entry, idx) => {
+            const module = modules?.find(m => m.moduleId === entry.module)
+            return (
+              <Card key={idx}>
+                <CardHeader className='text-right' pb={0}>
+                  <IconButton
+                    as={TrashIcon}
+                    color="#A9A9A9"
+                    variant="unstyled"
+                    size="xs"
+                    onClick={() => handleDelete(entry)}
+                  />
+                </CardHeader>
+                <CardBody pt={0} mt={-4} onClick={() => setSelectedEntry(entry)} className='cursor-pointer'>
+                  <div className='font-sansSemibold mb-2'>{module?.title}</div>
+                  <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
+                    <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
+                  </Tag>
+                </CardBody>
+              </Card>
+            )
+          })}
+        </SimpleGrid>
+      </div>
+      <Button leftIcon={<PlusIcon />} colorScheme='facebook' variant="solid">
         New Entry
-    </Button>
-  </div>
-)
+      </Button>
+    </div>
+  )
+}
 
 const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, grades }) => {
   const [modules, setModules] = useState()
@@ -105,7 +137,7 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
   return (
     <div className='w-full flex flex-col space-y-7 max-h-screen overflow-y-scroll bg-white'>
       <div className='w-full bg-gray-paleGray py-7'>
-        <Breadcrumb spacing='8px' className='px-14' separator={<Icon as={ChevronRightIcon} color='gray.500' />}>
+        <Breadcrumb spacing='8px' className='px-14' separator={<Icon as={ChevronRightIcon} color='gray.500' variant="unstyled" />}>
           <BreadcrumbItem>
             <BreadcrumbLink
               onClick={() => setSelectedKSB()}
@@ -164,6 +196,7 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
               setLoading={setLoading}
               modules={modules}
               entries={entries}
+              setEntries={setEntries}
               setSelectedEntry={setSelectedEntry}
             />
         }

@@ -46,4 +46,16 @@ router.post('/portfolioEntry/:pid', async function (req, res) {
   }
 })
 
+router.delete('/portfolioEntry/:pid', async function (req, res) {
+  const pid = new ObjectId(req.params.pid)
+
+  try {
+    const { entries } = await portfolioController.deletePortfolioEntry(pid)
+    return res.json(entries)
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+})
+
 module.exports = router
