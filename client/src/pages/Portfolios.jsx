@@ -35,6 +35,36 @@ const menuOptions = [
 
 const CardGrid = ({ sortedPortfolios, user }) => {
   const navigate = useNavigate()
+  const [entries, setEntries] = useState()
+
+  const fetchData = async () => {
+    const apiUrl = 'http://localhost:5001/entries'
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setEntries(data?.entries)
+    } catch (error) {
+      console.error('Operation failed:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    entries && setEntries(entries)
+  }, [entries])
 
   return (
     <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
@@ -42,9 +72,8 @@ const CardGrid = ({ sortedPortfolios, user }) => {
         const daysRemaining = calculateDateDifference(p?.deadline)
         const canEdit = p?.owner === user.uid
 
-        // Update logic
-        const ksbsCompleted = 19
-        const ksbsRemaining = 24
+        const ksbsCompleted = p?.specification?.filter(c => entries?.some(e => e.skill === c)).length
+        const ksbsRemaining = p?.specification?.filter(c => !entries?.some(e => e.skill === c)).length
 
         return (
           <GridItem key={idx} w='100%'>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Avatar, Card, CardBody, CardHeader, SimpleGrid, Tag, Icon, IconButton, Button } from '@chakra-ui/react'
-import { ChevronRightIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { TrashIcon } from '@heroicons/react/24/solid'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Avatar, Card, CardBody, CardHeader, SimpleGrid, Tag, Icon, IconButton } from '@chakra-ui/react'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { TrashIcon, EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
 import SortMenu from '../SortMenu'
 import PortfolioEntry from './PortfolioEntry'
@@ -79,9 +79,6 @@ const KSBGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries
           })}
         </SimpleGrid>
       </div>
-      <Button leftIcon={<PlusIcon />} colorScheme='facebook' variant="solid">
-        New Entry
-      </Button>
     </div>
   )
 }
@@ -157,6 +154,13 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
               : ''
           }
         </Breadcrumb>
+      </div>
+      <div className='w-full flex justify-end px-16 -mb-10'>
+        <IconButton
+          as={EllipsisVerticalIcon}
+          size="xs"
+          variant="unstyled"
+        />
       </div>
       <div className='px-20 h-full'>
         <div className='flex flex-col items-center space-y-5 pb-8'>

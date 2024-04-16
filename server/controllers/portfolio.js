@@ -37,6 +37,13 @@ const getPortfolioEntries = async (pid) => {
   return { entries }
 }
 
+const getEntries = async () => {
+  const db = getDb()
+
+  const entries = await db.collection('portfolioEntries').find({}).toArray()
+  return { entries }
+}
+
 const updatePortfolioEntry = async (pid, formattedEntry) => {
   const db = getDb()
   await db.collection('portfolioEntries').updateOne(
@@ -66,6 +73,7 @@ module.exports = {
   getUserPortfolios,
   getPortfolioCriterion,
   getPortfolioEntries,
+  getEntries,
   updatePortfolioEntry,
   deletePortfolioEntry,
 }
