@@ -33,4 +33,17 @@ router.get('/portfolio/:pid', async function (req, res) {
   }
 })
 
+router.post('/portfolioEntry/:pid', async function (req, res) {
+  const pid = new ObjectId(req.params.pid)
+  const formattedEntry = req.body
+
+  try {
+    const { entries } = await portfolioController.updatePortfolioEntry(pid, formattedEntry)
+    return res.json(entries)
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+})
+
 module.exports = router

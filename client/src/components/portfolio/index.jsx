@@ -96,6 +96,7 @@ const Portfolio = () => {
             selectedKSB={selectedKSB}
             setSelectedKSB = {setSelectedKSB}
             entries={entries.filter(e => e.skill === selectedKSB.title)}
+            setEntries={setEntries}
             grades={userGrades}
           />
           : <PortfolioCompact

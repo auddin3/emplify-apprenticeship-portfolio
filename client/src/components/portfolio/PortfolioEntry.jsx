@@ -89,23 +89,126 @@ const ModuleInfoCard = ({ module, performance }) => {
   )
 }
 
-const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, module }) => {
+const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, setEntries }) => {
+  const handleClick = (e, question) => {
+    setSelectedEntry({ ...selectedEntry, [question]: e.target.value })
+  }
+
+  const handleClose = async () => {
+    const apiUrl = `http://localhost:5001/portfolioEntry/${selectedEntry._id}`
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(selectedEntry),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setEntries(data)
+    } catch (error) {
+      console.error('Operation failed:', error)
+    } finally {
+      onClose()
+      // setLoading(false)
+    }
+  }
+
   return (
     <SideBar
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       size="xl"
       title={'Modify Portfolio Entry'}
     >
-      <div className='px-8 py-4 space-y-3'>
+      <div className='px-12 py-4 space-y-3'>
         <div className='text-lg font-sansSemibold text-black-custom1'>
            1. What was the nature of your involvement with the project?
         </div>
-        <Textarea
-          size="sm"
-          value={selectedEntry?.q1}
-          className='h-full'
-        />
+        <ul className='list-disc list-inside pl-6 pb-3'>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            What deliverables were you tasked with?
+          </li>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            Which team were you apart of during this time
+          </li>
+        </ul>
+        <div className='mx-1'>
+          <Textarea
+            size="sm"
+            value={selectedEntry?.q1}
+            rows={9}
+            onChange={e => handleClick(e, 'q1')}
+          />
+        </div>
+      </div>
+      <div className='px-12 py-4 space-y-3'>
+        <div className='text-lg font-sansSemibold text-black-custom1'>
+           2. Describe your actions and contributions.
+        </div>
+        <ul className='list-disc list-inside pl-6 pb-3'>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            What specific tasks were you assigned?
+          </li>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            What steps did you take to complete your tasks?
+          </li>
+        </ul>
+        <div className='mx-1'>
+          <Textarea
+            size="sm"
+            value={selectedEntry?.q2}
+            rows={9}
+            onChange={e => handleClick(e, 'q2')}
+          />
+        </div>
+      </div>
+      <div className='px-12 py-4 space-y-3'>
+        <div className='text-lg font-sansSemibold text-black-custom1'>
+          3. What were the outcomes of your contribution?
+        </div>
+        <ul className='list-disc list-inside pl-6 pb-3'>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            How did your actions impact the project&apos;s success or completion?
+          </li>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            What lessons did you learn from this experience?
+          </li>
+        </ul>
+        <div className='mx-1'>
+          <Textarea
+            size="sm"
+            value={selectedEntry?.q3}
+            rows={9}
+            onChange={e => handleClick(e, 'q3')}
+          />
+        </div>
+      </div>
+      <div className='px-12 py-4 space-y-3'>
+        <div className='text-lg font-sansSemibold text-black-custom1'>
+          4. Reflect on the skills gained from this experience.
+        </div>
+        <ul className='list-disc list-inside pl-6 pb-3'>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            What skills did you develop or enhance through your participation?
+          </li>
+          <li className='text-sm italic font-sans text-black-custom1'>
+            How do you plan to apply these skills in future endeavors?
+          </li>
+        </ul>
+        <div className='mx-1'>
+          <Textarea
+            size="sm"
+            value={selectedEntry?.q4}
+            rows={9}
+            onChange={e => handleClick(e, 'q4')}
+          />
+        </div>
       </div>
     </SideBar>
   )
@@ -124,8 +227,8 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
           as={PencilSquareIcon}
           h={5} w={5}
           variant="unstyled"
-          color="#686868"
           onClick={onOpen}
+          className='stroke-black-custom1/70 cursor-pointer'
         />
       </CardHeader>
       <CardBody p={0}>
@@ -168,7 +271,7 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
   )
 }
 
-const PortfolioEntry = ({ module, selectedEntry, grades, selectedKSB }) => {
+const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selectedKSB, setEntries }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -199,7 +302,8 @@ const PortfolioEntry = ({ module, selectedEntry, grades, selectedKSB }) => {
             isOpen={isOpen}
             onClose={onClose}
             selectedEntry={selectedEntry}
-            module={module}
+            setSelectedEntry={setSelectedEntry}
+            setEntries={setEntries}
           />)
       }
     </>

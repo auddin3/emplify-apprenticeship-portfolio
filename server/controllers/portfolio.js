@@ -34,8 +34,29 @@ const getPortfolioEntries = async (pid) => {
   const db = getDb()
 
   const entries = await db.collection('portfolioEntries').find({ portfolio: pid }).toArray()
-
   return { entries }
 }
 
-module.exports = { getUserPortfolios, getPortfolioCriterion, getPortfolioEntries }
+const updatePortfolioEntry = async (pid, formattedEntry) => {
+  const db = getDb()
+  await db.collection('portfolioEntries').updateOne(
+    { _id: pid },
+    {
+      $set: {
+        q1: formattedEntry.q1,
+        q2: formattedEntry.q2,
+        q3: formattedEntry.q3,
+        q4: formattedEntry.q4,
+      },
+    })
+
+  const entries = await db.collection('portfolioEntries').find({}).toArray()
+  return { entries }
+}
+
+module.exports = {
+  getUserPortfolios,
+  getPortfolioCriterion,
+  getPortfolioEntries,
+  updatePortfolioEntry,
+}
