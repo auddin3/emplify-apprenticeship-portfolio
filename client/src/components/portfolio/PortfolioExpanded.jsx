@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Breadcrumb,
-  BreadcrumbItem,
-  Button,
-  BreadcrumbLink,
-  Avatar,
-  Card,
-  CardBody,
-  CardHeader,
-  SimpleGrid,
-  Tag,
-  Icon,
-  IconButton } from '@chakra-ui/react'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Avatar, Card, CardBody, CardHeader, SimpleGrid, Tag, Icon, IconButton, Button } from '@chakra-ui/react'
 import { ChevronRightIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
@@ -185,7 +174,6 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
               module={modules?.find(m => m.moduleId === selectedEntry.module)}
               selectedEntry={selectedEntry}
               setSelectedEntry={setSelectedEntry}
-              setLoading={setLoading}
               grades={grades}
               selectedKSB={selectedKSB}
               setEntries={setEntries}

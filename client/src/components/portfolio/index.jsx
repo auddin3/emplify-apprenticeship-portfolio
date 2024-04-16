@@ -8,9 +8,7 @@ import PortfolioExpanded from './PortfolioExpanded'
 const Portfolio = () => {
   const location = useLocation()
   const portfolio = location?.state?.portfolio
-  // const canEdit = location?.state?.edit
   const [loading, setLoading] = useState(true)
-
   const [criterion, setCriterion] = useState()
   const [entries, setEntries] = useState()
   const [sortedCriterion, setSortedCriterion] = useState()
@@ -19,40 +17,32 @@ const Portfolio = () => {
 
   const fetchData = async () => {
     setLoading(true)
-    const apiUrl = `http://localhost:5001/portfolio/${portfolio._id}`
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error('Operation failed:', errorData)
-      }
-
-      const data = await response.json()
-      setCriterion(data?.specification)
-      setEntries(data?.entries)
-    } catch (error) {
-      console.error('Operation failed:', error)
-    }
-
+    const portfolioApiUrl = `http://localhost:5001/portfolio/${portfolio._id}`
     const gradesApiUrl = `http://localhost:5001/grades/${portfolio?.owner}`
 
     try {
-      const response = await fetch(gradesApiUrl, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const [portfolioResponse, gradesResponse] = await Promise.all([
+        fetch(portfolioApiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } }),
+        fetch(gradesApiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } }),
+      ])
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error('Operation failed:', errorData)
+      if (!portfolioResponse.ok) {
+        const errorData = await portfolioResponse.json()
+        console.error('Portfolio operation failed:', errorData)
       }
 
-      const gradesData = await response.json()
+      if (!gradesResponse.ok) {
+        const errorData = await gradesResponse.json()
+        console.error('Grades operation failed:', errorData)
+      }
+
+      const [portfolioData, gradesData] = await Promise.all([
+        portfolioResponse.json(),
+        gradesResponse.json(),
+      ])
+
+      setCriterion(portfolioData?.specification)
+      setEntries(portfolioData?.entries)
       setUserGrades(gradesData?.userGrades)
     } catch (error) {
       console.error('Operation failed:', error)
@@ -66,7 +56,7 @@ const Portfolio = () => {
   }, [])
 
   useEffect(() => {
-    criterion && setSortedCriterion(criterion?.sort((a, b) => a.title.localeCompare(b.title)))
+    criterion && setSortedCriterion([...criterion].sort((a, b) => a.title.localeCompare(b.title)))
   }, [criterion])
 
   useEffect(() => {
@@ -81,33 +71,32 @@ const Portfolio = () => {
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
       <Navbar />
       {loading
-        ? <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-          <Spinner
-            thickness='4px'
-            speed='0.65s'
-            emptyColor='gray.200'
-            color='blue.500'
-            size='xl'
-          />
-        </div>
+        ? (
+          <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+            <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='xl' />
+          </div>
+        )
         : selectedKSB
-          ? <PortfolioExpanded
-            setLoading={setLoading}
-            selectedKSB={selectedKSB}
-            setSelectedKSB = {setSelectedKSB}
-            entries={entries.filter(e => e.skill === selectedKSB.title)}
-            setEntries={setEntries}
-            grades={userGrades}
-          />
-          : <PortfolioCompact
-            sortedCriterion={sortedCriterion}
-            setSortedCriterion={setSortedCriterion}
-            entries={entries}
-            portfolio={portfolio}
-            setLoading = {setLoading}
-            setSelectedKSB = {setSelectedKSB}
-          />
-      }
+          ? (
+            <PortfolioExpanded
+              setLoading={setLoading}
+              selectedKSB={selectedKSB}
+              setSelectedKSB={setSelectedKSB}
+              entries={entries.filter(e => e.skill === selectedKSB.title)}
+              setEntries={setEntries}
+              grades={userGrades}
+            />
+          )
+          : (
+            <PortfolioCompact
+              sortedCriterion={sortedCriterion}
+              setSortedCriterion={setSortedCriterion}
+              entries={entries}
+              portfolio={portfolio}
+              setLoading={setLoading}
+              setSelectedKSB={setSelectedKSB}
+            />
+          )}
     </div>
   )
 }
