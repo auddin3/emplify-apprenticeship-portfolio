@@ -1,10 +1,11 @@
-import React from 'react'
-import { SimpleGrid, Avatar, Card, CardBody, Icon, IconButton, Tooltip } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { SimpleGrid, Avatar, Card, CardBody, Icon, IconButton, Input, Textarea, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { CheckCircleIcon, ChevronRightIcon, InformationCircleIcon, Cog8ToothIcon } from '@heroicons/react/24/outline'
 import SortMenu from '../SortMenu'
 import { calculateDateDifference } from '../../utils'
 import StatCard from '../StatCard'
 import { TimeIcon, RemainingIcon } from '../Icons'
+import SideBar from '../SideBar'
 
 const menuOptions = [
   {
@@ -74,45 +75,104 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
 }
 
 const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfolio, setLoading, setSelectedKSB }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [modifiedPortfolio, setModifiedPortfolio] = useState(portfolio)
+
   const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
   const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
 
+  const handleChange = (key, value) => {
+    setModifiedPortfolio({ ...modifiedPortfolio, [key]: value })
+  }
+
   return (
-    <div className='w-full p-14 flex flex-col space-y-10 max-h-screen overflow-y-scroll'>
-      <div className='flex flex-row space-x-12 justify-items-start ml-6'>
-        <div className='flex flex-col w-full'>
-          <div className='flex flex-row justify-between items-center w-full'>
-            <div className='flex flex-row space-x-3 items-center'>
-              <h1 className='text-2xl text-black-custom1 font-semibold'>{portfolio?.name}</h1>
-              <Tooltip hasArrow label={portfolio?.description || 'abc'} placement='auto'>
-                <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
-              </Tooltip>
+    <>
+      <div className='w-full p-14 flex flex-col space-y-10 max-h-screen overflow-y-scroll'>
+        <div className='flex flex-row space-x-12 justify-items-start ml-6'>
+          <div className='flex flex-col w-full'>
+            <div className='flex flex-row justify-between items-center w-full'>
+              <div className='flex flex-row space-x-3 items-center'>
+                <h1 className='text-2xl text-black-custom1 font-semibold'>{portfolio?.name}</h1>
+                <Tooltip hasArrow label={portfolio?.description || 'abc'} placement='auto'>
+                  <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
+                </Tooltip>
+              </div>
+              <IconButton as={Cog8ToothIcon} size='sm' variant='unstyled' color='#A8A8A8' onClick={onOpen}/>
             </div>
-            <IconButton as={Cog8ToothIcon} size='sm' variant='unstyled' color='#A8A8A8' />
+            <div className='text-lg pr-96 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
           </div>
-          <div className='text-lg pr-96 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
         </div>
+        <div className='px-8 flex flex-row justify-between w-full'>
+          <SimpleGrid columns={3} spacing={10} maxWidth='100%' className='w-full'>
+            <StatCard title='KSBs Achieved' icon={CheckCircleIcon} stat={ksbsAchieved} colour='#00A3A1' />
+            <StatCard title='KSBs Remaining' icon={RemainingIcon} stat={ksbsRemaining} colour='#C6007E' />
+            <StatCard title='Days Until Submission' icon={TimeIcon} stat={calculateDateDifference(portfolio?.deadline)} colour='#0091DA' />
+          </SimpleGrid>
+        </div>
+        <div className='px-8'>
+          <SortMenu elements={sortedCriterion} setSortedElements={setSortedCriterion} menuOptions={menuOptions} setLoading={setLoading} />
+        </div>
+        {['Incomplete', 'Achieved'].map((status, idx) =>
+          <SkillsAccordion
+            key={idx}
+            sortedCriterion={sortedCriterion}
+            entries={entries}
+            setSelectedKSB={setSelectedKSB}
+            status={status}
+          />,
+        )}
       </div>
-      <div className='px-8 flex flex-row justify-between w-full'>
-        <SimpleGrid columns={3} spacing={10} maxWidth='100%' className='w-full'>
-          <StatCard title='KSBs Achieved' icon={CheckCircleIcon} stat={ksbsAchieved} colour='#00A3A1' />
-          <StatCard title='KSBs Remaining' icon={RemainingIcon} stat={ksbsRemaining} colour='#C6007E' />
-          <StatCard title='Days Until Submission' icon={TimeIcon} stat={calculateDateDifference(portfolio?.deadline)} colour='#0091DA' />
-        </SimpleGrid>
-      </div>
-      <div className='px-8'>
-        <SortMenu elements={sortedCriterion} setSortedElements={setSortedCriterion} menuOptions={menuOptions} setLoading={setLoading} />
-      </div>
-      {['Incomplete', 'Achieved'].map((status, idx) =>
-        <SkillsAccordion
-          key={idx}
-          sortedCriterion={sortedCriterion}
-          entries={entries}
-          setSelectedKSB={setSelectedKSB}
-          status={status}
-        />,
+      {isOpen && (
+        <SideBar
+          isOpen={isOpen}
+          onClose={onClose}
+          size="xl"
+          title={'Modify Portfolio'}
+        >
+          <div className='px-12 py-4 space-y-3'>
+            <div className='text-lg font-sansSemibold text-black-custom1'>
+            Name
+            </div>
+            <div className='mx-1'>
+              <Input
+                size="sm"
+                value={modifiedPortfolio?.name}
+                rows={9}
+                onChange={e => handleChange('name', e.target.value)}
+                py='1rem'
+                _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
+              />
+            </div>
+          </div>
+          <div className='px-12 py-4 space-y-3'>
+            <div className='text-lg font-sansSemibold text-black-custom1'>
+             Description
+            </div>
+            <div className='mx-1'>
+              <Textarea
+                size="sm"
+                value={modifiedPortfolio?.description}
+                rows={3}
+                onChange={e => handleChange('description', e.value.target)}
+              />
+            </div>
+          </div>
+          <div className='px-12 py-4 space-y-3'>
+            <div className='text-lg font-sansSemibold text-black-custom1'>
+            Specification
+            </div>
+            {/* <div className='mx-1'>
+              <Textarea
+                size="sm"
+                value={selectedEntry?.q4}
+                rows={9}
+                onChange={e => handleChange(e, 'q4')}
+              />
+            </div> */}
+          </div>
+        </SideBar>
       )}
-    </div>
+    </>
   )
 }
 

@@ -128,7 +128,7 @@ const Dashboard = () => {
                         <div className='text-white font-sansSemibold text-lg'>Top Areas</div>
                       </CardHeader>
                       <CardBody className='max-h-40 overflow-y-scroll'>
-                        {skills && skills?.map((s, idx) => (
+                        {skills && skills?.slice(0, 3)?.map((s, idx) => (
                           <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
                             <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
                           </Tag>
@@ -142,7 +142,7 @@ const Dashboard = () => {
                       </CardHeader>
                       <CardBody className='max-h-40 overflow-y-scroll'>
                         <div>
-                          {skills && skills?.map((s, idx) => (
+                          {skills && skills?.slice(-3)?.map((s, idx) => (
                             <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
                               <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
                             </Tag>
