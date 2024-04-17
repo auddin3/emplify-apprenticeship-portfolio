@@ -76,7 +76,7 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
       isOpen={isOpen}
       onClose={onClose}
       size="xl"
-      title={`Add Entry to  ${selectedKSB?.title}: ${selectedKSB?.subTitle}`}
+      title={'Add Portfolio Entry'}
     >
       <div className='mx-20 my-10'>
         <Stepper size='md' index={activeStep}>
