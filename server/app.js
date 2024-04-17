@@ -16,12 +16,14 @@ const authRoutes = require('./routes/authRoutes')
 const portfolioRoutes = require('./routes/portfolioRoutes')
 const moduleRoutes = require('./routes/moduleRoutes')
 const gradeRoutes = require('./routes/gradeRoutes')
+const skillRoutes = require('./routes/skillRoutes')
 
 app.use('/', indexRoutes)
 app.use(authRoutes)
 app.use(portfolioRoutes)
 app.use(moduleRoutes)
 app.use(gradeRoutes)
+app.use(skillRoutes)
 
 // Start the server
 db.connectToDatabase().then(function () {

@@ -30,7 +30,7 @@ router.get('/dashboard/:uid', async function (req, res) {
       return Array.from(new Set([...acc, ...obj.specification]))
     }, [])
 
-    const { skills } = await skillController.getSkills(skillIds)
+    const { skills } = await skillController.getPortfolioSkills(skillIds)
 
     const skillCounts = skills.reduce((acc, skill) => {
       const count = combinedEntries.filter(entry => entry.skill === skill.title).length

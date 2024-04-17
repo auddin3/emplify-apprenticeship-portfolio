@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { SimpleGrid, Avatar, Card, CardBody, Icon, IconButton, Input, Textarea, Tooltip, useDisclosure } from '@chakra-ui/react'
+import React, { useState, useEffect } from 'react'
+import { SimpleGrid, Avatar, Card, CardBody, Checkbox, CheckboxGroup, Icon, IconButton, Input, Textarea, Tooltip, Stack, useDisclosure } from '@chakra-ui/react'
 import { CheckCircleIcon, ChevronRightIcon, InformationCircleIcon, Cog8ToothIcon } from '@heroicons/react/24/outline'
 import SortMenu from '../SortMenu'
 import { calculateDateDifference } from '../../utils'
@@ -10,12 +10,12 @@ import SideBar from '../SideBar'
 const menuOptions = [
   {
     type: 'alpha',
-    name: 'Skill ID (Ascending)',
+    name: 'ID (Ascending)',
     chronological: true,
   },
   {
     type: 'alpha',
-    name: 'Skill ID (Descending)',
+    name: 'ID (Descending)',
     chronological: false,
   },
   {
@@ -77,6 +77,7 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
 const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfolio, setLoading, setSelectedKSB }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [modifiedPortfolio, setModifiedPortfolio] = useState(portfolio)
+  const [skills, setSkills] = useState()
 
   const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
   const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
@@ -84,6 +85,34 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
   const handleChange = (key, value) => {
     setModifiedPortfolio({ ...modifiedPortfolio, [key]: value })
   }
+
+  const fetchData = async () => {
+    setLoading(true)
+    const apiUrl = 'http://localhost:5001/skills'
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setSkills(data?.skills.sort((a, b) => a.title.localeCompare(b.title)))
+    } catch (error) {
+      console.error('Operation failed:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <>
@@ -126,7 +155,7 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
         <SideBar
           isOpen={isOpen}
           onClose={onClose}
-          size="xl"
+          size="lg"
           title={'Modify Portfolio'}
         >
           <div className='px-12 py-4 space-y-3'>
@@ -161,14 +190,41 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
             <div className='text-lg font-sansSemibold text-black-custom1'>
             Specification
             </div>
-            {/* <div className='mx-1'>
-              <Textarea
-                size="sm"
-                value={selectedEntry?.q4}
-                rows={9}
-                onChange={e => handleChange(e, 'q4')}
-              />
-            </div> */}
+            <CheckboxGroup defaultValue={modifiedPortfolio?.specification}>
+              <Stack pl={2} mt={1} spacing={1} gap={5}>
+                {skills?.map((skill, idx) => {
+                  return (
+                    <>
+                      <Card key={idx} className='bg-gray-paleGray w-full border rounded-xl space-x-4'>
+                        <CardBody className='flex flex-row space-x-5'>
+                          <Checkbox
+                            size='lg'
+                            key={idx}
+                            value={skill?.title}
+                            onChange={(e) => {
+                              const checked = e.target.checked
+                              const updatedSkills = skills.map((s, index) => {
+                                if (idx === index) {
+                                  return { ...s, checked }
+                                }
+                                return s
+                              })
+                              setModifiedPortfolio({ ...modifiedPortfolio, specification: updatedSkills })
+                            }}
+                          >
+                          </Checkbox>
+                          <div>
+                            <div className='font-sansSemibold'>{skill?.subTitle}</div>
+                            <div className='font-sans text-black-custom1/70 text-sm'>{skill?.description.substring(0, 450)}...</div>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </>
+                  )
+                },
+                )}
+              </Stack>
+            </CheckboxGroup>
           </div>
         </SideBar>
       )}
