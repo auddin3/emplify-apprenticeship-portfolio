@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongodb = require('mongodb')
 
-const gradeController = require('../controllers/grades')
+const gradeController = require('../controllers/grade')
 
 const ObjectId = mongodb.ObjectId
 

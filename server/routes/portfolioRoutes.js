@@ -3,6 +3,7 @@ const router = express.Router()
 const mongodb = require('mongodb')
 
 const portfolioController = require('../controllers/portfolio')
+const gradeController = require('../controllers/grade')
 
 const ObjectId = mongodb.ObjectId
 
@@ -45,15 +46,24 @@ router.get('/entries', async function (req, res) {
 })
 
 router.put('/portfolioEntry/:pid', async function (req, res) {
-  const { skill, module, dateCreated, q1, q2, q3, q4 } = req.body
+  const { skill, module, dateCreated, q1, q2, q3, q4, user, ...assessments } = req.body
   const pid = new ObjectId(req.params.pid)
+  const uid = new ObjectId(String(user))
   const formattedDateCreated = new Date(dateCreated)
 
-  const newEntry = { pid, skill, module, dateCreated: formattedDateCreated, q1, q2, q3, q4 }
+  const newEntry = { portfolio: pid, skill, module, dateCreated: formattedDateCreated, q1, q2, q3, q4 }
+
+  const formattedGrades = Object.entries(assessments).map(([activity, grade]) => ({
+    activity,
+    grade: parseFloat(grade) / 100,
+  }))
+
+  const gradeRecord = { module, grades: formattedGrades, user: uid }
 
   try {
     const { entries } = await portfolioController.insertPortfolioEntry(newEntry)
-    return res.json(entries)
+    const { grades } = await gradeController.insertUserGrade(gradeRecord)
+    return res.json({ entries, grades })
   } catch (error) {
     console.error('Error:', error)
     res.status(500).json({ message: 'Internal Server Error' })

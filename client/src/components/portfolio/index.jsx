@@ -89,6 +89,7 @@ const Portfolio = () => {
               entries={entries.filter(e => e.skill === selectedKSB.title)}
               setEntries={setEntries}
               grades={userGrades}
+              setGrades={setUserGrades}
               canEdit={canEdit}
               portfolio={portfolio}
             />

@@ -202,6 +202,8 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
 const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selectedKSB, setEntries }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  console.log(grades)
+
   return (
     <>
       <Grid templateRows='repeat(4, 1fr)' templateColumns='repeat(10, 1fr)' gap={4} minHeight="screen" paddingBottom={10}>
