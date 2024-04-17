@@ -1,6 +1,7 @@
 import React from 'react'
 import { SimpleGrid, Avatar, Card, CardBody, Icon, IconButton, Tooltip } from '@chakra-ui/react'
 import { CheckCircleIcon, ChevronRightIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
+import { Cog8ToothIcon } from '@heroicons/react/24/solid'
 import SortMenu from '../SortMenu'
 import { calculateDateDifference } from '../../utils'
 import StatCard from '../StatCard'
@@ -88,7 +89,7 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
                 <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
               </Tooltip>
             </div>
-            <div>Settings</div>
+            <IconButton as={Cog8ToothIcon} size='sm' variant='unstyled' color='#A8A8A8' />
           </div>
           <div className='text-lg pr-96 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
         </div>

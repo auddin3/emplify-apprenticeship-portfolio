@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Grid, GridItem, Icon, SimpleGrid, Spinner, Tag,
   TagLabel, Avatar } from '@chakra-ui/react'
-import { ShieldCheckIcon, Cog6ToothIcon } from '@heroicons/react/24/solid'
+import { ShieldCheckIcon, Cog8ToothIcon } from '@heroicons/react/24/solid'
 
 const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
 
@@ -101,7 +101,7 @@ const Dashboard = () => {
               <Card className='rounded-full' size='lg' h="full">
                 <CardHeader>
                   <div className='text-right text-[#A8A8A8] cursor-pointer'>
-                    <Icon as={Cog6ToothIcon} h={6} w={6} onClick={() => navigate('/profile')}/>
+                    <Icon as={Cog8ToothIcon} h={6} w={6} onClick={() => navigate('/profile')}/>
                   </div>
                 </CardHeader>
                 <CardBody paddingTop={1} >
