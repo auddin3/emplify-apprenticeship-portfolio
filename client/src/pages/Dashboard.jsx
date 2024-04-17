@@ -4,7 +4,8 @@ import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Grid, GridItem, Icon, SimpleGrid, Spinner, Tag,
   TagLabel, Avatar } from '@chakra-ui/react'
-import { ShieldCheckIcon, Cog8ToothIcon } from '@heroicons/react/24/solid'
+import { ShieldCheckIcon } from '@heroicons/react/24/solid'
+import { Cog8ToothIcon } from '@heroicons/react/24/outline'
 
 const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
 

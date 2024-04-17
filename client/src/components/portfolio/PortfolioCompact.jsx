@@ -1,7 +1,6 @@
 import React from 'react'
 import { SimpleGrid, Avatar, Card, CardBody, Icon, IconButton, Tooltip } from '@chakra-ui/react'
-import { CheckCircleIcon, ChevronRightIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
-import { Cog8ToothIcon } from '@heroicons/react/24/solid'
+import { CheckCircleIcon, ChevronRightIcon, InformationCircleIcon, Cog8ToothIcon } from '@heroicons/react/24/outline'
 import SortMenu from '../SortMenu'
 import { calculateDateDifference } from '../../utils'
 import StatCard from '../StatCard'
@@ -81,7 +80,7 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
   return (
     <div className='w-full p-14 flex flex-col space-y-10 max-h-screen overflow-y-scroll'>
       <div className='flex flex-row space-x-12 justify-items-start ml-6'>
-        <div className='flex flex-col'>
+        <div className='flex flex-col w-full'>
           <div className='flex flex-row justify-between items-center w-full'>
             <div className='flex flex-row space-x-3 items-center'>
               <h1 className='text-2xl text-black-custom1 font-semibold'>{portfolio?.name}</h1>
