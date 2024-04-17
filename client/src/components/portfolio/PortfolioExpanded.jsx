@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Avatar, Card, CardBody, CardHeader, SimpleGrid, Select, Tag, NumberInput, NumberInputField, Icon, IconButton, InputRightAddon, InputGroup,
-  Step, Stepper, StepIndicator, StepStatus, StepIcon, StepNumber, Box, StepTitle, StepSeparator, StepDescription, useSteps, Textarea, useDisclosure } from '@chakra-ui/react'
+  Step, Stepper, StepIndicator, StepStatus, StepIcon, StepNumber, Box, StepTitle, StepSeparator, StepDescription, useSteps, Textarea, useDisclosure, useToast } from '@chakra-ui/react'
 import { ChevronRightIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
@@ -23,6 +23,7 @@ const menuOptions = [
 ]
 
 const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio, grades, setGrades }) => {
+  const toast = useToast()
   const [newEntry, setNewEntry] = useState()
   const [selectedModule, setSelectedModule] = useState()
   const auth = useAuthUser()
@@ -64,7 +65,21 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
       setGrades(data?.grades)
     } catch (error) {
       console.error('Operation failed:', error)
+      toast({
+        title: 'Insertion Failed',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
     } finally {
+      toast({
+        title: 'New Entry Inserted',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
       onClose()
     }
   }
@@ -135,7 +150,7 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
                     moduleGradesExist
                       ? (
                         <Box bg='rgba(75, 117, 255, 0.2)' w='100%' p={4} color='white'>
-                          <div className='text-blue-kpmgBlue'>Grades for this module already exist.</div>
+                          <div className='text-blue-kpmgBlue'>A record for this module already exists.</div>
                         </Box>
                       )
                       : (
@@ -274,6 +289,7 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
 }
 
 const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries, setSelectedEntry, setEntries, onOpen, canEdit }) => {
+  const toast = useToast()
   const handleDelete = async (entry) => {
     const apiUrl = `http://localhost:5001/portfolioEntry/${entry._id}`
     setLoading(true)
@@ -292,7 +308,21 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
       setEntries(data)
     } catch (error) {
       console.error('Operation failed:', error)
+      toast({
+        title: 'Deletion Failed',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
     } finally {
+      toast({
+        title: 'Deletion Successful',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
       setLoading(false)
     }
   }

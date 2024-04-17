@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, GridItem, Card, CardHeader, CardBody, Stack, StackDivider, IconButton, useDisclosure, Textarea } from '@chakra-ui/react'
+import { Grid, GridItem, Card, CardHeader, CardBody, Stack, StackDivider, IconButton, useDisclosure, Textarea, useToast } from '@chakra-ui/react'
 import { convertDateToString } from '../../utils'
 import Disclosure from '../Disclosure'
 import { PencilSquareIcon } from '@heroicons/react/24/solid'
@@ -7,6 +7,8 @@ import SideBar from '../SideBar'
 import ModuleInfoCard from './ModuleInfoCard'
 
 const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, setEntries }) => {
+  const toast = useToast()
+
   const handleChange = (e, question) => {
     setSelectedEntry({ ...selectedEntry, [question]: e.target.value })
   }
@@ -29,8 +31,22 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
       setEntries(data)
     } catch (error) {
       console.error('Operation failed:', error)
+      toast({
+        title: 'Changes Unsaved',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
     } finally {
       onClose()
+      toast({
+        title: 'Record Updated',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
     }
   }
 

@@ -4,7 +4,6 @@ const mongodb = require('mongodb')
 
 const portfolioController = require('../controllers/portfolio')
 const skillController = require('../controllers/skill')
-const moduleController = require('../controllers/module')
 
 const ObjectId = mongodb.ObjectId
 
@@ -26,17 +25,6 @@ router.get('/dashboard/:uid', async function (req, res) {
     const { skills } = await skillController.getSkills(skillIds)
 
     return res.json({ portfolios, skills })
-  } catch (error) {
-    console.error('Error:', error)
-    res.status(500).json({ message: 'Internal Server Error' })
-  }
-})
-
-router.get('/modules', async function (req, res) {
-  try {
-    const { modules } = await moduleController.getAllModules()
-
-    return res.json({ modules })
   } catch (error) {
     console.error('Error:', error)
     res.status(500).json({ message: 'Internal Server Error' })
