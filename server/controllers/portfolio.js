@@ -15,4 +15,74 @@ const getUserPortfolios = async (uid) => {
   return { portfolios }
 }
 
-module.exports = { getUserPortfolios }
+const getPortfolioCriterion = async (pid) => {
+  const db = getDb()
+
+  const { specification: titles } = await db.collection(collectionName).findOne(
+    { _id: pid },
+    { projection: { specification: 1, _id: 0 } },
+  )
+
+  const titleArray = Array.isArray(titles) ? titles : [titles]
+
+  const specification = await db.collection('skills').find({ title: { $in: titleArray } }).toArray()
+
+  return { specification }
+}
+
+const getPortfolioEntries = async (pid) => {
+  const db = getDb()
+
+  const entries = await db.collection('portfolioEntries').find({ portfolio: pid }).toArray()
+  return { entries }
+}
+
+const getEntries = async () => {
+  const db = getDb()
+
+  const entries = await db.collection('portfolioEntries').find({}).toArray()
+  return { entries }
+}
+
+const insertPortfolioEntry = async (newEntry) => {
+  const db = getDb()
+  await db.collection('portfolioEntries').insertOne(newEntry)
+
+  const entries = await db.collection('portfolioEntries').find({}).toArray()
+  return { entries }
+}
+
+const updatePortfolioEntry = async (pid, formattedEntry) => {
+  const db = getDb()
+  await db.collection('portfolioEntries').updateOne(
+    { _id: pid },
+    {
+      $set: {
+        q1: formattedEntry.q1,
+        q2: formattedEntry.q2,
+        q3: formattedEntry.q3,
+        q4: formattedEntry.q4,
+      },
+    })
+
+  const entries = await db.collection('portfolioEntries').find({}).toArray()
+  return { entries }
+}
+
+const deletePortfolioEntry = async (pid) => {
+  const db = getDb()
+  await db.collection('portfolioEntries').deleteOne({ _id: pid })
+
+  const entries = await db.collection('portfolioEntries').find({}).toArray()
+  return { entries }
+}
+
+module.exports = {
+  getUserPortfolios,
+  getPortfolioCriterion,
+  getPortfolioEntries,
+  getEntries,
+  insertPortfolioEntry,
+  updatePortfolioEntry,
+  deletePortfolioEntry,
+}

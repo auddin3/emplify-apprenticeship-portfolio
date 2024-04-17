@@ -16,11 +16,20 @@ export const camelCaseToSpaced = (str) => {
   }
 }
 
-export const convertDateToString = (date) => {
-  const options = { day: 'numeric', month: 'numeric', year: 'numeric' }
+export const convertDateToString = (date, options = { day: 'numeric', month: 'numeric', year: 'numeric' }) => {
   return new Date(date).toLocaleDateString('en-GB', options)
 }
 
 export const capitalize = (str) => {
   return str.replace(/\b\w/g, match => match.toUpperCase())
+}
+
+export const generateRandomString = (length) => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
+  const charactersLength = characters.length
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  }
+  return result
 }

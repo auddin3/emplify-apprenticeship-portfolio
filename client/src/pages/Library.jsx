@@ -218,7 +218,7 @@ const Library = () => {
                                   <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
                                     <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
                                   </Tag>
-                                  <div className='text-sm text-[#00338D]/80 font-sansSemibold'>{convertDateToString(module?.dateCreated) || ''}</div>
+                                  {/* <div className='text-sm text-[#00338D]/80 font-sansSemibold'>{convertDateToString(module?.dateCreated) || ''}</div> */}
                                 </CardHeader>
                                 <CardBody>
                                   <div className='text-blue-kpmgBlue font-sansSemibold text-lg h-12 cursor-pointer' onClick={() => onModuleClick(module)}>

@@ -25,9 +25,11 @@ const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOption
 
       if (selected.type === 'alpha') {
         if (selected.chronological) {
+          if (selected?.property) setSortedElements(sortedElements.sort((a, b) => a[selected.property].localeCompare(b[selected.property])))
           if (sortedElements[0]?.name !== undefined) setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
           if (sortedElements[0]?.title !== undefined) setSortedElements(sortedElements.sort((a, b) => a.title.localeCompare(b.title)))
         } else {
+          if (selected?.property !== undefined) setSortedElements(sortedElements.sort((a, b) => b[selected.property].localeCompare(a[selected.property])))
           if (sortedElements[0]?.name !== undefined) setSortedElements(sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
           if (sortedElements[0]?.title !== undefined) setSortedElements(sortedElements.sort((a, b) => b.title.localeCompare(a.title)))
         }
