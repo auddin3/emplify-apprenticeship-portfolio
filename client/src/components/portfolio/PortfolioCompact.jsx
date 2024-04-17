@@ -81,11 +81,14 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
     <div className='w-full p-14 flex flex-col space-y-10 max-h-screen overflow-y-scroll'>
       <div className='flex flex-row space-x-12 justify-items-start ml-6'>
         <div className='flex flex-col'>
-          <div className='flex flex-row space-x-3 items-center'>
-            <h1 className='text-2xl text-black-custom1 font-semibold'>{portfolio?.name}</h1>
-            <Tooltip hasArrow label={portfolio?.description || 'abc'} placement='auto'>
-              <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
-            </Tooltip>
+          <div className='flex flex-row justify-between items-center w-full'>
+            <div className='flex flex-row space-x-3 items-center'>
+              <h1 className='text-2xl text-black-custom1 font-semibold'>{portfolio?.name}</h1>
+              <Tooltip hasArrow label={portfolio?.description || 'abc'} placement='auto'>
+                <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
+              </Tooltip>
+            </div>
+            <div>Settings</div>
           </div>
           <div className='text-lg pr-96 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
         </div>

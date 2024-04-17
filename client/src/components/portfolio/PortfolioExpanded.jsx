@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Avatar, Card, CardBody, CardHeader, SimpleGrid, Tag, Icon, IconButton } from '@chakra-ui/react'
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { TrashIcon, EllipsisVerticalIcon } from '@heroicons/react/24/solid'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Avatar, Card, CardBody, CardHeader, SimpleGrid, Select, Tag, Icon, IconButton, Textarea, useDisclosure } from '@chakra-ui/react'
+import { ChevronRightIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
 import SortMenu from '../SortMenu'
 import PortfolioEntry from './PortfolioEntry'
+import SideBar from '../SideBar'
 
 const menuOptions = [
   {
@@ -19,7 +20,168 @@ const menuOptions = [
   },
 ]
 
-const KSBGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries, setSelectedEntry, setEntries }) => {
+const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio }) => {
+  const [newEntry, setNewEntry] = useState()
+  // eslint-disable-next-line no-unused-vars
+  const [selectedModule, setSelectedModule] = useState()
+
+  const handleChange = (val, data) => {
+    setNewEntry({ ...newEntry, [data]: val })
+  }
+
+  const handleSubmit = async () => {
+    const formattedEntry = { ...newEntry, skill: selectedKSB?.title, dateCreated: Date() }
+
+    const apiUrl = `http://localhost:5001/portfolioEntry/${portfolio?._id}`
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formattedEntry),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setEntries(data)
+    } catch (error) {
+      console.error('Operation failed:', error)
+    } finally {
+      onClose()
+    }
+  }
+
+  return (
+    <SideBar
+      isOpen={isOpen}
+      onClose={onClose}
+      size="xl"
+      title={`Add Entry to  ${selectedKSB?.title}: ${selectedKSB?.subTitle}`}
+    >
+      <div className='px-12 py-4 space-y-2 mb-4'>
+        <div className='text-lg font-sansSemibold text-black-custom1'>
+           Module
+        </div>
+        <Select
+          size='sm'
+          placeholder='Select module'
+          py='0.15rem'
+          className='text-gray-500/100'
+          onChange={e => handleChange(e.target.value, 'module')}
+        >
+          {modules && modules?.map(m => (
+            <option key={m?._id} value={m?.moduleId}>
+              {m?.title}
+            </option>
+          ))}
+        </Select>
+      </div>
+      <div className='px-12 text-lg font-sansSemibold text-black-custom1'>
+        <div className='px-2 py-4 space-y-3'>
+          <div className='font-sansSemibold text-black-custom1 text-sm'>
+           1. What was the nature of your involvement with the project?
+          </div>
+          <ul className='list-disc list-inside pl-6 pb-3'>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            What deliverables were you tasked with?
+            </li>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            Which team were you apart of during this time
+            </li>
+          </ul>
+          <div className='mx-1'>
+            <Textarea
+              size="sm"
+              value={newEntry?.q1}
+              rows={5}
+              onChange={e => handleChange(e.target.value, 'q1')}
+            />
+          </div>
+        </div>
+        <div className='px-2 py-4 space-y-3'>
+          <div className='font-sansSemibold text-black-custom1 text-sm'>
+            2. Describe your actions and contributions.
+          </div>
+          <ul className='list-disc list-inside pl-6 pb-3'>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            What specific tasks were you assigned?
+            </li>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            What steps did you take to complete your tasks?
+            </li>
+          </ul>
+          <div className='mx-1'>
+            <Textarea
+              size="sm"
+              value={newEntry?.q2}
+              rows={5}
+              onChange={e => handleChange(e.target.value, 'q2')}
+            />
+          </div>
+        </div>
+        <div className='px-2 py-4 space-y-3'>
+          <div className='font-sansSemibold text-black-custom1 text-sm'>
+            3. What were the outcomes of your contribution?
+          </div>
+          <ul className='list-disc list-inside pl-6 pb-3'>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            How did your actions impact the project&apos;s success or completion?
+            </li>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            What lessons did you learn from this experience?
+            </li>
+          </ul>
+          <div className='mx-1'>
+            <Textarea
+              size="sm"
+              value={newEntry?.q3}
+              rows={5}
+              onChange={e => handleChange(e.target.value, 'q3')}
+            />
+          </div>
+        </div>
+        <div className='px-2 py-4 space-y-3'>
+          <div className='font-sansSemibold text-black-custom1 text-sm'>
+          4. Reflect on the skills gained from this experience.
+          </div>
+          <ul className='list-disc list-inside pl-6 pb-3'>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            What skills did you develop or enhance through your participation?
+            </li>
+            <li className='text-sm italic font-sans text-black-custom1'>
+            How do you plan to apply these skills in future endeavors?
+            </li>
+          </ul>
+          <div className='mx-1'>
+            <Textarea
+              size="sm"
+              value={newEntry?.q4}
+              rows={5}
+              onChange={e => handleChange(e.target.value, 'q4')}
+            />
+          </div>
+        </div>
+      </div>
+      <div className='w-full flex flex-row justify-center my-2'>
+        <Button
+          size="lg"
+          bgColor='#00338D'
+          color='white'
+          borderRadius={99}
+          className='w-1/4 py-6 my-6 mx-auto'
+          onClick={handleSubmit}
+        >
+          Save
+        </Button>
+      </div>
+    </SideBar>
+  )
+}
+
+const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries, setSelectedEntry, setEntries, onOpen, canEdit }) => {
   const handleDelete = async (entry) => {
     const apiUrl = `http://localhost:5001/portfolioEntry/${entry._id}`
     setLoading(true)
@@ -77,16 +239,31 @@ const KSBGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries
               </Card>
             )
           })}
+          {!!canEdit && (
+            <Card
+              className='flex justify-center items-center cursor-pointer min-h-28'
+              backgroundColor='rgba(75, 117, 255, 0.2)'
+              onClick={onOpen}
+            >
+              <IconButton
+                as={PlusCircleIcon}
+                variant="unstyled"
+                h={16} w={16}
+                className='stroke-blue-kpmgBlue mx-auto self-center'
+              />
+            </Card>
+          )}
         </SimpleGrid>
       </div>
     </div>
   )
 }
 
-const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, grades }) => {
+const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, grades, canEdit, portfolio }) => {
   const [modules, setModules] = useState()
   const [sortedModules, setSortedModules] = useState()
   const [selectedEntry, setSelectedEntry] = useState()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const fetchData = async () => {
     setLoading(true)
@@ -155,13 +332,6 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
           }
         </Breadcrumb>
       </div>
-      <div className='w-full flex justify-end px-16 -mb-10'>
-        <IconButton
-          as={EllipsisVerticalIcon}
-          size="xs"
-          variant="unstyled"
-        />
-      </div>
       <div className='px-20 h-full'>
         <div className='flex flex-col items-center space-y-5 pb-8'>
           <Avatar
@@ -182,15 +352,32 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
               selectedKSB={selectedKSB}
               setEntries={setEntries}
             />
-            : <KSBGrid
-              sortedModules={sortedModules}
-              setSortedModules={setSortedModules}
-              setLoading={setLoading}
-              modules={modules}
-              entries={entries}
-              setEntries={setEntries}
-              setSelectedEntry={setSelectedEntry}
-            />
+            : (
+              <>
+                <EntriesGrid
+                  sortedModules={sortedModules}
+                  setSortedModules={setSortedModules}
+                  setLoading={setLoading}
+                  modules={modules}
+                  entries={entries}
+                  setEntries={setEntries}
+                  setSelectedEntry={setSelectedEntry}
+                  onOpen={onOpen}
+                  canEdit={canEdit}
+                />
+                {
+                  isOpen && !!canEdit &&
+                  <AddPortfolioLog
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    modules={modules}
+                    selectedKSB={selectedKSB}
+                    setEntries={setEntries}
+                    portfolio={portfolio}
+                  />
+                }
+              </>
+            )
         }
       </div>
     </div>

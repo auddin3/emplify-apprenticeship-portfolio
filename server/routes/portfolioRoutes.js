@@ -44,6 +44,22 @@ router.get('/entries', async function (req, res) {
   }
 })
 
+router.put('/portfolioEntry/:pid', async function (req, res) {
+  const { skill, module, dateCreated, q1, q2, q3, q4 } = req.body
+  const pid = new ObjectId(req.params.pid)
+  const formattedDateCreated = new Date(dateCreated)
+
+  const newEntry = { pid, skill, module, dateCreated: formattedDateCreated, q1, q2, q3, q4 }
+
+  try {
+    const { entries } = await portfolioController.insertPortfolioEntry(newEntry)
+    return res.json(entries)
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+})
+
 router.post('/portfolioEntry/:pid', async function (req, res) {
   const pid = new ObjectId(req.params.pid)
   const formattedEntry = req.body

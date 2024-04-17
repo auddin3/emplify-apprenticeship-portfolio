@@ -4,16 +4,20 @@ import { useLocation } from 'react-router-dom'
 import { Spinner } from '@chakra-ui/react'
 import PortfolioCompact from './PortfolioCompact'
 import PortfolioExpanded from './PortfolioExpanded'
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
 const Portfolio = () => {
   const location = useLocation()
   const portfolio = location?.state?.portfolio
+  const auth = useAuthUser()
+  const user = auth?.user
   const [loading, setLoading] = useState(true)
   const [criterion, setCriterion] = useState()
   const [entries, setEntries] = useState()
   const [sortedCriterion, setSortedCriterion] = useState()
   const [selectedKSB, setSelectedKSB] = useState()
   const [userGrades, setUserGrades] = useState()
+  const canEdit = portfolio?.owner === user.uid
 
   const fetchData = async () => {
     setLoading(true)
@@ -85,6 +89,8 @@ const Portfolio = () => {
               entries={entries.filter(e => e.skill === selectedKSB.title)}
               setEntries={setEntries}
               grades={userGrades}
+              canEdit={canEdit}
+              portfolio={portfolio}
             />
           )
           : (
