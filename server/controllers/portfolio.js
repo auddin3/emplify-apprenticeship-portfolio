@@ -15,6 +15,47 @@ const getUserPortfolios = async (uid) => {
   return { portfolios }
 }
 
+const updatePortfolio = async (pid, updatedPortfolioData) => {
+  const db = getDb()
+
+  try {
+    if (!updatedPortfolioData) {
+      throw new Error('No update object.')
+    }
+
+    const existingPortfolio = await db.collection(collectionName).findOne({ _id: pid })
+
+    const result = await db.collection(collectionName).updateOne(
+      { _id: pid },
+      {
+        $set: {
+          name: updatedPortfolioData?.name,
+          description: updatedPortfolioData?.description,
+          specification: updatedPortfolioData?.specification,
+        },
+      },
+    )
+
+    if (result.modifiedCount === 0) {
+      throw new Error('Portfolio not found or not updated.')
+    }
+
+    const updatedPortfolio = await db.collection(collectionName).findOne({ _id: pid })
+    // const deletedSkills = existingPortfolio?.specification?.filter(skill => !updatedPortfolio?.specification?.includes(skill))
+
+    console.log(existingPortfolio, updatedPortfolioData)
+
+    // await db.collection('portfolioEntries').deleteMany({
+    //   portfolio: pid,
+    //   skill: { $in: deletedSkills },
+    // })
+
+    return updatedPortfolio
+  } catch (error) {
+    throw new Error(`Failed to update portfolio: ${error.message}`)
+  }
+}
+
 const getPortfolioCriterion = async (pid) => {
   const db = getDb()
 
@@ -79,6 +120,7 @@ const deletePortfolioEntry = async (pid) => {
 
 module.exports = {
   getUserPortfolios,
+  updatePortfolio,
   getPortfolioCriterion,
   getPortfolioEntries,
   getEntries,

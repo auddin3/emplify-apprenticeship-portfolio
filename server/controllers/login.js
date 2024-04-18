@@ -38,4 +38,11 @@ const login = async (req, res) => {
   res.json({ message: 'Successful login', token: jwtToken, user })
 }
 
-module.exports = { login }
+const getAllUsers = async () => {
+  const db = getDb()
+
+  const users = await db.collection(collectionName).find().toArray()
+  return { users }
+}
+
+module.exports = { login, getAllUsers }

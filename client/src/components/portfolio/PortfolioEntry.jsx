@@ -29,6 +29,13 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
 
       const data = await response.json()
       setEntries(data)
+      toast({
+        title: 'Record Updated',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
     } catch (error) {
       console.error('Operation failed:', error)
       toast({
@@ -40,13 +47,6 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
       })
     } finally {
       onClose()
-      toast({
-        title: 'Record Updated',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-        position: 'bottom-right',
-      })
     }
   }
 

@@ -1,14 +1,58 @@
-import React, { useState } from 'react'
-import { Button, Box, Card, CardBody, Checkbox, CheckboxGroup, Input, Textarea, Stack, Stepper, Step, StepIndicator, StepStatus,
-  StepSeparator, StepIcon, StepNumber, StepTitle, StepDescription, useSteps } from '@chakra-ui/react'
+import React, { useState, useEffect } from 'react'
+import { Avatar, Button, Box, Card, CardBody, Checkbox, CheckboxGroup, Input, Textarea, Stack, Stepper, Step, StepIndicator, StepStatus,
+  StepSeparator, StepIcon, StepNumber, StepTitle, StepDescription, useSteps, useToast } from '@chakra-ui/react'
 import Sidebar from '../Sidebar'
 
-const EditPortfolio = ({ isOpen, onClose, portfolio, skills }) => {
+const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users }) => {
   const [modifiedPortfolio, setModifiedPortfolio] = useState(portfolio)
+  const toast = useToast()
 
   const handleChange = (key, value) => {
     setModifiedPortfolio({ ...modifiedPortfolio, [key]: value })
   }
+
+  const handleSubmit = async () => {
+    const { _id, ...formattedPortfolio } = modifiedPortfolio
+    const apiUrl = `http://localhost:5001/portfolio/${_id}`
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formattedPortfolio),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setPortfolio(data?.portfolio)
+      setModifiedPortfolio(data?.portfolio)
+      toast({
+        title: 'Record Updated',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (error) {
+      console.error('Operation failed:', error)
+      toast({
+        title: 'Changes Unsaved',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
+    } finally {
+      onClose()
+    }
+  }
+
+  useEffect(() => {
+    setModifiedPortfolio(portfolio)
+  }, [portfolio])
 
   const steps = [
     { title: 'First', description: 'Basic Information' },
@@ -63,7 +107,7 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, skills }) => {
                   size="sm"
                   value={modifiedPortfolio?.name}
                   rows={9}
-                  onChange={e => handleChange('name', e.target.value)}
+                  onChange={e => handleChange('name', e?.target?.value)}
                   py='1rem'
                   _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
                 />
@@ -78,21 +122,20 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, skills }) => {
                   size="sm"
                   value={modifiedPortfolio?.description}
                   rows={3}
-                  onChange={e => handleChange('description', e.value.target)}
+                  onChange={e => handleChange('description', e?.target?.value)}
                 />
               </div>
             </div>
-            <div className='px-12 py-4 space-y-3'>
+            <div className='px-12 py-4 space-y-8 mb-8'>
               <div className='text-lg font-sansSemibold text-black-custom1'>
              Shared With
               </div>
-              <div className='mx-1'>
-                <Textarea
-                  size="sm"
-                  value={modifiedPortfolio?.description}
-                  rows={3}
-                  onChange={e => handleChange('description', e.value.target)}
-                />
+              <div className='mx-1 flex flex-row space-x-4 items-center'>
+                {
+                  users?.filter(user => portfolio?.sharedWith.includes(user._id)).map(user => (
+                    <Avatar key={user._id} name={user?.name} size='lg' fontWeight={600} className='cursor-pointer'/>
+                  ))
+                }
               </div>
             </div>
           </>
@@ -112,17 +155,21 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, skills }) => {
                           <CardBody className='flex flex-row space-x-5'>
                             <Checkbox
                               size='lg'
-                              key={idx}
+                              key={skill?.subTitle}
                               value={skill?.title}
                               onChange={(e) => {
                                 const checked = e.target.checked
-                                const updatedSkills = skills.map((s, index) => {
-                                  if (idx === index) {
-                                    return { ...s, checked }
-                                  }
-                                  return s
-                                })
-                                setModifiedPortfolio({ ...modifiedPortfolio, specification: updatedSkills })
+                                if (checked) {
+                                  setModifiedPortfolio({
+                                    ...modifiedPortfolio,
+                                    specification: modifiedPortfolio?.specification?.concat(e.target.value),
+                                  })
+                                } else {
+                                  setModifiedPortfolio({
+                                    ...modifiedPortfolio,
+                                    specification: modifiedPortfolio?.specification.filter(value => value !== e.target.value),
+                                  })
+                                }
                               }}
                             >
                             </Checkbox>
@@ -148,7 +195,7 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, skills }) => {
           color='white'
           borderRadius={99}
           className='w-1/4 py-6 my-6 mx-auto'
-        //   onClick={handleSubmit}
+          onClick={handleSubmit}
         >
                 Save
         </Button>

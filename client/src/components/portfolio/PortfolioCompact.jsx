@@ -38,8 +38,8 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
       <div className='font-sansSemibold text-black-custom1/70 text-xl'>{status}</div>
       {sortedCriterion &&
         sortedCriterion
-          .filter(c => (status === 'Incomplete' ? !entries.some(e => e.skill === c.title) : entries.some(e => e.skill === c.title)))
-          .map((c, idx) => {
+          ?.filter(c => (status === 'Incomplete' ? !entries.some(e => e.skill === c.title) : entries.some(e => e.skill === c.title)))
+          ?.map((c, idx) => {
             const occurences = entries.filter(e => e.skill === c.title).length
             return (
               <Card key={idx} className='bg-white w-full border rounded-xl space-x-4'>
@@ -74,30 +74,42 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
   )
 }
 
-const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfolio, setLoading, setSelectedKSB }) => {
+const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfolio, setPortfolio, setLoading, setSelectedKSB }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [skills, setSkills] = useState()
+  const [users, setUsers] = useState()
 
   const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
   const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
 
   const fetchData = async () => {
     setLoading(true)
-    const apiUrl = 'http://localhost:5001/skills'
+    const skillsApiUrl = 'http://localhost:5001/skills'
+    const usersApiUrl = 'http://localhost:5001/users'
 
     try {
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const [skillsResponse, usersResponse] = await Promise.all([
+        fetch(skillsApiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } }),
+        fetch(usersApiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } }),
+      ])
 
-      if (!response.ok) {
-        const errorData = await response.json()
+      if (!skillsResponse.ok) {
+        const errorData = await skillsResponse.json()
         console.error('Operation failed:', errorData)
       }
 
-      const data = await response.json()
-      setSkills(data?.skills.sort((a, b) => a.title.localeCompare(b.title)))
+      if (!usersResponse.ok) {
+        const errorData = await usersResponse.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const [skillsData, usersData] = await Promise.all([
+        skillsResponse.json(),
+        usersResponse.json(),
+      ])
+
+      setSkills(skillsData?.skills.sort((a, b) => a.title.localeCompare(b.title)))
+      setUsers(usersData?.users)
     } catch (error) {
       console.error('Operation failed:', error)
     } finally {
@@ -117,7 +129,7 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
             <div className='flex flex-row justify-between items-center w-full'>
               <div className='flex flex-row space-x-3 items-center'>
                 <h1 className='text-2xl text-black-custom1 font-semibold'>{portfolio?.name}</h1>
-                <Tooltip hasArrow label={portfolio?.description || 'abc'} placement='auto'>
+                <Tooltip hasArrow label={`Owned by ${users?.find(user => user._id === portfolio.owner)?.name}`} placement='auto'>
                   <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
                 </Tooltip>
               </div>
@@ -151,7 +163,9 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
           isOpen={isOpen}
           onClose={onClose}
           portfolio={portfolio}
+          setPortfolio={setPortfolio}
           skills={skills}
+          users={users}
         />
       )}
     </>

@@ -8,7 +8,7 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
 const Portfolio = () => {
   const location = useLocation()
-  const portfolio = location?.state?.portfolio
+  const [portfolio, setPortfolio] = useState(location?.state?.portfolio)
   const auth = useAuthUser()
   const user = auth?.user
   const [loading, setLoading] = useState(true)
@@ -63,14 +63,6 @@ const Portfolio = () => {
     criterion && setSortedCriterion([...criterion].sort((a, b) => a.title.localeCompare(b.title)))
   }, [criterion])
 
-  useEffect(() => {
-    entries && setEntries(entries)
-  }, [entries])
-
-  useEffect(() => {
-    userGrades && setUserGrades(userGrades)
-  }, [userGrades])
-
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
       <Navbar />
@@ -100,6 +92,7 @@ const Portfolio = () => {
               setSortedCriterion={setSortedCriterion}
               entries={entries}
               portfolio={portfolio}
+              setPortfolio={setPortfolio}
               setLoading={setLoading}
               setSelectedKSB={setSelectedKSB}
             />
