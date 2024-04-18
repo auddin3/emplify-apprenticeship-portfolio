@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { SimpleGrid, Avatar, Card, CardBody, Checkbox, CheckboxGroup, Icon, IconButton, Input, Textarea, Tooltip, Stack, useDisclosure } from '@chakra-ui/react'
+import { SimpleGrid, Avatar, Card, CardBody, Icon, IconButton, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { CheckCircleIcon, ChevronRightIcon, InformationCircleIcon, Cog8ToothIcon } from '@heroicons/react/24/outline'
 import SortMenu from '../SortMenu'
 import { calculateDateDifference } from '../../utils'
 import StatCard from '../StatCard'
 import { TimeIcon, RemainingIcon } from '../Icons'
-import Sidebar from '../Sidebar'
+import EditPortfolio from './EditPortfolio'
 
 const menuOptions = [
   {
@@ -76,15 +76,10 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
 
 const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfolio, setLoading, setSelectedKSB }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [modifiedPortfolio, setModifiedPortfolio] = useState(portfolio)
   const [skills, setSkills] = useState()
 
   const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
   const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
-
-  const handleChange = (key, value) => {
-    setModifiedPortfolio({ ...modifiedPortfolio, [key]: value })
-  }
 
   const fetchData = async () => {
     setLoading(true)
@@ -152,81 +147,12 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
         )}
       </div>
       {isOpen && (
-        <Sidebar
+        <EditPortfolio
           isOpen={isOpen}
           onClose={onClose}
-          size="lg"
-          title={'Modify Portfolio'}
-        >
-          <div className='px-12 py-4 space-y-3'>
-            <div className='text-lg font-sansSemibold text-black-custom1'>
-            Name
-            </div>
-            <div className='mx-1'>
-              <Input
-                size="sm"
-                value={modifiedPortfolio?.name}
-                rows={9}
-                onChange={e => handleChange('name', e.target.value)}
-                py='1rem'
-                _placeholder={{ opacity: 1, color: 'gray.500', fontSize: 14 }}
-              />
-            </div>
-          </div>
-          <div className='px-12 py-4 space-y-3'>
-            <div className='text-lg font-sansSemibold text-black-custom1'>
-             Description
-            </div>
-            <div className='mx-1'>
-              <Textarea
-                size="sm"
-                value={modifiedPortfolio?.description}
-                rows={3}
-                onChange={e => handleChange('description', e.value.target)}
-              />
-            </div>
-          </div>
-          <div className='px-12 py-4 space-y-3'>
-            <div className='text-lg font-sansSemibold text-black-custom1'>
-            Specification
-            </div>
-            <CheckboxGroup defaultValue={modifiedPortfolio?.specification}>
-              <Stack pl={2} mt={1} spacing={1} gap={5}>
-                {skills?.map((skill, idx) => {
-                  return (
-                    <>
-                      <Card key={idx} className='bg-gray-paleGray w-full border rounded-xl space-x-4'>
-                        <CardBody className='flex flex-row space-x-5'>
-                          <Checkbox
-                            size='lg'
-                            key={idx}
-                            value={skill?.title}
-                            onChange={(e) => {
-                              const checked = e.target.checked
-                              const updatedSkills = skills.map((s, index) => {
-                                if (idx === index) {
-                                  return { ...s, checked }
-                                }
-                                return s
-                              })
-                              setModifiedPortfolio({ ...modifiedPortfolio, specification: updatedSkills })
-                            }}
-                          >
-                          </Checkbox>
-                          <div>
-                            <div className='font-sansSemibold'>{skill?.subTitle}</div>
-                            <div className='font-sans text-black-custom1/70 text-sm'>{skill?.description.substring(0, 450)}...</div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </>
-                  )
-                },
-                )}
-              </Stack>
-            </CheckboxGroup>
-          </div>
-        </Sidebar>
+          portfolio={portfolio}
+          skills={skills}
+        />
       )}
     </>
   )

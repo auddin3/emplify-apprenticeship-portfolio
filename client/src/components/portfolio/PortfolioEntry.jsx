@@ -55,7 +55,6 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
       isOpen={isOpen}
       onClose={handleSubmit}
       size="xl"
-      title={'Modify Portfolio Entry'}
     >
       <div className='px-12 py-4 space-y-3'>
         <div className='text-lg font-sansSemibold text-black-custom1'>

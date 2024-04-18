@@ -22,16 +22,18 @@ const menuOptions = [
   },
 ]
 
-const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio, grades, setGrades }) => {
+const AddPage = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio, grades, setGrades }) => {
   const toast = useToast()
   const [newEntry, setNewEntry] = useState()
   const [selectedModule, setSelectedModule] = useState()
   const auth = useAuthUser()
   const user = auth?.user
 
+  const moduleGradesExist = grades?.filter(g => g?.module === selectedModule?.moduleId).length > 0
+
   const steps = [
     { title: 'First', description: 'Basic Information' },
-    { title: 'Second', description: 'Annotation' },
+    { title: 'Second', description: 'Reflection' },
   ]
 
   const { activeStep, setActiveStep } = useSteps({
@@ -84,14 +86,12 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
     }
   }
 
-  const moduleGradesExist = grades?.filter(g => g?.module === selectedModule?.moduleId).length > 0
-
   return (
     <Sidebar
       isOpen={isOpen}
       onClose={onClose}
       size="xl"
-      title={'Add Portfolio Entry'}
+      title='New Page'
     >
       <div className='mx-20 my-10'>
         <Stepper size='md' index={activeStep}>
@@ -166,6 +166,7 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
                                   size='md'
                                   max={100}
                                   min={0}
+                                  defaultValue={newEntry[assessment?.title]}
                                   onChange={(e => handleChange(assessment?.title, e))}
                                 >
                                   <NumberInputField />
@@ -489,7 +490,7 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
                 />
                 {
                   isOpen && !!canEdit &&
-                  <AddPortfolioLog
+                  <AddPage
                     isOpen={isOpen}
                     onClose={onClose}
                     modules={modules}

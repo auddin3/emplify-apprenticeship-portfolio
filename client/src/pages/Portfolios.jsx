@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
-import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, SimpleGrid, Spinner, Tooltip } from '@chakra-ui/react'
+import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, IconButton, SimpleGrid, Spinner, Tooltip } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { calculateDateDifference } from '../utils'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { InformationCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
 import { ClockIcon, UserGroupIcon } from '@heroicons/react/24/solid'
 import SortMenu from '../components/SortMenu'
 
@@ -33,7 +33,7 @@ const menuOptions = [
   },
 ]
 
-const CardGrid = ({ sortedPortfolios, user }) => {
+const CardGrid = ({ sortedPortfolios, user, canEdit = false }) => {
   const navigate = useNavigate()
   const [entries, setEntries] = useState()
 
@@ -70,7 +70,6 @@ const CardGrid = ({ sortedPortfolios, user }) => {
     <Grid templateColumns='repeat(2, 1fr)' rowGap={8} columnGap={10} marginTop={8}>
       {sortedPortfolios && sortedPortfolios?.map((p, idx) => {
         const daysRemaining = calculateDateDifference(p?.deadline)
-        const canEdit = p?.owner === user.uid
 
         const ksbsCompleted = p?.specification?.filter(c => entries?.some(e => e.skill === c)).length
         const ksbsRemaining = p?.specification?.filter(c => !entries?.some(e => e.skill === c)).length
@@ -128,6 +127,20 @@ const CardGrid = ({ sortedPortfolios, user }) => {
           </GridItem>
         )
       })}
+      {!!canEdit && (
+        <Card
+          className='flex justify-center items-center cursor-pointer min-h-28'
+          backgroundColor='rgba(75, 117, 255, 0.2)'
+          // onClick={onOpen}
+        >
+          <IconButton
+            as={PlusCircleIcon}
+            variant="unstyled"
+            h={32} w={32}
+            className='stroke-blue-kpmgBlue mx-auto self-center'
+          />
+        </Card>
+      )}
     </Grid>
   )
 }
@@ -197,7 +210,7 @@ const Portfolios = () => {
           <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
           <div>
             <h2 className='text-xl text-blue-kpmgBlue font-semibold'>My Portfolios</h2>
-            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} />
+            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} canEdit />
           </div>
 
           <div className='mt-14'>
