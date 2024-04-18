@@ -6,7 +6,7 @@ import { TrashIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
 import SortMenu from '../SortMenu'
 import PortfolioEntry from './PortfolioEntry'
-import SideBar from '../SideBar'
+import Sidebar from '../Sidebar'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
 const menuOptions = [
@@ -87,7 +87,7 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
   const moduleGradesExist = grades?.filter(g => g?.module === selectedModule?.moduleId).length > 0
 
   return (
-    <SideBar
+    <Sidebar
       isOpen={isOpen}
       onClose={onClose}
       size="xl"
@@ -284,7 +284,7 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
           </>
         )
       }
-    </SideBar>
+    </Sidebar>
   )
 }
 

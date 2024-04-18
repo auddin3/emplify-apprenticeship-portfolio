@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
-import SearchBar from '../components/SearchBar'
+import Searchbar from '../components/Searchbar'
 import { Card, CardHeader, CardBody, Checkbox, Grid, Spinner, Tabs, TabList, Tab, TabIndicator,
   TabPanels, TabPanel, Tag, useDisclosure } from '@chakra-ui/react'
 import SortMenu from '../components/SortMenu'
 import { camelCaseToSpaced, convertDateToString } from '../utils'
-import SideBar from '../components/SideBar'
+import Sidebar from '../components/Sidebar'
 import PieChart from '../components/charts/PieChart'
 
 const pages = ['all', 'dataModelling', 'artificialIntelligence', 'softwareEngineering', 'networks', 'UXD/UID']
@@ -37,7 +37,7 @@ const menuOptions = [
 
 const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
   return (
-    <SideBar isOpen={isOpen} onClose={onClose} title={selectedModule?.title} >
+    <Sidebar isOpen={isOpen} onClose={onClose} title={selectedModule?.title} >
       <div className='relative space-y-2'>
         <div className='ml-8 mt-2.5 mb-3 flex flex-row items-center space-x-8'>
           <div className='space-y-2 w-24'>
@@ -88,7 +88,7 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
         <div className="h-1"></div>
         <hr className='border-t border-t-black-custom1/20 text-black-custom1 w-full absolute left-0 right-0' />
       </div>
-    </SideBar>
+    </Sidebar>
   )
 }
 
@@ -155,7 +155,7 @@ const Library = () => {
         </div>
         : <>
           <div className='w-full p-12 max-h-screen overflow-y-scroll'>
-            <SearchBar
+            <Searchbar
               elements={filteredModules}
               setElements={setFilteredModules}
               initialElements={modules}

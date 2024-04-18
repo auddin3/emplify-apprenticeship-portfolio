@@ -5,7 +5,7 @@ import SortMenu from '../SortMenu'
 import { calculateDateDifference } from '../../utils'
 import StatCard from '../StatCard'
 import { TimeIcon, RemainingIcon } from '../Icons'
-import SideBar from '../SideBar'
+import Sidebar from '../Sidebar'
 
 const menuOptions = [
   {
@@ -152,7 +152,7 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
         )}
       </div>
       {isOpen && (
-        <SideBar
+        <Sidebar
           isOpen={isOpen}
           onClose={onClose}
           size="lg"
@@ -226,7 +226,7 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
               </Stack>
             </CheckboxGroup>
           </div>
-        </SideBar>
+        </Sidebar>
       )}
     </>
   )

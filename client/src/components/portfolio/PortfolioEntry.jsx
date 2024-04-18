@@ -3,7 +3,7 @@ import { Grid, GridItem, Card, CardHeader, CardBody, Stack, StackDivider, IconBu
 import { convertDateToString } from '../../utils'
 import Disclosure from '../Disclosure'
 import { PencilSquareIcon } from '@heroicons/react/24/solid'
-import SideBar from '../SideBar'
+import Sidebar from '../Sidebar'
 import ModuleInfoCard from './ModuleInfoCard'
 
 const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, setEntries }) => {
@@ -51,7 +51,7 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
   }
 
   return (
-    <SideBar
+    <Sidebar
       isOpen={isOpen}
       onClose={handleSubmit}
       size="xl"
@@ -141,7 +141,7 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
           />
         </div>
       </div>
-    </SideBar>
+    </Sidebar>
   )
 }
 
