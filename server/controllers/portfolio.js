@@ -25,7 +25,7 @@ const updatePortfolio = async (pid, updatedPortfolioData) => {
 
     const existingPortfolio = await db.collection(collectionName).findOne({ _id: pid })
 
-    const result = await db.collection(collectionName).updateOne(
+    const updateResult = await db.collection(collectionName).updateOne(
       { _id: pid },
       {
         $set: {
@@ -36,39 +36,26 @@ const updatePortfolio = async (pid, updatedPortfolioData) => {
       },
     )
 
-    if (result.modifiedCount === 0) {
+    if (updateResult.modifiedCount === 0) {
       throw new Error('Portfolio not found or not updated.')
     }
 
     const updatedPortfolio = await db.collection(collectionName).findOne({ _id: pid })
-    // const deletedSkills = existingPortfolio?.specification?.filter(skill => !updatedPortfolio?.specification?.includes(skill))
+    const deletedSkills = existingPortfolio?.specification?.filter(skill => !updatedPortfolio?.specification?.includes(skill))
 
-    console.log(existingPortfolio, updatedPortfolioData)
+    const deletionResult = await db.collection('portfolioEntries').deleteMany({
+      portfolio: pid,
+      skill: { $in: deletedSkills },
+    })
 
-    // await db.collection('portfolioEntries').deleteMany({
-    //   portfolio: pid,
-    //   skill: { $in: deletedSkills },
-    // })
+    if (deletionResult.modifiedCount === 0) {
+      throw new Error('Old portfolio entries were not found or removed.')
+    }
 
     return updatedPortfolio
   } catch (error) {
     throw new Error(`Failed to update portfolio: ${error.message}`)
   }
-}
-
-const getPortfolioCriterion = async (pid) => {
-  const db = getDb()
-
-  const { specification: titles } = await db.collection(collectionName).findOne(
-    { _id: pid },
-    { projection: { specification: 1, _id: 0 } },
-  )
-
-  const titleArray = Array.isArray(titles) ? titles : [titles]
-
-  const specification = await db.collection('skills').find({ title: { $in: titleArray } }).toArray()
-
-  return { specification }
 }
 
 const getPortfolioEntries = async (pid) => {
@@ -121,7 +108,6 @@ const deletePortfolioEntry = async (pid) => {
 module.exports = {
   getUserPortfolios,
   updatePortfolio,
-  getPortfolioCriterion,
   getPortfolioEntries,
   getEntries,
   insertPortfolioEntry,
