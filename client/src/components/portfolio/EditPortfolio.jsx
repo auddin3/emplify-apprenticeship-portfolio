@@ -148,14 +148,14 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
               </div>
               <CheckboxGroup defaultValue={modifiedPortfolio?.specification}>
                 <Stack pl={2} mt={1} spacing={1} gap={5}>
-                  {skills?.map((skill, idx) => {
+                  {skills?.map((skill) => {
                     return (
                       <>
-                        <Card key={idx} className='bg-gray-paleGray w-full border rounded-xl space-x-4'>
+                        <Card key={skill._id} className='bg-gray-paleGray w-full border rounded-xl space-x-4'>
                           <CardBody className='flex flex-row space-x-5'>
                             <Checkbox
                               size='lg'
-                              key={idx}
+                              key={skill._id}
                               value={skill?.title}
                               onChange={(e) => {
                                 const checked = e.target.checked
