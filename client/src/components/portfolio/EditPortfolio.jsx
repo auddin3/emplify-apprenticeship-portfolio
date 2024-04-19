@@ -155,7 +155,7 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
                           <CardBody className='flex flex-row space-x-5'>
                             <Checkbox
                               size='lg'
-                              key={skill?.subTitle}
+                              key={idx}
                               value={skill?.title}
                               onChange={(e) => {
                                 const checked = e.target.checked

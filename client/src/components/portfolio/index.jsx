@@ -12,11 +12,11 @@ const Portfolio = () => {
   const auth = useAuthUser()
   const user = auth?.user
   const [loading, setLoading] = useState(true)
-  const [criterion, setCriterion] = useState()
   const [entries, setEntries] = useState()
-  const [sortedCriterion, setSortedCriterion] = useState()
+  const [specification, setSpecification] = useState(portfolio?.specification)
   const [selectedKSB, setSelectedKSB] = useState()
   const [userGrades, setUserGrades] = useState()
+
   const canEdit = portfolio?.owner === user.uid
 
   const fetchData = async () => {
@@ -45,7 +45,7 @@ const Portfolio = () => {
         gradesResponse.json(),
       ])
 
-      setCriterion(portfolioData?.specification)
+      // setSpecification(portfolioData?.specification)
       setEntries(portfolioData?.entries)
       setUserGrades(gradesData?.userGrades)
     } catch (error) {
@@ -60,8 +60,8 @@ const Portfolio = () => {
   }, [])
 
   useEffect(() => {
-    criterion && setSortedCriterion([...criterion].sort((a, b) => a.title.localeCompare(b.title)))
-  }, [criterion])
+    portfolio?.specification && setSpecification(portfolio?.specification)
+  }, [portfolio?.specification])
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
@@ -88,8 +88,7 @@ const Portfolio = () => {
           )
           : (
             <PortfolioCompact
-              sortedCriterion={sortedCriterion}
-              setSortedCriterion={setSortedCriterion}
+              specification={specification?.sort((a, b) => a?.localeCompare(b))}
               entries={entries}
               portfolio={portfolio}
               setPortfolio={setPortfolio}

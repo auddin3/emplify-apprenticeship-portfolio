@@ -74,13 +74,10 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
   )
 }
 
-const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfolio, setPortfolio, setLoading, setSelectedKSB }) => {
+const PortfolioCompact = ({ specification, entries, portfolio, setPortfolio, setLoading, setSelectedKSB }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [skills, setSkills] = useState()
   const [users, setUsers] = useState()
-
-  const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
-  const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
 
   const fetchData = async () => {
     setLoading(true)
@@ -120,6 +117,15 @@ const PortfolioCompact = ({ sortedCriterion, setSortedCriterion, entries, portfo
   useEffect(() => {
     fetchData()
   }, [])
+
+  const [sortedCriterion, setSortedCriterion] = useState(skills?.filter(s => specification?.includes(s?.title)))
+
+  const ksbsAchieved = sortedCriterion?.filter(c => entries.some(e => e.skill === c.title)).length
+  const ksbsRemaining = sortedCriterion?.filter(c => !entries.some(e => e.skill === c.title)).length
+
+  useEffect(() => {
+    specification && setSortedCriterion(skills?.filter(s => specification?.includes(s?.title)))
+  }, [specification, skills])
 
   return (
     <>
