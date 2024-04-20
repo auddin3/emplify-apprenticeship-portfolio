@@ -67,7 +67,7 @@ const Portfolio = () => {
 
   const openFile = async () => {
     try {
-      const path = 'desktop/'
+      const path = 'documents/'
       const pathSegments = path.split('/').filter(segment => segment !== '').slice(0, -1)
       let currentHandle = await window.showDirectoryPicker()
 
