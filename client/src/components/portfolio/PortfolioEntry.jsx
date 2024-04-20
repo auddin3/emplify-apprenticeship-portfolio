@@ -6,7 +6,7 @@ import Disclosure from '../Disclosure'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import Sidebar from '../Sidebar'
 import ModuleInfoCard from './ModuleInfoCard'
-import UploadEvidence from './UploadEvidence'
+import EvidenceList from './EvidenceList'
 
 const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, setEntries }) => {
   const toast = useToast()
@@ -200,7 +200,7 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
           className="stroke-black-custom1/70 cursor-pointer"
         />
       </CardHeader>
-      <CardBody p={0}>
+      <CardBody>
         <Stack divider={<StackDivider />}>
           {questions.map(({ question, answer, subtext }, idx) => (
             <Disclosure
@@ -216,7 +216,7 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
   )
 }
 
-const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selectedKSB, setEntries }) => {
+const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selectedKSB, setEntries, openFile, fileList }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [tabIndex, setTabIndex] = useState(0)
@@ -251,7 +251,11 @@ const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selec
                 <ModuleInfoCard module={module} performance={grades?.find(g => g.module === module.moduleId)} />
               </GridItem>
               <GridItem colSpan={4} rowSpan={1}>
-                <UploadEvidence />
+                <EvidenceList
+                  fileList={fileList}
+                  openFile={openFile}
+                  selectedKSB={selectedKSB?.title}
+                />
               </GridItem>
             </Grid>
           </TabPanel>

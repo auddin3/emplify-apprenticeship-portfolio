@@ -15,15 +15,15 @@ const ModuleInfoCard = ({ module, performance }) => {
 
   return (
     <Card>
-      <CardHeader backgroundColor={'#F8F9FD'} px={8} className="flex flex-row items-center space-x-3">
+      <CardHeader backgroundColor={'#F8F9FD'} className="flex flex-row items-center space-x-3">
         <div className='text-black-custom1 text-lg font-sansSemibold leading-tight pl-2'>{module?.title}</div>
         <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
           <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
         </Tag>
       </CardHeader>
-      <CardBody p={0}>
+      <CardBody>
         <Stack divider={<StackDivider />}>
-          <Box className='px-8 py-4'>
+          <Box className='px-3 pb-4'>
             <div className='font-sansSemibold pb-2'>Learning Objectives</div>
             <ul className='list-inside pl-1.5 space-y-0.5 mb-2'>
               {module?.learningObjectives?.map((lo, idx) => (
@@ -35,7 +35,7 @@ const ModuleInfoCard = ({ module, performance }) => {
               ))}
             </ul>
           </Box>
-          <Box className='px-8 py-4'>
+          <Box className='px-3 py-4'>
             <div className='font-sansSemibold pb-2'>Assessment Breakdown</div>
             {module?.assessmentBreakdown && <PieChart data={module?.assessmentBreakdown}/>}
             <TableContainer className='mt-8'>

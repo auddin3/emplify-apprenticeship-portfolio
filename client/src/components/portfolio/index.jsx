@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar'
 import { useLocation } from 'react-router-dom'
-import { Spinner } from '@chakra-ui/react'
+import { Spinner, useToast } from '@chakra-ui/react'
 import PortfolioCompact from './PortfolioCompact'
 import PortfolioExpanded from './PortfolioExpanded'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
@@ -16,6 +16,7 @@ const Portfolio = () => {
   const [specification, setSpecification] = useState(portfolio?.specification)
   const [selectedKSB, setSelectedKSB] = useState()
   const [userGrades, setUserGrades] = useState()
+  const toast = useToast()
 
   const canEdit = portfolio?.owner === user.uid
 
@@ -45,7 +46,6 @@ const Portfolio = () => {
         gradesResponse.json(),
       ])
 
-      // setSpecification(portfolioData?.specification)
       setEntries(portfolioData?.entries)
       setUserGrades(gradesData?.userGrades)
     } catch (error) {
@@ -62,6 +62,75 @@ const Portfolio = () => {
   useEffect(() => {
     portfolio?.specification && setSpecification(portfolio?.specification)
   }, [portfolio?.specification])
+
+  const [fileList, setFileList] = useState([])
+
+  const openFile = async () => {
+    try {
+      const path = 'desktop/'
+      const pathSegments = path.split('/').filter(segment => segment !== '').slice(0, -1)
+      let currentHandle = await window.showDirectoryPicker()
+
+      for (const segment of pathSegments) {
+        currentHandle = await currentHandle.getDirectoryHandle(segment)
+      }
+
+      const files = []
+      for await (const entry of currentHandle.values()) {
+        const isDirectory = entry.kind === 'directory'
+        const fileInfo = {
+          name: entry.name,
+          isDirectory,
+          files: isDirectory ? await readFilesFromDirectory(entry) : null,
+        }
+        files.push(fileInfo)
+      }
+      setFileList(files)
+      toast({
+        title: 'Success',
+        description: 'The file list has been refreshed.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (error) {
+      console.error('Error selecting directory:', error)
+      if (error.name === 'NotAllowedError') {
+        toast({
+          title: 'Error',
+          description: 'You do not have permission to access this directory. Please grant permission in your browser settings.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        toast({
+          title: 'Error',
+          description: 'An error occurred while selecting the directory.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      }
+    }
+  }
+
+  const readFilesFromDirectory = async (directoryHandle) => {
+    const files = []
+    for await (const entry of directoryHandle.values()) {
+      const isDirectory = entry.kind === 'directory'
+      const fileInfo = {
+        name: entry.name,
+        isDirectory,
+        files: isDirectory ? await readFilesFromDirectory(entry) : null,
+      }
+      files.push(fileInfo)
+    }
+    return files
+  }
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
@@ -84,6 +153,8 @@ const Portfolio = () => {
               setGrades={setUserGrades}
               canEdit={canEdit}
               portfolio={portfolio}
+              fileList={fileList}
+              openFile={openFile}
             />
           )
           : (

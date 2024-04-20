@@ -404,7 +404,7 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
   )
 }
 
-const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, canEdit, portfolio, grades, setGrades }) => {
+const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, canEdit, portfolio, grades, setGrades, openFile, fileList }) => {
   const [modules, setModules] = useState()
   const [sortedModules, setSortedModules] = useState()
   const [selectedEntry, setSelectedEntry] = useState()
@@ -496,6 +496,8 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
               grades={grades}
               selectedKSB={selectedKSB}
               setEntries={setEntries}
+              fileList={fileList}
+              openFile={openFile}
             />
             : (
               <>
