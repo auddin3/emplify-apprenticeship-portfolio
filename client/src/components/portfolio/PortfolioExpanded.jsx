@@ -354,7 +354,9 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
                 borderRadius='full'
               >
                 <TagLeftIcon boxSize='12px' as={PlusIcon} className='mr-2' onClick={onOpen} />
-                <TagLabel className='font-sansSemibold py-3 pr-2'>{m?.title}</TagLabel>
+                <TagLabel className='font-sansSemibold py-3 pr-2'>
+                  {m?.title.substring(0, 23)}{m?.title?.length > 23 ? '...' : ''}
+                </TagLabel>
               </Tag>,
             )
           }

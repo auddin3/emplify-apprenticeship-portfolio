@@ -52,7 +52,9 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
                   />
                   <div>
                     <div className='font-sansSemibold'>{c?.subTitle}</div>
-                    <div className='font-sans text-black-custom1/70 text-sm'>{c?.description.substring(0, 80)}...</div>
+                    <div className='font-sans text-black-custom1/70 text-sm'>
+                      {c?.description.substring(0, 80)}{c?.description?.length > 80 ? '...' : ''}
+                    </div>
                   </div>
                   <div className='flex flex-row items-center space-x-5' style={{ marginLeft: 'auto' }}>
                     <p className={`text-3xl font-sansSemibold ${occurences > 1 ? 'text-green-turquoise' : status === 'Incomplete' ? 'text-pink' : 'text-orange'}`}>{occurences}</p>
