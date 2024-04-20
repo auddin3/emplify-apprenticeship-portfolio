@@ -32,7 +32,7 @@ const AddPage = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio,
   const moduleGradesExist = grades?.filter(g => g?.module === selectedModule?.moduleId).length > 0
 
   const steps = [
-    { title: 'First', description: 'Basic Information' },
+    { title: 'First', description: 'Module Information' },
     { title: 'Second', description: 'Reflection' },
   ]
 

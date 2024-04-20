@@ -1,10 +1,12 @@
-import React from 'react'
-import { Grid, GridItem, Card, CardHeader, CardBody, Stack, StackDivider, IconButton, useDisclosure, Textarea, useToast } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { Grid, GridItem, Card, CardHeader, CardBody, Stack, StackDivider, IconButton, useDisclosure, Textarea,
+  Tabs, TabList, TabPanels, TabPanel, Tab, useToast } from '@chakra-ui/react'
 import { convertDateToString } from '../../utils'
 import Disclosure from '../Disclosure'
 import { PencilSquareIcon } from '@heroicons/react/24/solid'
 import Sidebar from '../Sidebar'
 import ModuleInfoCard from './ModuleInfoCard'
+import UploadEvidence from './UploadEvidence'
 
 const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, setEntries }) => {
   const toast = useToast()
@@ -145,7 +147,7 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
 }
 
 const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
-  const creationDate = convertDateToString(selectedEntry?.dateCreated, { month: 'long', year: 'numeric' })
+  const creationDate = convertDateToString(selectedEntry?.dateCreated, { day: 'numeric', month: 'numeric', year: 'numeric' }).split('/').join('.')
 
   const questions = [
     {
@@ -187,7 +189,7 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
       <CardHeader backgroundColor="#F8F9FD" pl={8} pr={2} className="flex flex-row items-start justify-between">
         <div className="flex flex-col">
           <div className="font-sansSemibold text-black-custom1 mr-6 text-lg">{selectedKSB?.description}</div>
-          <div className="font-sans text-black-custom1/80 pt-2">{creationDate}</div>
+          <div className="font-sans text-black-custom1/80 pt-2 italic">Last Modified {creationDate}</div>
         </div>
         <IconButton
           as={PencilSquareIcon}
@@ -217,16 +219,51 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
 const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selectedKSB, setEntries }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const [tabIndex, setTabIndex] = useState(0)
+
+  const handleTabsChange = (index) => {
+    setTabIndex(index)
+  }
+
   return (
     <>
-      <Grid templateRows='repeat(4, 1fr)' templateColumns='repeat(10, 1fr)' gap={4} minHeight="screen" paddingBottom={10}>
-        <GridItem colSpan={4} rowSpan={4}>
-          <ModuleInfoCard module={module} performance={grades?.find(g => g.module === module.moduleId)} />
-        </GridItem>
-        <GridItem colSpan={6} rowSpan={4}>
-          <PortfolioLogCard selectedEntry={selectedEntry} selectedKSB={selectedKSB} onOpen={onOpen} />
-        </GridItem>
-      </Grid>
+      <Tabs isFitted variant='enclosed' index={tabIndex} onChange={handleTabsChange} className='my-5'>
+        <TabList mb='1em'>
+          <Tab>
+            <div className={`${tabIndex === 0
+              ? 'text-blue-kpmgBlue text-lg'
+              : 'text-black-custom1'}`}>
+                Module Information
+            </div>
+          </Tab>
+          <Tab>
+            <div className={`${tabIndex === 1
+              ? 'text-blue-kpmgBlue text-lg'
+              : 'text-black-custom1'}`}>
+                Reflection
+            </div>
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Grid templateRows='repeat(1, 1fr)' templateColumns='repeat(10, 1fr)' gap={10} minHeight="screen" paddingBottom={10}>
+              <GridItem colSpan={6} rowSpan={1}>
+                <ModuleInfoCard module={module} performance={grades?.find(g => g.module === module.moduleId)} />
+              </GridItem>
+              <GridItem colSpan={4} rowSpan={1}>
+                <UploadEvidence />
+              </GridItem>
+            </Grid>
+          </TabPanel>
+          <TabPanel>
+            <Grid templateRows='repeat(1, 1fr)' templateColumns='repeat(1, 1fr)' gap={4} minHeight="screen" paddingBottom={10}>
+              <GridItem colSpan={1} rowSpan={1}>
+                <PortfolioLogCard selectedEntry={selectedEntry} selectedKSB={selectedKSB} onOpen={onOpen} />
+              </GridItem>
+            </Grid>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
       {isOpen && (
         <EditPortfolioLog
           isOpen={isOpen}

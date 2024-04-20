@@ -15,9 +15,8 @@ const ModuleInfoCard = ({ module, performance }) => {
 
   return (
     <Card>
-      <CardHeader backgroundColor={'#F8F9FD'} px={8}>
-        <div className='text-blue-kpmgBlue/[80] font-sansSemibold leading-tight'>{module?.moduleId}</div>
-        <div className='text-black-custom1 text-lg font-sansSemibold leading-tight mb-2'>{module?.title}</div>
+      <CardHeader backgroundColor={'#F8F9FD'} px={8} className="flex flex-row items-center space-x-3">
+        <div className='text-black-custom1 text-lg font-sansSemibold leading-tight pl-2'>{module?.title}</div>
         <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
           <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
         </Tag>
@@ -46,7 +45,7 @@ const ModuleInfoCard = ({ module, performance }) => {
                   <Tr>
                     <Th>Activity</Th>
                     <Th>Weight(%)</Th>
-                    <Th>Grade</Th>
+                    <Th>Grade(%)</Th>
                     <Th>Total(%)</Th>
                   </Tr>
                 </Thead>
@@ -56,7 +55,7 @@ const ModuleInfoCard = ({ module, performance }) => {
 
                     return (
                       <Tr key={idx}>
-                        <Td noOfLines={4} style={{ maxWidth: '7rem', wordWrap: 'break-word', whiteSpace: 'initial' }}>
+                        <Td noOfLines={4} style={{ maxWidth: '20rem', wordWrap: 'break-word', whiteSpace: 'initial' }}>
                           {g.activity}
                         </Td>
                         <Td>
