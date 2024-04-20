@@ -94,6 +94,7 @@ const Portfolio = () => {
               setPortfolio={setPortfolio}
               setLoading={setLoading}
               setSelectedKSB={setSelectedKSB}
+              canEdit={canEdit}
             />
           )}
     </div>

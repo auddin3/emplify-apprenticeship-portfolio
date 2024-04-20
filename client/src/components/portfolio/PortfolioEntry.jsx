@@ -3,7 +3,7 @@ import { Grid, GridItem, Card, CardHeader, CardBody, Stack, StackDivider, IconBu
   Tabs, TabList, TabPanels, TabPanel, Tab, useToast } from '@chakra-ui/react'
 import { convertDateToString } from '../../utils'
 import Disclosure from '../Disclosure'
-import { PencilSquareIcon } from '@heroicons/react/24/solid'
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import Sidebar from '../Sidebar'
 import ModuleInfoCard from './ModuleInfoCard'
 import UploadEvidence from './UploadEvidence'
@@ -197,7 +197,7 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
           w={4}
           variant="unstyled"
           onClick={onOpen}
-          className="stroke-blue-kpmgBlue cursor-pointer"
+          className="stroke-black-custom1/70 cursor-pointer"
         />
       </CardHeader>
       <CardBody p={0}>

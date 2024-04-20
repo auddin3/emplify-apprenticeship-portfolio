@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Searchbar from '../components/Searchbar'
-import { Card, CardHeader, CardBody, Checkbox, Grid, Spinner, Tabs, TabList, Tab, TabIndicator,
+import { Button, Card, CardHeader, CardBody, Checkbox, Grid, Spinner, Tabs, TabList, Tab, TabIndicator,
   TabPanels, TabPanel, Tag, useDisclosure } from '@chakra-ui/react'
 import SortMenu from '../components/SortMenu'
 import { camelCaseToSpaced, convertDateToString } from '../utils'
@@ -87,6 +87,18 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
         {selectedModule?.assessmentBreakdown && <PieChart data={selectedModule?.assessmentBreakdown}/>}
         <div className="h-1"></div>
         <hr className='border-t border-t-black-custom1/20 text-black-custom1 w-full absolute left-0 right-0' />
+      </div>
+      <div className='w-full flex flex-row justify-center'>
+        <Button
+          size="md"
+          bgColor='#00338D'
+          color='white'
+          borderRadius={99}
+          className='w-1/2 mx-auto mt-8 mb-2'
+          // onClick={handleSubmit}
+        >
+         Use Module
+        </Button>
       </div>
     </Sidebar>
   )
@@ -214,17 +226,17 @@ const Library = () => {
                           {tabModules && tabModules?.map((module, idx) => {
                             return (
                               <Card key={idx} className='px-2'>
-                                <CardHeader className='flex flex-row justify-between border-b'>
+                                <CardHeader className='flex flex-row justify-between' pb={2}>
                                   <Tag backgroundColor='rgba(75, 117, 255, 0.2)' paddingX={2.5} borderRadius={7}>
                                     <div className='text-blue-kpmgBlue'>{camelCaseToSpaced(module?.category)}</div>
                                   </Tag>
                                   {/* <div className='text-sm text-[#00338D]/80 font-sansSemibold'>{convertDateToString(module?.dateCreated) || ''}</div> */}
                                 </CardHeader>
-                                <CardBody>
-                                  <div className='text-blue-kpmgBlue font-sansSemibold text-lg h-12 cursor-pointer' onClick={() => onModuleClick(module)}>
+                                <CardBody pt={0}>
+                                  <div className='text-blue-kpmgBlue font-sansSemibold text-lg min-h-12 cursor-pointer pl-1' onClick={() => onModuleClick(module)}>
                                     {module?.moduleId} - {module?.title}
                                   </div>
-                                  <div className='text-blue-kpmgBlue my-5'>{module?.description}</div>
+                                  <div className='text-blue-kpmgBlue my-2 px-1'>{module?.description}</div>
                                 </CardBody>
                               </Card>
                             )

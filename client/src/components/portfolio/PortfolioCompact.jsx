@@ -32,7 +32,7 @@ const menuOptions = [
   },
 ]
 
-const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) => {
+const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status, canEdit }) => {
   return (
     <div className='px-8 flex flex-col space-y-4 w-full'>
       <div className='font-sansSemibold text-black-custom1/70 text-xl'>{status}</div>
@@ -64,8 +64,8 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
                       w={5}
                       strokeWidth={3}
                       variant={'unstyled'}
-                      onClick={() => setSelectedKSB(c)}
-                      className='stroke-black-custom1/70 cursor-pointer'
+                      onClick={() => canEdit && setSelectedKSB(c)}
+                      className={`stroke-black-custom1/70 ${canEdit ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                     />
                   </div>
                 </CardBody>
@@ -76,7 +76,7 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status }) =
   )
 }
 
-const PortfolioCompact = ({ specification, entries, portfolio, setPortfolio, setLoading, setSelectedKSB }) => {
+const PortfolioCompact = ({ specification, entries, portfolio, setPortfolio, setLoading, setSelectedKSB, canEdit }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [skills, setSkills] = useState()
   const [users, setUsers] = useState()
@@ -141,7 +141,7 @@ const PortfolioCompact = ({ specification, entries, portfolio, setPortfolio, set
                   <Icon color='#7213EA' as={InformationCircleIcon} h={7} w={7}/>
                 </Tooltip>
               </div>
-              <IconButton as={Cog8ToothIcon} size='sm' variant='unstyled' color='#A8A8A8' onClick={onOpen}/>
+              {canEdit && <IconButton as={Cog8ToothIcon} size='sm' variant='unstyled' color='#A8A8A8' onClick={onOpen}/>}
             </div>
             <div className='text-lg pr-96 mt-6 text-black-custom1/80'>{portfolio?.description}</div>
           </div>
@@ -163,6 +163,7 @@ const PortfolioCompact = ({ specification, entries, portfolio, setPortfolio, set
             entries={entries}
             setSelectedKSB={setSelectedKSB}
             status={status}
+            canEdit={canEdit}
           />,
         )}
       </div>
