@@ -146,7 +146,7 @@ const EditPortfolioLog = ({ isOpen, onClose, selectedEntry, setSelectedEntry, se
   )
 }
 
-const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
+const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen, canEdit }) => {
   const creationDate = convertDateToString(selectedEntry?.dateCreated, { day: 'numeric', month: 'numeric', year: 'numeric' }).split('/').join('.')
 
   const questions = [
@@ -191,14 +191,18 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
           <div className="font-sansSemibold text-black-custom1 mr-6 text-lg">{selectedKSB?.description}</div>
           <div className="font-sans text-black-custom1/80 pt-2 italic">Last Modified {creationDate}</div>
         </div>
-        <IconButton
-          as={PencilSquareIcon}
-          h={4}
-          w={4}
-          variant="unstyled"
-          onClick={onOpen}
-          className="stroke-black-custom1/70 cursor-pointer"
-        />
+        {
+          canEdit && (
+            <IconButton
+              as={PencilSquareIcon}
+              h={4}
+              w={4}
+              variant="unstyled"
+              onClick={onOpen}
+              className="stroke-black-custom1/70 cursor-pointer"
+            />
+          )
+        }
       </CardHeader>
       <CardBody>
         <Stack divider={<StackDivider />}>
@@ -216,7 +220,7 @@ const PortfolioLogCard = ({ selectedEntry, selectedKSB, onOpen }) => {
   )
 }
 
-const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selectedKSB, setEntries, openFile, fileList }) => {
+const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selectedKSB, setEntries, openFile, fileList, canEdit }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [tabIndex, setTabIndex] = useState(0)
@@ -262,7 +266,7 @@ const PortfolioEntry = ({ module, selectedEntry, setSelectedEntry, grades, selec
           <TabPanel>
             <Grid templateRows='repeat(1, 1fr)' templateColumns='repeat(1, 1fr)' gap={4} minHeight="screen" paddingBottom={10}>
               <GridItem colSpan={1} rowSpan={1}>
-                <PortfolioLogCard selectedEntry={selectedEntry} selectedKSB={selectedKSB} onOpen={onOpen} />
+                <PortfolioLogCard selectedEntry={selectedEntry} selectedKSB={selectedKSB} onOpen={onOpen} canEdit={canEdit}/>
               </GridItem>
             </Grid>
           </TabPanel>

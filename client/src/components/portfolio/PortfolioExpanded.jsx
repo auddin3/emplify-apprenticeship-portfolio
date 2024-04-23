@@ -14,11 +14,13 @@ const menuOptions = [
     type: 'alpha',
     name: 'Alphabetically (A-Z)',
     chronological: true,
+    property: 'module',
   },
   {
     type: 'alpha',
     name: 'Alphabetically (Z-A)',
     chronological: false,
+    property: 'module',
   },
 ]
 
@@ -289,7 +291,7 @@ const AddPage = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio,
   )
 }
 
-const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries, setSelectedEntry, setEntries, onOpen, canEdit, selectedKSB }) => {
+const EntriesGrid = ({ setLoading, modules, entries, setSelectedEntry, setEntries, onOpen, canEdit, selectedKSB }) => {
   const toast = useToast()
   const handleDelete = async (entry) => {
     const apiUrl = `http://localhost:5001/portfolioEntry/${entry._id}`
@@ -332,8 +334,8 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
     <div>
       <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full' />
       <SortMenu
-        elements={sortedModules}
-        setSortedElements={setSortedModules}
+        elements={entries}
+        setSortedElements={setEntries}
         menuOptions={menuOptions}
         setLoading={setLoading}
       />
@@ -353,7 +355,7 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
                 bgColor="#00338D"
                 borderRadius='full'
               >
-                <TagLeftIcon boxSize='12px' as={PlusIcon} className='mr-2' onClick={onOpen} />
+                {canEdit && <TagLeftIcon boxSize='12px' as={PlusIcon} className='mr-2' onClick={onOpen} />}
                 <TagLabel className='font-sansSemibold py-3 pr-2'>
                   {m?.title.substring(0, 23)}{m?.title?.length > 23 ? '...' : ''}
                 </TagLabel>
@@ -372,7 +374,9 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
                     color="#A9A9A9"
                     variant="unstyled"
                     size="xs"
+                    disabled={!canEdit}
                     onClick={() => handleDelete(entry)}
+                    className={`${canEdit ? '' : 'invisible cursor-not-allowed'}`}
                   />
                 </CardHeader>
                 <CardBody pt={0} mt={-4} onClick={() => setSelectedEntry(entry)} className='cursor-pointer'>
@@ -406,7 +410,6 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
 
 const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, canEdit, portfolio, grades, setGrades, openFile, fileList }) => {
   const [modules, setModules] = useState()
-  const [sortedModules, setSortedModules] = useState()
   const [selectedEntry, setSelectedEntry] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -498,12 +501,11 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
               setEntries={setEntries}
               fileList={fileList}
               openFile={openFile}
+              canEdit={canEdit}
             />
             : (
               <>
                 <EntriesGrid
-                  sortedModules={sortedModules}
-                  setSortedModules={setSortedModules}
                   setLoading={setLoading}
                   modules={modules}
                   entries={entries}

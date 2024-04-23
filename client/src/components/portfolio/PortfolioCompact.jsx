@@ -64,8 +64,8 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status, can
                       w={5}
                       strokeWidth={3}
                       variant={'unstyled'}
-                      onClick={() => canEdit && setSelectedKSB(c)}
-                      className={`stroke-black-custom1/70 ${canEdit ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                      onClick={() => (canEdit || status !== 'Incomplete') && setSelectedKSB(c)}
+                      className={`stroke-black-custom1/70 ${!canEdit && status === 'Incomplete' ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                     />
                   </div>
                 </CardBody>
