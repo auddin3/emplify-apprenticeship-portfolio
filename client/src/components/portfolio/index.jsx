@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar'
 import { useLocation } from 'react-router-dom'
-import { Spinner } from '@chakra-ui/react'
+import { Spinner, useToast } from '@chakra-ui/react'
 import PortfolioCompact from './PortfolioCompact'
 import PortfolioExpanded from './PortfolioExpanded'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
 const Portfolio = () => {
   const location = useLocation()
-  const portfolio = location?.state?.portfolio
+  const [portfolio, setPortfolio] = useState(location?.state?.portfolio)
   const auth = useAuthUser()
   const user = auth?.user
   const [loading, setLoading] = useState(true)
-  const [criterion, setCriterion] = useState()
   const [entries, setEntries] = useState()
-  const [sortedCriterion, setSortedCriterion] = useState()
+  const [specification, setSpecification] = useState(portfolio?.specification)
   const [selectedKSB, setSelectedKSB] = useState()
   const [userGrades, setUserGrades] = useState()
+  const toast = useToast()
+
   const canEdit = portfolio?.owner === user.uid
 
   const fetchData = async () => {
@@ -45,7 +46,6 @@ const Portfolio = () => {
         gradesResponse.json(),
       ])
 
-      setCriterion(portfolioData?.specification)
       setEntries(portfolioData?.entries)
       setUserGrades(gradesData?.userGrades)
     } catch (error) {
@@ -60,16 +60,77 @@ const Portfolio = () => {
   }, [])
 
   useEffect(() => {
-    criterion && setSortedCriterion([...criterion].sort((a, b) => a.title.localeCompare(b.title)))
-  }, [criterion])
+    portfolio?.specification && setSpecification(portfolio?.specification)
+  }, [portfolio?.specification])
 
-  useEffect(() => {
-    entries && setEntries(entries)
-  }, [entries])
+  const [fileList, setFileList] = useState([])
 
-  useEffect(() => {
-    userGrades && setUserGrades(userGrades)
-  }, [userGrades])
+  const openFile = async () => {
+    try {
+      const path = 'documents/'
+      const pathSegments = path.split('/').filter(segment => segment !== '').slice(0, -1)
+      let currentHandle = await window.showDirectoryPicker()
+
+      for (const segment of pathSegments) {
+        currentHandle = await currentHandle.getDirectoryHandle(segment)
+      }
+
+      const files = []
+      for await (const entry of currentHandle.values()) {
+        const isDirectory = entry.kind === 'directory'
+        const fileInfo = {
+          name: entry.name,
+          isDirectory,
+          files: isDirectory ? await readFilesFromDirectory(entry) : null,
+        }
+        files.push(fileInfo)
+      }
+      setFileList(files)
+      toast({
+        title: 'Success',
+        description: 'The file list has been refreshed.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (error) {
+      console.error('Error selecting directory:', error)
+      if (error.name === 'NotAllowedError') {
+        toast({
+          title: 'Error',
+          description: 'You do not have permission to access this directory. Please grant permission in your browser settings.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        toast({
+          title: 'Error',
+          description: 'An error occurred while selecting the directory.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      }
+    }
+  }
+
+  const readFilesFromDirectory = async (directoryHandle) => {
+    const files = []
+    for await (const entry of directoryHandle.values()) {
+      const isDirectory = entry.kind === 'directory'
+      const fileInfo = {
+        name: entry.name,
+        isDirectory,
+        files: isDirectory ? await readFilesFromDirectory(entry) : null,
+      }
+      files.push(fileInfo)
+    }
+    return files
+  }
 
   return (
     <div className='bg-gradient-to-r from-[#F7F7F8] from-10% to-white flex flex-row'>
@@ -92,16 +153,19 @@ const Portfolio = () => {
               setGrades={setUserGrades}
               canEdit={canEdit}
               portfolio={portfolio}
+              fileList={fileList}
+              openFile={openFile}
             />
           )
           : (
             <PortfolioCompact
-              sortedCriterion={sortedCriterion}
-              setSortedCriterion={setSortedCriterion}
+              specification={specification?.sort((a, b) => a?.localeCompare(b))}
               entries={entries}
               portfolio={portfolio}
+              setPortfolio={setPortfolio}
               setLoading={setLoading}
               setSelectedKSB={setSelectedKSB}
+              canEdit={canEdit}
             />
           )}
     </div>

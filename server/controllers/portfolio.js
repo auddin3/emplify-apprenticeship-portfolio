@@ -15,19 +15,47 @@ const getUserPortfolios = async (uid) => {
   return { portfolios }
 }
 
-const getPortfolioCriterion = async (pid) => {
+const updatePortfolio = async (pid, updatedPortfolioData) => {
   const db = getDb()
 
-  const { specification: titles } = await db.collection(collectionName).findOne(
-    { _id: pid },
-    { projection: { specification: 1, _id: 0 } },
-  )
+  try {
+    if (!updatedPortfolioData) {
+      throw new Error('No update object.')
+    }
 
-  const titleArray = Array.isArray(titles) ? titles : [titles]
+    const existingPortfolio = await db.collection(collectionName).findOne({ _id: pid })
 
-  const specification = await db.collection('skills').find({ title: { $in: titleArray } }).toArray()
+    const updateResult = await db.collection(collectionName).updateOne(
+      { _id: pid },
+      {
+        $set: {
+          name: updatedPortfolioData?.name,
+          description: updatedPortfolioData?.description,
+          specification: updatedPortfolioData?.specification,
+        },
+      },
+    )
 
-  return { specification }
+    if (updateResult.modifiedCount === 0) {
+      throw new Error('Portfolio not found or not updated.')
+    }
+
+    const updatedPortfolio = await db.collection(collectionName).findOne({ _id: pid })
+    const deletedSkills = existingPortfolio?.specification?.filter(skill => !updatedPortfolio?.specification?.includes(skill))
+
+    const deletionResult = await db.collection('portfolioEntries').deleteMany({
+      portfolio: pid,
+      skill: { $in: deletedSkills },
+    })
+
+    if (deletionResult.modifiedCount === 0) {
+      throw new Error('Old portfolio entries were not found or removed.')
+    }
+
+    return updatedPortfolio
+  } catch (error) {
+    throw new Error(`Failed to update portfolio: ${error.message}`)
+  }
 }
 
 const getPortfolioEntries = async (pid) => {
@@ -79,7 +107,7 @@ const deletePortfolioEntry = async (pid) => {
 
 module.exports = {
   getUserPortfolios,
-  getPortfolioCriterion,
+  updatePortfolio,
   getPortfolioEntries,
   getEntries,
   insertPortfolioEntry,

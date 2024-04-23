@@ -5,7 +5,7 @@ import { Icon,
   InputLeftElement } from '@chakra-ui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
-const SearchBar = ({ elements, setElements, initialElements, searchKeys, setLoading }) => {
+const Searchbar = ({ elements, setElements, initialElements, searchKeys, setLoading }) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = (searchTerm) => {
@@ -55,4 +55,4 @@ const SearchBar = ({ elements, setElements, initialElements, searchKeys, setLoad
   )
 }
 
-export default SearchBar
+export default Searchbar

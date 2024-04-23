@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Avatar, Card, CardBody, CardHeader, SimpleGrid, Select, Tag, NumberInput, NumberInputField, Icon, IconButton, InputRightAddon, InputGroup,
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Avatar, Card, CardBody, CardHeader, SimpleGrid, Select, Tag, TagLeftIcon, TagLabel, NumberInput, NumberInputField, Icon, IconButton, InputRightAddon, InputGroup,
   Step, Stepper, StepIndicator, StepStatus, StepIcon, StepNumber, Box, StepTitle, StepSeparator, StepDescription, useSteps, Textarea, useDisclosure, useToast } from '@chakra-ui/react'
 import { ChevronRightIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
-import { TrashIcon } from '@heroicons/react/24/solid'
+import { TrashIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { camelCaseToSpaced } from '../../utils'
 import SortMenu from '../SortMenu'
 import PortfolioEntry from './PortfolioEntry'
-import SideBar from '../SideBar'
+import Sidebar from '../Sidebar'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
 const menuOptions = [
@@ -14,24 +14,28 @@ const menuOptions = [
     type: 'alpha',
     name: 'Alphabetically (A-Z)',
     chronological: true,
+    property: 'module',
   },
   {
     type: 'alpha',
     name: 'Alphabetically (Z-A)',
     chronological: false,
+    property: 'module',
   },
 ]
 
-const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio, grades, setGrades }) => {
+const AddPage = ({ isOpen, onClose, modules, selectedKSB, setEntries, portfolio, grades, setGrades }) => {
   const toast = useToast()
   const [newEntry, setNewEntry] = useState()
   const [selectedModule, setSelectedModule] = useState()
   const auth = useAuthUser()
   const user = auth?.user
 
+  const moduleGradesExist = grades?.filter(g => g?.module === selectedModule?.moduleId).length > 0
+
   const steps = [
-    { title: 'First', description: 'Basic Information' },
-    { title: 'Second', description: 'Annotation' },
+    { title: 'First', description: 'Module Information' },
+    { title: 'Second', description: 'Reflection' },
   ]
 
   const { activeStep, setActiveStep } = useSteps({
@@ -84,14 +88,12 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
     }
   }
 
-  const moduleGradesExist = grades?.filter(g => g?.module === selectedModule?.moduleId).length > 0
-
   return (
-    <SideBar
+    <Sidebar
       isOpen={isOpen}
       onClose={onClose}
       size="xl"
-      title={'Add Portfolio Entry'}
+      title='New Page'
     >
       <div className='mx-20 my-10'>
         <Stepper size='md' index={activeStep}>
@@ -166,6 +168,7 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
                                   size='md'
                                   max={100}
                                   min={0}
+                                  defaultValue={newEntry[assessment?.title]}
                                   onChange={(e => handleChange(assessment?.title, e))}
                                 >
                                   <NumberInputField />
@@ -284,11 +287,11 @@ const AddPortfolioLog = ({ isOpen, onClose, modules, selectedKSB, setEntries, po
           </>
         )
       }
-    </SideBar>
+    </Sidebar>
   )
 }
 
-const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, entries, setSelectedEntry, setEntries, onOpen, canEdit }) => {
+const EntriesGrid = ({ setLoading, modules, entries, setSelectedEntry, setEntries, onOpen, canEdit, selectedKSB }) => {
   const toast = useToast()
   const handleDelete = async (entry) => {
     const apiUrl = `http://localhost:5001/portfolioEntry/${entry._id}`
@@ -331,13 +334,35 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
     <div>
       <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full' />
       <SortMenu
-        elements={sortedModules}
-        setSortedElements={setSortedModules}
+        elements={entries}
+        setSortedElements={setEntries}
         menuOptions={menuOptions}
         setLoading={setLoading}
       />
       <hr className='border-t border-t-black-custom1/20 text-black-custom1 my-2 w-full mb-5' />
       <div>
+        <div className='flex flex-row items-center space-x-4 text-black-custom1/80 mb-7 mx-4'>
+          <div className='text-black-custom1/70 font-sansSemibold'>SUGGESTED:</div>
+          {modules?.filter(m => selectedKSB?.category.includes(m?.category))
+            .filter(m => !entries.map(e => e.module).includes(m.moduleId))
+            .sort((a, b) => a?.title.localeCompare(b?.title))
+            .slice(0, 5).map(m =>
+              <Tag
+                size='md'
+                key={m?.moduleId}
+                variant='subtle'
+                color="#FFFFFF"
+                bgColor="#00338D"
+                borderRadius='full'
+              >
+                {canEdit && <TagLeftIcon boxSize='12px' as={PlusIcon} className='mr-2' onClick={onOpen} />}
+                <TagLabel className='font-sansSemibold py-3 pr-2'>
+                  {m?.title.substring(0, 23)}{m?.title?.length > 23 ? '...' : ''}
+                </TagLabel>
+              </Tag>,
+            )
+          }
+        </div>
         <SimpleGrid columns={3} py={5} gap={10}>
           {entries?.map((entry, idx) => {
             const module = modules?.find(m => m.moduleId === entry.module)
@@ -349,7 +374,9 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
                     color="#A9A9A9"
                     variant="unstyled"
                     size="xs"
+                    disabled={!canEdit}
                     onClick={() => handleDelete(entry)}
+                    className={`${canEdit ? '' : 'invisible cursor-not-allowed'}`}
                   />
                 </CardHeader>
                 <CardBody pt={0} mt={-4} onClick={() => setSelectedEntry(entry)} className='cursor-pointer'>
@@ -381,9 +408,8 @@ const EntriesGrid = ({ sortedModules, setSortedModules, setLoading, modules, ent
   )
 }
 
-const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, canEdit, portfolio, grades, setGrades }) => {
+const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, setLoading, canEdit, portfolio, grades, setGrades, openFile, fileList }) => {
   const [modules, setModules] = useState()
-  const [sortedModules, setSortedModules] = useState()
   const [selectedEntry, setSelectedEntry] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -473,12 +499,13 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
               grades={grades}
               selectedKSB={selectedKSB}
               setEntries={setEntries}
+              fileList={fileList}
+              openFile={openFile}
+              canEdit={canEdit}
             />
             : (
               <>
                 <EntriesGrid
-                  sortedModules={sortedModules}
-                  setSortedModules={setSortedModules}
                   setLoading={setLoading}
                   modules={modules}
                   entries={entries}
@@ -486,10 +513,11 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
                   setSelectedEntry={setSelectedEntry}
                   onOpen={onOpen}
                   canEdit={canEdit}
+                  selectedKSB={selectedKSB}
                 />
                 {
                   isOpen && !!canEdit &&
-                  <AddPortfolioLog
+                  <AddPage
                     isOpen={isOpen}
                     onClose={onClose}
                     modules={modules}

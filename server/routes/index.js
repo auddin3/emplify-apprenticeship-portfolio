@@ -4,12 +4,23 @@ const mongodb = require('mongodb')
 
 const portfolioController = require('../controllers/portfolio')
 const skillController = require('../controllers/skill')
+const userController = require('../controllers/login')
 
 const ObjectId = mongodb.ObjectId
 
 // Define main route
 router.get('/', (req, res) => {
   res.send('Welcome to the API!')
+})
+
+router.get('/users', async function (req, res) {
+  try {
+    const { users } = await userController.getAllUsers()
+    return res.json({ users })
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
 })
 
 router.get('/dashboard/:uid', async function (req, res) {

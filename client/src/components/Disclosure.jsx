@@ -6,7 +6,7 @@ const Disclosure = ({ question, answer, subtext }) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Box className='px-8 py-4'>
+    <Box className='px-3 py-2'>
       <div className='flex flex-row items-center space-x-4'>
         <IconButton
           as={ChevronRightIcon}

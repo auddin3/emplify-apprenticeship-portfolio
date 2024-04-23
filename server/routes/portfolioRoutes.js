@@ -24,10 +24,9 @@ router.get('/portfolio/:pid', async function (req, res) {
   const pid = new ObjectId(req.params.pid)
 
   try {
-    const { specification } = await portfolioController.getPortfolioCriterion(pid)
     const { entries } = await portfolioController.getPortfolioEntries(pid)
 
-    return res.json({ specification, entries })
+    return res.json({ entries })
   } catch (error) {
     console.error('Error:', error)
     res.status(500).json({ message: 'Internal Server Error' })
@@ -39,6 +38,21 @@ router.get('/entries', async function (req, res) {
     const { entries } = await portfolioController.getEntries()
 
     return res.json({ entries })
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+})
+
+router.post('/portfolio/:pid', async function (req, res) {
+  const pid = new ObjectId(req.params.pid)
+  const updatedPortfolioData = req.body
+
+  try {
+    const updatedPortfolio = await portfolioController.updatePortfolio(pid, updatedPortfolioData)
+    const updatedPortfolioEntries = await portfolioController.getPortfolioEntries(pid)
+
+    return res.json({ portfolio: updatedPortfolio, entries: updatedPortfolioEntries })
   } catch (error) {
     console.error('Error:', error)
     res.status(500).json({ message: 'Internal Server Error' })
