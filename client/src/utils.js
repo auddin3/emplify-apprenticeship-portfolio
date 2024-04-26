@@ -71,4 +71,26 @@ const handleSort = ({ elements, selected }) => {
   }
 }
 
-module.exports = { calculateDateDifference, camelCaseToSpaced, convertDateToString, capitalize, generateRandomString, handleSort }
+const handleSearch = ({ searchTerm, elements, initialElements, searchKeys }) => {
+  if (elements) {
+    const sortedElements = [...initialElements].sort((a, b) => a.title.localeCompare(b.title))
+
+    const filteredElements = searchTerm.trim().length < 1
+      ? initialElements
+      : sortedElements.filter(el =>
+        searchKeys.some(k => el[k].toLowerCase().includes(searchTerm.toLowerCase())),
+      )
+
+    return filteredElements
+  }
+}
+
+module.exports = {
+  calculateDateDifference,
+  camelCaseToSpaced,
+  convertDateToString,
+  capitalize,
+  generateRandomString,
+  handleSort,
+  handleSearch,
+}

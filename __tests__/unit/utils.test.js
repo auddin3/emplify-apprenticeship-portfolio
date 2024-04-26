@@ -70,7 +70,7 @@ describe('Sorting Menu Functionality', () => {
     const selected = { type: 'numerical', chronological: true, property: 'age',  name: 'Age', };
 
     const sortedElements = utilsModule.handleSort({ elements, selected });
-    
+
     expect(sortedElements).toEqual([
       { age: 12 }, 
       { age: 25 }, 
@@ -123,4 +123,52 @@ describe('Sorting Menu Functionality', () => {
     ]);
   })
 })
+
+describe('handleSearch function', () => {
+  const elements = [
+    { title: 'Apple', module: 'Fruit' },
+    { title: 'Banana', module: 'Fruit' },
+    { title: 'Carrot', module: 'Vegetable' },
+  ];
+
+  const initialElements = [...elements];
+
+  test('filters elements based on search term in title', () => {
+    const searchTerm = 'app';
+    const searchKeys = ['title'];
+
+    const result = utilsModule.handleSearch({ searchTerm, elements, initialElements, searchKeys });
+
+    expect(result).toEqual([{ title: 'Apple', module: 'Fruit' }]);
+  });
+
+  test('filters elements based on search term in module', () => {
+    const searchTerm = 'veg';
+    const searchKeys = ['module'];
+
+    const result = utilsModule.handleSearch({ searchTerm, elements, initialElements, searchKeys });
+
+    expect(result).toEqual([{ title: 'Carrot', module: 'Vegetable' }]);
+  });
+
+  test('returns all elements if search term is empty', () => {
+    const searchTerm = '';
+    const searchKeys = ['title'];
+
+    const result = utilsModule.handleSearch({ searchTerm, elements, initialElements, searchKeys });
+
+    expect(result).toEqual(elements);
+  });
+
+  test('returns no elements if search term does not match any', () => {
+    const searchTerm = 'xyz';
+    const searchKeys = ['title'];
+
+    const result = utilsModule.handleSearch({ searchTerm, elements, initialElements, searchKeys });
+
+    expect(result).toEqual([]);
+  });
+})
+
+
 

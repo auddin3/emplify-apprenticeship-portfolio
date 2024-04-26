@@ -4,28 +4,17 @@ import { Icon,
   InputGroup,
   InputLeftElement } from '@chakra-ui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { handleSearch } from '../utils'
 
 const Searchbar = ({ elements, setElements, initialElements, searchKeys, setLoading }) => {
   const [searchTerm, setSearchTerm] = useState('')
 
-  const handleSearch = (searchTerm) => {
+  const handleChange = (searchTerm) => {
+    setLoading(true)
     setSearchTerm(searchTerm)
-    setLoading && setLoading(true)
-
-    if (elements) {
-      setElements((prevElements) => {
-        const sortedElements = [...initialElements].sort((a, b) => a.title.localeCompare(b.title))
-
-        const filteredElements = searchTerm.trim().length < 1
-          ? initialElements
-          : sortedElements.filter(el =>
-            searchKeys.some(k => el[k].toLowerCase().includes(searchTerm.toLowerCase())),
-          )
-
-        setLoading && setLoading(false)
-        return filteredElements
-      })
-    }
+    const filteredElements = handleSearch({ searchTerm, elements, initialElements, searchKeys })
+    setElements(filteredElements)
+    setLoading(false)
   }
 
   return (
@@ -48,7 +37,7 @@ const Searchbar = ({ elements, setElements, initialElements, searchKeys, setLoad
           py='1.75rem'
           marginX={2}
           value={searchTerm}
-          onChange={e => handleSearch(e.target.value)}
+          onChange={e => handleChange(e.target.value)}
         />
       </InputGroup>
     </>
