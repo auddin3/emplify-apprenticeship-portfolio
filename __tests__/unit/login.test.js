@@ -1,5 +1,5 @@
-const userLogin = require('../../server/controllers/login');
-const db = require('../../server/config/database');
+const userLogin = require('../../server/controllers/login')
+const db = require('../../server/config/database')
 
 describe('User Login', () => {
 

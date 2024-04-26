@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuList, MenuItem, Icon } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
+import { handleSort } from '../utils'
 
 const defaultMenuOptions = [
   {
@@ -21,40 +22,8 @@ const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOption
   useEffect(() => {
     if (elements) {
       setLoading && setLoading(true)
-      const sortedElements = [...elements]
-
-      if (selected.type === 'alpha') {
-        if (selected.chronological) {
-          if (selected?.property) setSortedElements(sortedElements.sort((a, b) => a[selected.property].localeCompare(b[selected.property])))
-          if (sortedElements[0]?.name !== undefined) setSortedElements(sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
-          if (sortedElements[0]?.title !== undefined) setSortedElements(sortedElements.sort((a, b) => a.title.localeCompare(b.title)))
-        } else {
-          if (selected?.property !== undefined) setSortedElements(sortedElements.sort((a, b) => b[selected.property].localeCompare(a[selected.property])))
-          if (sortedElements[0]?.name !== undefined) setSortedElements(sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
-          if (sortedElements[0]?.title !== undefined) setSortedElements(sortedElements.sort((a, b) => b.title.localeCompare(a.title)))
-        }
-      }
-      if (selected.type === 'numerical') {
-        if (selected.chronological) setSortedElements(sortedElements.sort((a, b) => a[selected.property] + b[selected.property]))
-        else setSortedElements(sortedElements.sort((a, b) => a[selected.property] - b[selected.property]))
-      }
-      if (selected.type === 'date') {
-        if (selected.chronological) {
-          setSortedElements(sortedElements.sort((a, b) => {
-            const dateA = a[selected.property] ? new Date(a[selected.property]) : null
-            const dateB = b[selected.property] ? new Date(b[selected.property]) : null
-
-            return dateB - dateA
-          }))
-        } else {
-          setSortedElements(sortedElements.sort((a, b) => {
-            const dateA = a[selected.property] ? new Date(a[selected.property]) : null
-            const dateB = b[selected.property] ? new Date(b[selected.property]) : null
-
-            return dateA - dateB
-          }))
-        }
-      }
+      const sortedElements = handleSort({ elements, selected })
+      setSortedElements(sortedElements)
       setLoading && setLoading(false)
     }
   }, [selected, elements, setSortedElements])
