@@ -1,5 +1,5 @@
-const userRegistration = require('../server/controllers/register')
-const db = require('../server/config/database')
+const userRegistration = require('../../server/controllers/register')
+const db = require('../../server/config/database')
 
 describe('User Registration', () => {
   // Connect to the database before running any tests
