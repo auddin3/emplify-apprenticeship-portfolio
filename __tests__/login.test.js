@@ -6,7 +6,7 @@ beforeAll(async () => {
   await db.connectToDatabase()
 })
 
-describe('User Authentication', () => {
+describe('User Login', () => {
   // Test case for valid user login
   test('Valid username and password should authenticate user', async () => {
     const email = 'qmul@qmul.ac.uk'
