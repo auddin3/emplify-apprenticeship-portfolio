@@ -21,12 +21,9 @@ const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOption
 
   useEffect(() => {
     if (elements) {
-      setLoading && setLoading(true)
-      const sortedElements = handleSort({ elements, selected })
-      setSortedElements(sortedElements)
-      setLoading && setLoading(false)
+      setSortedElements(handleSort({ elements, selected }))
     }
-  }, [selected, elements, setSortedElements])
+  }, [selected, elements])
 
   const handleMenuItemClick = (value) => {
     setSelected(value)

@@ -69,6 +69,8 @@ const handleSort = ({ elements, selected }) => {
       }))
     }
   }
+
+  return sortedElements
 }
 
 const handleSearch = ({ searchTerm, elements, initialElements, searchKeys }) => {
