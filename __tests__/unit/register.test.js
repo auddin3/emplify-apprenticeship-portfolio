@@ -7,6 +7,10 @@ describe('User Registration', () => {
     await db.connectToDatabase()
   })
 
+  afterAll(async () => {
+    await db.close()
+  })
+
   test('Register with valid information', async () => {
     const name = 'Test User'
     const email = 'test@example.com'

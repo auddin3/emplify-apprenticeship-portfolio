@@ -7,6 +7,10 @@ describe('User Login', () => {
   beforeAll(async () => {
     await db.connectToDatabase()
   })
+
+  afterAll(async () => {
+    await db.close()
+  })
   
   // Test case for valid user login
   test('Valid username and password should authenticate user', async () => {

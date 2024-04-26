@@ -26,6 +26,8 @@ app.use(gradeRoutes)
 app.use(skillRoutes)
 
 // Start the server
-db.connectToDatabase().then(function () {
+const server = db.connectToDatabase().then(function () {
   app.listen(5001)
 })
+
+module.exports = server
