@@ -18,4 +18,11 @@ const insertUserGrade = async (newEntry) => {
   return { grades }
 }
 
-module.exports = { getUserGrades, insertUserGrade }
+const deleteGrade = async (uid, mod) => {
+  const db = getDb()
+  await db.collection(collectionName).deleteMany({ user: uid, module: mod })
+  const grades = await db.collection(collectionName).find({ uid }).toArray()
+  return { grades }
+}
+
+module.exports = { getUserGrades, insertUserGrade, deleteGrade }

@@ -36,13 +36,13 @@ describe('Portfolio Controller Integration Tests', () => {
             .send({ 
                 name: 'Updated Title', 
                 description: 'This is a test', 
-                specification: ['C1', 'C4'] 
+                specification: ['C1', 'C6'] 
             })
 
             expect(response.status).toBe(200)
             expect(response.body.portfolio.name).toBe('Updated Title')
             expect(response.body.portfolio.description).toBe('This is a test')
-            expect(response.body.portfolio.specification).toEqual(['C1', 'C4'] )
+            expect(response.body.portfolio.specification).toEqual(['C1', 'C6'] )
         })
     })
 
