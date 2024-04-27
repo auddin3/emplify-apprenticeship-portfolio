@@ -185,6 +185,8 @@ const Portfolios = () => {
     portfolios && setSortedPortfolios(portfolios)
   }, [portfolios])
 
+  console.log(sortedPortfolios)
+
   return (
     <div className='bg-gray-paleGray flex flex-row'>
       <Navbar />

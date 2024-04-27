@@ -54,7 +54,6 @@ router.post('/portfolio/:pid', async function (req, res) {
 
     return res.json({ portfolio: updatedPortfolio, entries: updatedPortfolioEntries })
   } catch (error) {
-    console.error('Error:', error)
     res.status(500).json({ message: 'Internal Server Error' })
   }
 })

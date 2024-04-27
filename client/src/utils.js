@@ -1,4 +1,4 @@
-export const calculateDateDifference = (targetDate) => {
+const calculateDateDifference = (targetDate) => {
   const currentDate = new Date()
   const targetDateObj = new Date(targetDate)
 
@@ -8,7 +8,7 @@ export const calculateDateDifference = (targetDate) => {
   return daysDifference
 }
 
-export const camelCaseToSpaced = (str) => {
+const camelCaseToSpaced = (str) => {
   if (str) {
     return str
       .replace(/([a-z])([A-Z])/g, '$1 $2')
@@ -16,15 +16,15 @@ export const camelCaseToSpaced = (str) => {
   }
 }
 
-export const convertDateToString = (date, options = { day: 'numeric', month: 'numeric', year: 'numeric' }) => {
+const convertDateToString = (date, options = { day: 'numeric', month: 'numeric', year: 'numeric' }) => {
   return new Date(date).toLocaleDateString('en-GB', options)
 }
 
-export const capitalize = (str) => {
+const capitalize = (str) => {
   return str.replace(/\b\w/g, match => match.toUpperCase())
 }
 
-export const generateRandomString = (length) => {
+const generateRandomString = (length) => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let result = ''
   const charactersLength = characters.length
@@ -32,4 +32,67 @@ export const generateRandomString = (length) => {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
   return result
+}
+
+const handleSort = ({ elements, selected }) => {
+  const sortedElements = [...elements]
+
+  if (selected.type === 'alpha') {
+    if (selected.chronological) {
+      if (selected?.property) return (sortedElements.sort((a, b) => a[selected.property].localeCompare(b[selected.property])))
+      if (sortedElements[0]?.name !== undefined) return (sortedElements.sort((a, b) => a.name.localeCompare(b.name)))
+      if (sortedElements[0]?.title !== undefined) return (sortedElements.sort((a, b) => a.title.localeCompare(b.title)))
+    } else {
+      if (selected?.property !== undefined) return (sortedElements.sort((a, b) => b[selected.property].localeCompare(a[selected.property])))
+      if (sortedElements[0]?.name !== undefined) return (sortedElements.sort((a, b) => b.name.localeCompare(a.name)))
+      if (sortedElements[0]?.title !== undefined) return (sortedElements.sort((a, b) => b.title.localeCompare(a.title)))
+    }
+  }
+  if (selected.type === 'numerical') {
+    if (selected.chronological) return (sortedElements.sort((a, b) => a[selected.property] - b[selected.property]))
+    else return (sortedElements.sort((a, b) => b[selected.property] - a[selected.property]))
+  }
+  if (selected.type === 'date') {
+    if (selected.chronological) {
+      return (sortedElements.sort((a, b) => {
+        const dateA = a[selected.property] ? new Date(a[selected.property]) : null
+        const dateB = b[selected.property] ? new Date(b[selected.property]) : null
+
+        return dateB - dateA
+      }))
+    } else {
+      return (sortedElements.sort((a, b) => {
+        const dateA = a[selected.property] ? new Date(a[selected.property]) : null
+        const dateB = b[selected.property] ? new Date(b[selected.property]) : null
+
+        return dateA - dateB
+      }))
+    }
+  }
+
+  return sortedElements
+}
+
+const handleSearch = ({ searchTerm, elements, initialElements, searchKeys }) => {
+  if (elements) {
+    const sortedElements = [...initialElements].sort((a, b) => a.title.localeCompare(b.title))
+
+    const filteredElements = searchTerm.trim().length < 1
+      ? initialElements
+      : sortedElements.filter(el =>
+        searchKeys.some(k => el[k].toLowerCase().includes(searchTerm.toLowerCase())),
+      )
+
+    return filteredElements
+  }
+}
+
+module.exports = {
+  calculateDateDifference,
+  camelCaseToSpaced,
+  convertDateToString,
+  capitalize,
+  generateRandomString,
+  handleSort,
+  handleSearch,
 }

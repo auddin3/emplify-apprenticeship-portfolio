@@ -86,10 +86,10 @@ const updatePortfolioEntry = async (pid, formattedEntry) => {
     { _id: pid },
     {
       $set: {
-        q1: formattedEntry.q1,
-        q2: formattedEntry.q2,
-        q3: formattedEntry.q3,
-        q4: formattedEntry.q4,
+        q1: formattedEntry?.q1,
+        q2: formattedEntry?.q2,
+        q3: formattedEntry?.q3,
+        q4: formattedEntry?.q4,
       },
     })
 
