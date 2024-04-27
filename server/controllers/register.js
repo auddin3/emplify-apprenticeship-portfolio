@@ -38,19 +38,20 @@ const register = async (req, res) => {
   const { name, email, password, school } = req.body
 
   const db = getDb()
-  const validDetails = registerUser(name, email, password, school)
+  const validDetails = await registerUser(name, email, password, school)
 
   if (!validDetails.success) {
-    res.status(500).json({ error: 'Registration details are invalid' })
+    return res.status(500).json({ error: validDetails.message })
   }
 
-  const hashedPassword = await bcrypt.hash(password, 12)
-  const savedUser = db.collection(collectionName).insertOne({ name, email, password: hashedPassword, school }).catch((err) => {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 12)
+    await db.collection(collectionName).insertOne({ name, email, password: hashedPassword, school })
+    res.json({ message: 'Successful registration' })
+  } catch (err) {
     console.log('Error: ', err)
     res.status(500).json({ error: 'Failed to register user' })
-  })
-
-  if (savedUser) res.json({ message: 'Successful registration' })
+  }
 }
 
 module.exports = { register, registerUser }
