@@ -11,7 +11,7 @@ describe('Register Controller Integration Tests', () => {
     })
 
     afterAll(async () => {
-        await  db.getDb().collection(COLLECTION_NAME).deleteMany({ email: 'john@example.com' })
+        await db.getDb().collection(COLLECTION_NAME).deleteMany({ email: 'john@example.com' })
         await db.close()
     })
 
