@@ -44,6 +44,18 @@ describe('Portfolio Controller Integration Tests', () => {
             expect(response.body.portfolio.description).toBe('This is a test')
             expect(response.body.portfolio.specification).toEqual(['C1', 'C6'] )
         })
+
+        it('should reject updating a portfolio if there have been no changes made', async () => {
+          const response = await request(API_CONNECTION)
+          .post(`/portfolio/65db659ad8c16c7a6b9974fc`)
+          .send({ 
+              name: 'Updated Title', 
+              description: 'This is a test', 
+              specification: ['C1', 'C6'] 
+          })
+
+          expect(response.status).toBe(500)
+      })
     })
 
     describe('getEntries', () => {

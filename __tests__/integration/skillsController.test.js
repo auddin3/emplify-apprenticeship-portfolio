@@ -12,10 +12,10 @@ describe('Skills Controller Integration Tests', () => {
         await db.close()
     })
 
-    describe('GET modules', () => {
-        it('should return all modules', async () => {
+    describe('GET skills', () => {
+        it('should return all skills', async () => {
 
-            const response = await request(API_CONNECTION).get('/modules')
+            const response = await request(API_CONNECTION).get('/skills')
             expect(response.status).toBe(200)
         })
     })
