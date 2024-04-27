@@ -38,7 +38,7 @@ const ModuleInfoCard = ({ module, performance }) => {
           <Box className='px-3 py-4'>
             <div className='font-sansSemibold pb-2'>Assessment Breakdown</div>
             {module?.assessmentBreakdown && <PieChart data={module?.assessmentBreakdown}/>}
-            <TableContainer className='mt-8'>
+            <TableContainer className='mt-8' tabIndex={0}>
               <Table variant='simple' size='sm'>
                 <TableCaption>Results for {module?.title}</TableCaption>
                 <Thead>

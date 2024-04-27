@@ -185,8 +185,6 @@ const Portfolios = () => {
     portfolios && setSortedPortfolios(portfolios)
   }, [portfolios])
 
-  console.log(sortedPortfolios)
-
   return (
     <div className='bg-gray-paleGray flex flex-row'>
       <Navbar />
@@ -211,7 +209,7 @@ const Portfolios = () => {
         : <div className='w-full px-14 py-8 max-h-screen overflow-y-scroll'>
           <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
           <div>
-            <h2 className='text-xl text-blue-kpmgBlue font-semibold'>My Portfolios</h2>
+            <h1 className='text-xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
             <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} canEdit />
           </div>
 

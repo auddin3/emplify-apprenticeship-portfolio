@@ -7,7 +7,7 @@ import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Grid,
 import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { Cog8ToothIcon } from '@heroicons/react/24/outline'
 
-const colorScheme = ['#0091DA', '#C6007E', '#00A3A1']
+const colorScheme = ['#0091DA', '#C6007E', '#007E7D']
 
 const Dashboard = () => {
   const auth = useAuthUser()
@@ -86,7 +86,7 @@ const Dashboard = () => {
                     {portfolios && portfolios?.map((p, idx) => (
                       <Card key={idx}>
                         <CardBody className='flex flex-col justify-items-center max-h-48' paddingBottom='15px'>
-                          <CircularProgress thickness='10px' size='110px' color={colorScheme[idx]} value={p?.performance * 100} className='mx-auto' />
+                          <CircularProgress aria-label={`${p?.name}-progress`} thickness='10px' size='110px' color={colorScheme[idx]} value={p?.performance * 100} className='mx-auto' />
                           <div className={' text-2xl text-center mt-4 font-sansBold'} style= {{ color: colorScheme[idx] }}>{p?.performance * 100}%</div>
                         </CardBody>
                         <CardFooter paddingTop='0px'>
@@ -111,7 +111,7 @@ const Dashboard = () => {
                   </div>
                 </CardBody>
                 <CardFooter className='flex flex-col items-center space-y-1' paddingTop={0} paddingBottom={10}>
-                  <div className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</div>
+                  <h1 className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</h1>
                   <div className='w-full text-center mx-10 mb-4 text-[#696969]'>{user?.school}</div>
                 </CardFooter>
               </Card>

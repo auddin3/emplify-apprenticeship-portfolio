@@ -42,15 +42,15 @@ const Navbar = () => {
 
       <div className='flex flex-col justify-between h-full'>
         <div className='flex flex-col w-full mt-12 2xl:my-40 space-y-12'>
-          <a href='/dashboard' className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/dashboard') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
+          <a href='/dashboard' aria-label="dashboard" className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/dashboard') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
             <Icon w={30} h={30} color="white" as={ChartPieIcon}/>
           </a>
 
-          <a href='/portfolios' className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/portfolios') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
+          <a href='/portfolios' aria-label="portfolios" className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/portfolios') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
             <Icon w={30} h={30} color="white" as={ShieldCheckIcon}/>
           </a>
 
-          <a href='/library' className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/library') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
+          <a href='/library' aria-label="library" className={`flex justify-center py-3 cursor-pointer ${location.pathname.includes('/library') ? 'bg-blue-lightBlue rounded-r-full w-10/12 pl-4' : ''}`}>
             <Icon w={30} h={30} color="white" as={WalletIcon}/>
           </a>
         </div>
@@ -60,7 +60,7 @@ const Navbar = () => {
 
           <Popover placement='right'>
             <PopoverTrigger>
-              <div className={`mb-20 flex justify-center py-2.5 mr-3 pl-3
+              <div role="button" className={`mb-20 flex justify-center py-2.5 mr-3 pl-3
               ${location.pathname.includes('/profile') ? 'bg-blue-lightBlue rounded-r-full' : ''}`}>
                 <Avatar name={user?.name} size='lg' fontWeight={600} className='cursor-pointer'/>
               </div>

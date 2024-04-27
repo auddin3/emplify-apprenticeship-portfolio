@@ -7,7 +7,7 @@ module.exports = {
         blue: {
           kpmgBlue: '#00338D',
           mediumBlue: '#005EB8',
-          lightBlue: '#0091DA',
+          lightBlue: '#0071b6',
         },
         purple: {
           violet: '#483698',
@@ -15,7 +15,7 @@ module.exports = {
           lightPurple: '#6D2077',
         },
         green: {
-          turquoise: '#00A3A1',
+          turquoise: '#007E7D',
           forestGreen: '#009A44',
           lightGreen: '#43B02A',
         },

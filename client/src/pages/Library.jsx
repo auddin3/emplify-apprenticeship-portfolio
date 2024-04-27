@@ -193,14 +193,14 @@ const Library = () => {
                       <Tab
                         key={idx}
                         _selected={{ color: '#00338D' }}
-                        className={`text-[#00338D]/60 ${page === 'All' ? '' : 'space-x-2'}`}
+                        className={`${page === 'All' ? '' : 'space-x-2'}`}
                         onClick={() => setTabIndex(idx)}
                       >
-                        <div className='capitalize'>{camelCaseToSpaced(page)}</div>
+                        <div className='capitalize text-blue-kpmgBlue/90'>{camelCaseToSpaced(page)}</div>
                         {page === 'all'
                           ? ''
                           : (
-                            <Tag backgroundColor={`${isSelected ? 'rgb(75, 117, 255)' : 'rgba(75, 117, 255, 0.2)'}`} paddingX={3.5} borderRadius={7}>
+                            <Tag backgroundColor={`${isSelected ? '#4B75FF' : 'rgba(75, 117, 255, 0.2)'}`} paddingX={3.5} borderRadius={7}>
                               <div className={`${isSelected ? 'text-white' : 'text-blue-kpmgBlue'}`}>
                                 {count}
                               </div>

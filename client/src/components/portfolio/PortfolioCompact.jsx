@@ -35,7 +35,7 @@ const menuOptions = [
 const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status, canEdit }) => {
   return (
     <div className='px-8 flex flex-col space-y-4 w-full'>
-      <div className='font-sansSemibold text-black-custom1/70 text-xl'>{status}</div>
+      <div className='font-sansSemibold text-black-custom1/90 text-xl'>{status}</div>
       {sortedCriterion &&
         sortedCriterion
           ?.filter(c => (status === 'Incomplete' ? !entries.some(e => e.skill === c.title) : entries.some(e => e.skill === c.title)))
@@ -48,7 +48,7 @@ const SkillsAccordion = ({ sortedCriterion, entries, setSelectedKSB, status, can
                     name={c.title[0] + c.subTitle + ' ' + c.title[1]}
                     size='md'
                     fontWeight={600}
-                    className={`cursor-pointer ${occurences >= 1 ? 'opacity-100' : 'opacity-50'}`}
+                    className={`cursor-pointer ${occurences >= 1 ? 'opacity-100' : 'opacity-80'}`}
                   />
                   <div>
                     <div className='font-sansSemibold'>{c?.subTitle}</div>
@@ -148,9 +148,9 @@ const PortfolioCompact = ({ specification, entries, portfolio, setPortfolio, set
         </div>
         <div className='px-8 flex flex-row justify-between w-full'>
           <SimpleGrid columns={3} spacing={10} maxWidth='100%' className='w-full'>
-            <StatCard title='KSBs Achieved' icon={CheckCircleIcon} stat={ksbsAchieved} colour='#00A3A1' />
+            <StatCard title='KSBs Achieved' icon={CheckCircleIcon} stat={ksbsAchieved} colour='#007E7D' />
             <StatCard title='KSBs Remaining' icon={RemainingIcon} stat={ksbsRemaining} colour='#C6007E' />
-            <StatCard title='Days Until Submission' icon={TimeIcon} stat={calculateDateDifference(portfolio?.deadline)} colour='#0091DA' />
+            <StatCard title='Days Until Submission' icon={TimeIcon} stat={calculateDateDifference(portfolio?.deadline)} colour='#0071b6' />
           </SimpleGrid>
         </div>
         <div className='px-8'>

@@ -487,7 +487,7 @@ const PortfolioExpanded = ({ selectedKSB, setSelectedKSB, entries, setEntries, s
             size='xl'
             fontWeight={600}
             className='cursor-pointer'/>
-          <div className='text-xl font-sansSemibold'>{selectedKSB.subTitle}</div>
+          <h1 className='text-xl font-sansSemibold'>{selectedKSB.subTitle}</h1>
           <div className='font-sans text-black-custom1/70'>{selectedKSB.description}</div>
         </div>
         {

@@ -23,7 +23,7 @@ const SortMenu = ({ elements, setSortedElements, menuOptions = defaultMenuOption
     if (elements) {
       setSortedElements(handleSort({ elements, selected }))
     }
-  }, [selected, elements])
+  }, [selected])
 
   const handleMenuItemClick = (value) => {
     setSelected(value)

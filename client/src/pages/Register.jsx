@@ -61,7 +61,6 @@ const Register = () => {
         console.error('Registration failed:', errorData)
       }
 
-      console.log('Registration successful')
       navigate('/login')
       toast({
         title: 'Account created.',
