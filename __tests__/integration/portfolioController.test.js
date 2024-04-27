@@ -29,22 +29,22 @@ describe('Portfolio Controller Integration Tests', () => {
         })
     })
 
-    // describe('updatePortfolio', () => {
-    //     it('should update portfolio', async () => {
-    //         const response = await request(API_CONNECTION)
-    //         .post(`/portfolio/65db659ad8c16c7a6b9974fc`)
-    //         .send({ 
-    //             name: 'Updated Title', 
-    //             description: 'This is a test', 
-    //             specification: ['C1', 'C4'] 
-    //         })
+    describe('updatePortfolio', () => {
+        it('should update portfolio', async () => {
+            const response = await request(API_CONNECTION)
+            .post(`/portfolio/65db659ad8c16c7a6b9974fc`)
+            .send({ 
+                name: 'Updated Title', 
+                description: 'This is a test', 
+                specification: ['C1', 'C4'] 
+            })
 
-    //         expect(response.status).toBe(200)
-    //         expect(response.body.portfolio.name).toBe('Updated Title')
-    //         expect(response.body.portfolio.description).toBe('This is a test')
-    //         expect(response.body.portfolio.specification).toEqual(['C1', 'C4'] )
-    //     })
-    // })
+            expect(response.status).toBe(200)
+            expect(response.body.portfolio.name).toBe('Updated Title')
+            expect(response.body.portfolio.description).toBe('This is a test')
+            expect(response.body.portfolio.specification).toEqual(['C1', 'C4'] )
+        })
+    })
 
     describe('getEntries', () => {
       it('should return all portfolio entries', async () => {
