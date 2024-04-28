@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom'
-import { Button, Card, CardBody, CardHeader, CardFooter, CircularProgress, Grid, GridItem, Icon, SimpleGrid, Spinner, Tag,
+import { Button, Card, CardBody, CardHeader, CardFooter, Grid, GridItem, Icon, SimpleGrid, Spinner, Tag,
   TagLabel, Avatar } from '@chakra-ui/react'
 import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { Cog8ToothIcon } from '@heroicons/react/24/outline'
@@ -75,7 +75,7 @@ const Dashboard = () => {
             h="screen"
             padding={6}
           >
-            <GridItem colSpan={7} rowSpan={1}>
+            {/* <GridItem colSpan={7} rowSpan={1}>
               <Card className='px-2 rounded-full' size='md' h="full">
                 <CardHeader paddingBottom='8px'>
                   <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Performance Analysis</div>
@@ -97,7 +97,45 @@ const Dashboard = () => {
                   </SimpleGrid>
                 </CardBody>
               </Card>
-            </GridItem >
+            </GridItem > */}
+            <GridItem colSpan={7} rowSpan={2}>
+              <Card className='px-2 rounded-full' size='lg' h="full">
+                <CardHeader paddingBottom='8px'>
+                  <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Skills Distribution</div>
+                </CardHeader>
+                <CardBody>
+                  <SimpleGrid spacing={8} templateColumns='repeat(1, minmax(200px, 1fr))'>
+                    <Card backgroundColor={colorScheme[2]}>
+                      <CardHeader paddingBottom={0}>
+                        <div className='text-white font-sansSemibold text-lg'>Top Areas</div>
+                      </CardHeader>
+                      <CardBody className='max-h-40 overflow-y-scroll'>
+                        {skills && skills?.slice(0, 20)?.map((s, idx) => (
+                          <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
+                            <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
+                          </Tag>
+                        ))}
+                      </CardBody>
+                    </Card>
+
+                    <Card backgroundColor={colorScheme[1]}>
+                      <CardHeader paddingBottom={0}>
+                        <div className='text-white font-sansSemibold text-lg'>Areas For Improvement</div>
+                      </CardHeader>
+                      <CardBody className='max-h-40 overflow-y-scroll'>
+                        <div>
+                          {skills && skills?.slice(-20)?.map((s, idx) => (
+                            <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
+                              <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
+                            </Tag>
+                          ))}
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </SimpleGrid>
+                </CardBody>
+              </Card>
+            </GridItem>
             <GridItem colSpan={3} rowSpan={1}>
               <Card className='rounded-full' size='lg' h="full">
                 <CardHeader>
@@ -116,44 +154,6 @@ const Dashboard = () => {
                 </CardFooter>
               </Card>
             </GridItem>
-            <GridItem colSpan={7} rowSpan={1}>
-              <Card className='px-2 rounded-full' size='lg' h="full">
-                <CardHeader paddingBottom='8px'>
-                  <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Skills Distribution</div>
-                </CardHeader>
-                <CardBody>
-                  <SimpleGrid spacing={8} templateColumns='repeat(2, minmax(200px, 1fr))'>
-                    <Card backgroundColor={colorScheme[2]}>
-                      <CardHeader paddingBottom={0}>
-                        <div className='text-white font-sansSemibold text-lg'>Top Areas</div>
-                      </CardHeader>
-                      <CardBody className='max-h-40 overflow-y-scroll'>
-                        {skills && skills?.slice(0, 3)?.map((s, idx) => (
-                          <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
-                            <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
-                          </Tag>
-                        ))}
-                      </CardBody>
-                    </Card>
-
-                    <Card backgroundColor={colorScheme[1]}>
-                      <CardHeader paddingBottom={0}>
-                        <div className='text-white font-sansSemibold text-lg'>Areas For Improvement</div>
-                      </CardHeader>
-                      <CardBody className='max-h-40 overflow-y-scroll'>
-                        <div>
-                          {skills && skills?.slice(-3)?.map((s, idx) => (
-                            <Tag key={idx} size="lg" borderRadius="full" backgroundColor="white" marginRight={2} marginY={1}>
-                              <TagLabel className='text-blue-kpmgBlue font-sansSemibold text-sm px-2 py-1.5'>{s?.subTitle}</TagLabel>
-                            </Tag>
-                          ))}
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </SimpleGrid>
-                </CardBody>
-              </Card>
-            </GridItem>
             <GridItem colSpan={3} rowSpan={1}>
               <Card className='px-2 rounded-full' size='lg' h="full">
                 <CardHeader paddingBottom='8px'>
@@ -161,7 +161,7 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardBody marginX={5} marginY={0}>
                   <ul className='space-y-8'>
-                    {portfolios && portfolios?.map((p, idx) => (
+                    {portfolios && portfolios?.slice(0, 2)?.map((p, idx) => (
                       <li key={idx} className='flex flex-row space-x-8 items-center cursor-pointer' onClick={() => navigate(`/portfolios/${p._id}`, { state: { portfolio: p, edit: p.owner === user.uid } })}>
                         <Icon as={ShieldCheckIcon} color='#0091DA' h={8} w={8}/>
                         <div className='font-sansSemibold text-lg leading-tight'>{p?.name}</div>
