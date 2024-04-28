@@ -131,7 +131,7 @@ const CardGrid = ({ sortedPortfolios, user, canEdit = false, onOpen }) => {
       })}
       {!!canEdit && onOpen && (
         <Card
-          className='flex justify-center items-center cursor-pointer min-h-28'
+          className='flex justify-center items-center cursor-pointer min-h-80'
           backgroundColor='rgba(75, 117, 255, 0.2)'
           onClick={onOpen}
         >
