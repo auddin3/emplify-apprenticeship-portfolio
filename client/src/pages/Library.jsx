@@ -91,10 +91,11 @@ const ModuleInformation = ({ isOpen, onClose, selectedModule }) => {
       <div className='w-full flex flex-row justify-center'>
         <Button
           size="md"
-          bgColor='#00338D'
-          color='white'
+          // bgColor='#00338D'
+          // color='white'
+          disabled
           borderRadius={99}
-          className='w-1/2 mx-auto mt-8 mb-2'
+          className='w-1/2 mx-auto mt-8 mb-2 cursor-not-allowed'
           // onClick={handleSubmit}
         >
          Use Module
