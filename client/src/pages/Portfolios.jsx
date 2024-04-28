@@ -103,7 +103,7 @@ const CardGrid = ({ sortedPortfolios, user, canEdit = false, onOpen }) => {
                 <SimpleGrid spacing={8} templateColumns='repeat(2, minmax(200px, 1fr))'>
                   <Card className='items-center p-5'>
                     <div className='text-4xl font-sansSemibold text-green-turquoise pb-2'>{ksbsCompleted}</div>
-                    <div className='leading-tight'>has been</div>
+                    <div className='leading-tight'>have been</div>
                     <strong className='leading-tight'>completed</strong>
                   </Card>
                   <Card className='items-center p-5'>

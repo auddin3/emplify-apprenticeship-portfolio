@@ -248,6 +248,7 @@ const PortfolioMenu = ({ isOpen, onClose, portfolio, setPortfolio, setPortfolioL
                 }
               </div>
             </div>
+            {!portfolio &&
             <div className='px-12 py-4 space-y-8 mb-8'>
               <div className='text-lg font-sansSemibold text-black-custom1'>
                 Deadline
@@ -260,6 +261,7 @@ const PortfolioMenu = ({ isOpen, onClose, portfolio, setPortfolio, setPortfolioL
                 onChange={e => handleChange('deadline', e?.target?.value)}
               />
             </div>
+            }
           </>
         )
         : (
