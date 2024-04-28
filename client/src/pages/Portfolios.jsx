@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
-import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, IconButton, SimpleGrid, Spinner, Tooltip } from '@chakra-ui/react'
+import { Button, Card, CardHeader, CardBody, CardFooter, Grid, GridItem, Icon, IconButton, SimpleGrid, Spinner, Tooltip,
+  useDisclosure } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { calculateDateDifference } from '../utils'
 import { InformationCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
 import { ClockIcon, UserGroupIcon } from '@heroicons/react/24/solid'
 import SortMenu from '../components/SortMenu'
+import PortfolioMenu from '../components/portfolio/PortfolioMenu'
 
 const menuOptions = [
   {
@@ -33,7 +35,7 @@ const menuOptions = [
   },
 ]
 
-const CardGrid = ({ sortedPortfolios, user, canEdit = false }) => {
+const CardGrid = ({ sortedPortfolios, user, canEdit = false, onOpen }) => {
   const navigate = useNavigate()
   const [entries, setEntries] = useState()
 
@@ -127,11 +129,11 @@ const CardGrid = ({ sortedPortfolios, user, canEdit = false }) => {
           </GridItem>
         )
       })}
-      {!!canEdit && (
+      {!!canEdit && onOpen && (
         <Card
           className='flex justify-center items-center cursor-pointer min-h-28'
           backgroundColor='rgba(75, 117, 255, 0.2)'
-          // onClick={onOpen}
+          onClick={onOpen}
         >
           <IconButton
             as={PlusCircleIcon}
@@ -152,6 +154,7 @@ const Portfolios = () => {
   const [portfolios, setPortfolios] = useState()
   const [sortedPortfolios, setSortedPortfolios] = useState()
   const [loading, setLoading] = useState(true)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const fetchData = async () => {
     setLoading(true)
@@ -206,20 +209,29 @@ const Portfolios = () => {
             size='xl'
           />
         </div>
-        : <div className='w-full px-14 py-8 max-h-screen overflow-y-scroll'>
-          <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
-          <div>
-            <h1 className='text-xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
-            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} canEdit />
-          </div>
+        : (
+          <div className='w-full px-14 py-8 max-h-screen overflow-y-scroll'>
+            <SortMenu elements={portfolios} setSortedElements={setSortedPortfolios} menuOptions={menuOptions} />
+            <div>
+              <h1 className='text-xl text-blue-kpmgBlue font-semibold'>My Portfolios</h1>
+              <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner === user.uid)} user={user} canEdit onOpen={onOpen} />
+            </div>
 
-          <div className='mt-14'>
-            <h2 className='text-xl text-blue-kpmgBlue font-semibold'>Shared with Me</h2>
-            <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner !== user.uid)} user={user} />
+            <div className='mt-14'>
+              <h2 className='text-xl text-blue-kpmgBlue font-semibold'>Shared with Me</h2>
+              <CardGrid sortedPortfolios={sortedPortfolios?.filter(p => p.owner !== user.uid)} user={user} />
+            </div>
           </div>
-
-        </div>
+        )
       }
+      {isOpen && (
+        <PortfolioMenu
+          isOpen={isOpen}
+          onClose={onClose}
+          setPortfolioList={setPortfolios}
+          user={user.uid}
+        />
+      )}
     </div>
   )
 }

@@ -3,9 +3,48 @@ import { Avatar, Button, Box, Card, CardBody, Checkbox, CheckboxGroup, Input, Te
   StepSeparator, StepIcon, StepNumber, StepTitle, StepDescription, useSteps, useToast } from '@chakra-ui/react'
 import Sidebar from '../Sidebar'
 
-const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users }) => {
+const PortfolioMenu = ({ isOpen, onClose, portfolio, setPortfolio, setPortfolioList, user }) => {
+  const [skills, setSkills] = useState()
+  const [users, setUsers] = useState()
+
   const [modifiedPortfolio, setModifiedPortfolio] = useState(portfolio)
   const toast = useToast()
+
+  const fetchData = async () => {
+    const skillsApiUrl = 'http://localhost:5001/skills'
+    const usersApiUrl = 'http://localhost:5001/users'
+
+    try {
+      const [skillsResponse, usersResponse] = await Promise.all([
+        fetch(skillsApiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } }),
+        fetch(usersApiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } }),
+      ])
+
+      if (!skillsResponse.ok) {
+        const errorData = await skillsResponse.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      if (!usersResponse.ok) {
+        const errorData = await usersResponse.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const [skillsData, usersData] = await Promise.all([
+        skillsResponse.json(),
+        usersResponse.json(),
+      ])
+
+      setSkills(skillsData?.skills.sort((a, b) => a.title.localeCompare(b.title)))
+      setUsers(usersData?.users)
+    } catch (error) {
+      console.error('Operation failed:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   const handleChange = (key, value) => {
     setModifiedPortfolio({ ...modifiedPortfolio, [key]: value })
@@ -50,6 +89,43 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
     }
   }
 
+  const handleCreate = async () => {
+    const apiUrl = `http://localhost:5001/portfolio/${user}`
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(modifiedPortfolio),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Operation failed:', errorData)
+      }
+
+      const data = await response.json()
+      setPortfolioList(data?.portfolios)
+      toast({
+        title: 'Record Inserted',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (error) {
+      console.error('Operation failed:', error)
+      toast({
+        title: 'Changes Unsaved',
+        status: 'error',
+        isClosable: true,
+        duration: 9000,
+        position: 'bottom-right',
+      })
+    } finally {
+      onClose()
+    }
+  }
+
   useEffect(() => {
     setModifiedPortfolio(portfolio)
   }, [portfolio])
@@ -69,7 +145,7 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
       isOpen={isOpen}
       onClose={onClose}
       size="xl"
-      title={'Edit Portfolio'}
+      title={`${portfolio ? 'Edit' : 'Add'} Portfolio`}
     >
       <div className='mx-20 my-10'>
         <Stepper size='md' index={activeStep}>
@@ -128,15 +204,61 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
             </div>
             <div className='px-12 py-4 space-y-8 mb-8'>
               <div className='text-lg font-sansSemibold text-black-custom1'>
-             Shared With
+                {portfolio ? 'Shared With' : 'Share With'}
               </div>
               <div className='mx-1 flex flex-row space-x-4 items-center'>
                 {
-                  users?.filter(user => portfolio?.sharedWith.includes(user._id)).map(user => (
-                    <Avatar key={user._id} name={user?.name} size='lg' fontWeight={600} className='cursor-pointer'/>
-                  ))
+                  portfolio
+                    ? (
+                      users?.filter(user => portfolio?.sharedWith.includes(user._id)).map(user => (
+                        <Avatar key={user._id} name={user?.name} size='lg' fontWeight={600} className='cursor-pointer'/>
+                      )))
+                    : (
+                      <div className='flex flex-col space-y-4 ml-5'>
+                        {users?.map(user => (
+                          <Checkbox
+                            key={user._id}
+                            variant="blue"
+                            size="md"
+                            value={user._id}
+                            onChange={(e) => {
+                              const checked = e.target.checked
+                              if (checked) {
+                                setModifiedPortfolio({
+                                  ...modifiedPortfolio,
+                                  sharedWith: modifiedPortfolio?.sharedWith
+                                    ? modifiedPortfolio?.sharedWith?.concat(e.target.value)
+                                    : [e.target.value],
+                                })
+                              } else {
+                                setModifiedPortfolio({
+                                  ...modifiedPortfolio,
+                                  sharedWith: modifiedPortfolio?.sharedWith
+                                    ? modifiedPortfolio?.sharedWith.filter(value => value !== e.target.value)
+                                    : [],
+                                })
+                              }
+                            }}
+                          >
+                            {user.name}
+                          </Checkbox>
+                        ))}
+                      </div>
+                    )
                 }
               </div>
+            </div>
+            <div className='px-12 py-4 space-y-8 mb-8'>
+              <div className='text-lg font-sansSemibold text-black-custom1'>
+                Deadline
+              </div>
+              <Input
+                placeholder='Select Date'
+                size='md'
+                type='date'
+                value={modifiedPortfolio?.deadline}
+                onChange={e => handleChange('deadline', e?.target?.value)}
+              />
             </div>
           </>
         )
@@ -162,12 +284,16 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
                                 if (checked) {
                                   setModifiedPortfolio({
                                     ...modifiedPortfolio,
-                                    specification: modifiedPortfolio?.specification?.concat(e.target.value),
+                                    specification: modifiedPortfolio?.specification
+                                      ? modifiedPortfolio?.specification?.concat(e.target.value)
+                                      : [e.target.value],
                                   })
                                 } else {
                                   setModifiedPortfolio({
                                     ...modifiedPortfolio,
-                                    specification: modifiedPortfolio?.specification.filter(value => value !== e.target.value),
+                                    specification: modifiedPortfolio?.specification
+                                      ? modifiedPortfolio?.specification.filter(value => value !== e.target.value)
+                                      : [],
                                   })
                                 }
                               }}
@@ -195,7 +321,7 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
           color='white'
           borderRadius={99}
           className='w-1/4 py-6 my-6 mx-auto'
-          onClick={handleSubmit}
+          onClick={portfolio ? handleSubmit : handleCreate }
         >
                 Save
         </Button>
@@ -204,4 +330,4 @@ const EditPortfolio = ({ isOpen, onClose, portfolio, setPortfolio, skills, users
   )
 }
 
-export default EditPortfolio
+export default PortfolioMenu

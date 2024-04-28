@@ -15,6 +15,36 @@ const getUserPortfolios = async (uid) => {
   return { portfolios }
 }
 
+const createPortfolio = async (uid, portfolioData) => {
+  const db = getDb()
+
+  try {
+    if (!portfolioData) {
+      throw new Error('No portfolio object to be inserted.')
+    }
+
+    const updateResult = await db.collection(collectionName).insertOne(
+      {
+        name: portfolioData?.name,
+        description: portfolioData?.description,
+        specification: portfolioData?.specification,
+        owner: uid,
+        deadline: portfolioData?.deadline,
+        sharedWith: portfolioData?.sharedWith,
+        performance: 0,
+      },
+    )
+
+    if (updateResult.modifiedCount === 0) {
+      throw new Error('Portfolio not found or not updated.')
+    }
+
+    return updateResult
+  } catch (error) {
+    throw new Error(`Failed to update portfolio: ${error.message}`)
+  }
+}
+
 const updatePortfolio = async (pid, updatedPortfolioData) => {
   const db = getDb()
 
@@ -107,6 +137,7 @@ const deletePortfolioEntry = async (pid) => {
 
 module.exports = {
   getUserPortfolios,
+  createPortfolio,
   updatePortfolio,
   getPortfolioEntries,
   getEntries,

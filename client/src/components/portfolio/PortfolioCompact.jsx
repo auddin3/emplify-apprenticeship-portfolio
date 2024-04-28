@@ -5,7 +5,7 @@ import SortMenu from '../SortMenu'
 import { calculateDateDifference } from '../../utils'
 import StatCard from '../StatCard'
 import { TimeIcon, RemainingIcon } from '../Icons'
-import EditPortfolio from './EditPortfolio'
+import PortfolioMenu from './PortfolioMenu'
 
 const menuOptions = [
   {
@@ -168,13 +168,11 @@ const PortfolioCompact = ({ specification, entries, portfolio, setPortfolio, set
         )}
       </div>
       {isOpen && (
-        <EditPortfolio
+        <PortfolioMenu
           isOpen={isOpen}
           onClose={onClose}
           portfolio={portfolio}
           setPortfolio={setPortfolio}
-          skills={skills}
-          users={users}
         />
       )}
     </>

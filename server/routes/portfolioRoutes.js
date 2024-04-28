@@ -33,6 +33,19 @@ router.get('/portfolio/:pid', async function (req, res) {
   }
 })
 
+router.put('/portfolio/:uid', async function (req, res) {
+  const uid = new ObjectId(req.params.uid)
+  const portfolioData = req.body
+  try {
+    await portfolioController.createPortfolio(uid, portfolioData)
+    const { portfolios } = await portfolioController.getUserPortfolios(uid)
+
+    return res.json({ portfolios })
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+})
+
 router.get('/entries', async function (req, res) {
   try {
     const { entries } = await portfolioController.getEntries()
