@@ -19,7 +19,7 @@ Welcome to Emplify! This repository contains the code for Emplify, a digital por
 ## Installation
 
 1. **Clone the repository**: `git clone https://github.com/auddin3/emplify.git`
-2. **Install dependencies**: `cd emplify && npm install`
+2. **Install dependencies**: `cd emplify && npm install && cd client && npm install && cd../server && npm install`
 4. **Run the application**: `npm run dev`
 5. **Access the application**: Open your web browser and navigate to `http://localhost:3000`.
 
