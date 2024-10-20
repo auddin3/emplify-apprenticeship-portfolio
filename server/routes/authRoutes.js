@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mongodb = require('mongodb')
-const { getDb } = require('../config/database')
+const { getDb } = require('../scripts/database')
 const jwt = require('jsonwebtoken')
 
 const registerController = require('../controllers/register')

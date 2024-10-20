@@ -1,4 +1,4 @@
-const { getDb } = require('../config/database')
+const { getDb } = require('../scripts/database')
 
 const collectionName = 'grades'
 

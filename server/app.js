@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const db = require('./config/database')
+const db = require('./scripts/database')
 const app = express()
 
 // Middleware
