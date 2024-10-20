@@ -21,7 +21,8 @@
   "homepage": "https://github.com/auddin3/emplify#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^8.7.2"
   },
   "devDependencies": {
     "bson": "^6.3.0",
