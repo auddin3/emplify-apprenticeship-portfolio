@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom'
-import { Button, Card, CardBody, CardHeader, CardFooter, Grid, GridItem, Icon, SimpleGrid, Spinner, Tag,
+import { Button, Card, CircularProgress, CardBody, CardHeader, CardFooter, Grid, GridItem, Icon, SimpleGrid, Spinner, Tag,
   TagLabel, Avatar } from '@chakra-ui/react'
 import { ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { Cog8ToothIcon } from '@heroicons/react/24/outline'
@@ -75,7 +75,7 @@ const Dashboard = () => {
             h="screen"
             padding={6}
           >
-            {/* <GridItem colSpan={7} rowSpan={1}>
+            <GridItem colSpan={7} rowSpan={1}>
               <Card className='px-2 rounded-full' size='md' h="full">
                 <CardHeader paddingBottom='8px'>
                   <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Performance Analysis</div>
@@ -97,8 +97,26 @@ const Dashboard = () => {
                   </SimpleGrid>
                 </CardBody>
               </Card>
-            </GridItem > */}
-            <GridItem colSpan={7} rowSpan={2}>
+            </GridItem >
+            <GridItem colSpan={3} rowSpan={1}>
+              <Card className='rounded-full' size='lg' h="full">
+                <CardHeader>
+                  <div className='text-right text-[#A8A8A8] cursor-pointer'>
+                    <Icon as={Cog8ToothIcon} h={6} w={6} onClick={() => navigate('/profile')}/>
+                  </div>
+                </CardHeader>
+                <CardBody paddingTop={1} >
+                  <div className='text-center'>
+                    <Avatar name={user?.name} fontWeight={600} h={150} w={150} size="2xl"/>
+                  </div>
+                </CardBody>
+                <CardFooter className='flex flex-col items-center space-y-1' paddingTop={0} paddingBottom={10}>
+                  <h1 className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</h1>
+                  <div className='w-full text-center mx-10 mb-4 text-[#696969]'>{user?.school}</div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            <GridItem colSpan={7} rowSpan={1}>
               <Card className='px-2 rounded-full' size='lg' h="full">
                 <CardHeader paddingBottom='8px'>
                   <div className='font-sansSemibold text-blue-kpmgBlue text-xl'>Skills Distribution</div>
@@ -134,24 +152,6 @@ const Dashboard = () => {
                     </Card>
                   </SimpleGrid>
                 </CardBody>
-              </Card>
-            </GridItem>
-            <GridItem colSpan={3} rowSpan={1}>
-              <Card className='rounded-full' size='lg' h="full">
-                <CardHeader>
-                  <div className='text-right text-[#A8A8A8] cursor-pointer'>
-                    <Icon as={Cog8ToothIcon} h={6} w={6} onClick={() => navigate('/profile')}/>
-                  </div>
-                </CardHeader>
-                <CardBody paddingTop={1} >
-                  <div className='text-center'>
-                    <Avatar name={user?.name} fontWeight={600} h={150} w={150} size="2xl"/>
-                  </div>
-                </CardBody>
-                <CardFooter className='flex flex-col items-center space-y-1' paddingTop={0} paddingBottom={10}>
-                  <h1 className='text-3xl text-center font-sansSemibold pt-8'>{user?.name}</h1>
-                  <div className='w-full text-center mx-10 mb-4 text-[#696969]'>{user?.school}</div>
-                </CardFooter>
               </Card>
             </GridItem>
             <GridItem colSpan={3} rowSpan={1}>
