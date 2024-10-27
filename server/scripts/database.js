@@ -5,15 +5,13 @@ let database
 let client
 
 async function connect () {
-  client = await MongoClient.connect('mongodb://127.0.0.1:27017')
+  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017'
+  client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   database = client.db('emplify')
 }
 
 function getDb () {
-  if (!database) {
-    // eslint-disable-next-line no-throw-literal
-    throw { message: 'Database connection not established!' }
-  }
+  if (!database) throw new Error('Database connection not established!')
   return database
 }
 
