@@ -28,5 +28,5 @@ app.use(skillRoutes)
 
 // Start the server
 db.connectToDatabase().then(function () {
-  app.listen(5001)
+  app.listen(3000)
 })

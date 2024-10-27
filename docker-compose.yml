@@ -1,0 +1,31 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"  # Map client port 3001 to host
+    depends_on:
+      - server       # Ensure server is running before client tries to connect
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # Map server port 3000 to host
+    depends_on:
+      - mongodb      # Ensure MongoDB is running before server tries to connect
+    env_file:
+      - ./server/.env  # Load environment variables from .env file in server directory
+
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"  # Map MongoDB port 27017 to host
+    volumes:
+      - mongo-data:/data/db  # Persistent storage for MongoDB
+
+volumes:
+  mongo-data:
+    driver: local
