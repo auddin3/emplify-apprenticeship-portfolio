@@ -5,7 +5,7 @@ let database
 let client
 
 async function connect () {
-  client = await MongoClient.connect('mongodb://127.0.0.1:27017')
+  client = await MongoClient.connect('mongodb+srv://auddin:cTz8y4XH63WI7Spk@dev.p8a9z.mongodb.net/?retryWrites=true&w=majority')
   database = client.db('emplify')
 }
 
